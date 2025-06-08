@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-JobhunterApplication<jobhunter-BE>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "vn.tranphudev.jobhunter.JobhunterApplication",
+            "projectName": "jobhunter-BE",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
