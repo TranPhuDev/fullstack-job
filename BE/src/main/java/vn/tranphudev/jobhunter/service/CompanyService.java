@@ -26,26 +26,20 @@ public class CompanyService {
         return this.companyRepositoty.findAll();
     }
 
-    public Company handleGetCompanyById(long id) {
-        Optional<Company> companyOptinal = this.companyRepositoty.findById(id);
-        if (companyOptinal.isPresent()) {
-            return companyOptinal.get();
-        }
-        return null;
-    }
-
     public Company handleUpdateCompany(Company company) {
-        Company currentCompany = this.handleGetCompanyById(company.getId());
-        if (currentCompany != null) {
+        Optional<Company> companyOptional = this.companyRepositoty.findById(company.getId());
+        if (companyOptional.isPresent()) {
+            Company currentCompany = companyOptional.get();
             currentCompany.setName(company.getName());
             currentCompany.setDescription(company.getDescription());
             currentCompany.setAddress(company.getAddress());
             currentCompany.setLogo(company.getLogo());
 
-            currentCompany = this.companyRepositoty.save(currentCompany);
+            return this.companyRepositoty.save(currentCompany);
+
         }
 
-        return currentCompany;
+        return null;
     }
 
     public void handleDeleteCompany(long id) {
