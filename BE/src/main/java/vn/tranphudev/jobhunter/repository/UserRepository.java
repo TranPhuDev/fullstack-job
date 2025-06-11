@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 import vn.tranphudev.jobhunter.domain.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> , JpaSpecificationExecutor<User>{
+public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
     User findByEmail(String email);
 
-    
+    boolean existsByEmail(String email);
 
 }

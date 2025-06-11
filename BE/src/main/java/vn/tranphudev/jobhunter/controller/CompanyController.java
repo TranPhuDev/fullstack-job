@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkraft.springfilter.boot.Filter;
@@ -20,6 +21,7 @@ import vn.tranphudev.jobhunter.domain.Company;
 import vn.tranphudev.jobhunter.domain.User;
 import vn.tranphudev.jobhunter.domain.dto.ResultPaginationDTO;
 import vn.tranphudev.jobhunter.service.CompanyService;
+import vn.tranphudev.jobhunter.util.annotaion.ApiMessage;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
+@RequestMapping("/api/v1")
 public class CompanyController {
 
     CompanyService companyService;
@@ -44,6 +47,7 @@ public class CompanyController {
 
     // get all company
     @GetMapping("/companies")
+    @ApiMessage("Fecth all companies")
     public ResponseEntity<ResultPaginationDTO> getCompany(@Filter Specification<Company> spec, Pageable pageable) {
 
         return ResponseEntity.ok(this.companyService.handleGetCompany(spec, pageable));
