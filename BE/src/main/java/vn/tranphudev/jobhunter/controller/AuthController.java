@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import vn.tranphudev.jobhunter.domain.User;
-import vn.tranphudev.jobhunter.domain.dto.ReqLoginDTO;
-import vn.tranphudev.jobhunter.domain.dto.ResLoginDTO;
+import vn.tranphudev.jobhunter.domain.request.ReqLoginDTO;
+import vn.tranphudev.jobhunter.domain.response.ResLoginDTO;
 import vn.tranphudev.jobhunter.service.UserService;
 import vn.tranphudev.jobhunter.util.annotaion.ApiMessage;
 import vn.tranphudev.jobhunter.util.error.IdInvalidException;
@@ -25,7 +25,6 @@ import vn.tranphudev.jobhunter.util.error.SecurityUtil;
 
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v1")

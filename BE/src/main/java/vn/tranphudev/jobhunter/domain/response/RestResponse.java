@@ -1,4 +1,4 @@
-package vn.tranphudev.jobhunter.domain;
+package vn.tranphudev.jobhunter.domain.response;
 
 public class RestResponse<T> {
     private int statusCode;

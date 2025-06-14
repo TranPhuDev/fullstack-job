@@ -1,9 +1,5 @@
 package vn.tranphudev.jobhunter.controller;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -18,15 +14,13 @@ import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
 import vn.tranphudev.jobhunter.domain.Company;
-import vn.tranphudev.jobhunter.domain.User;
-import vn.tranphudev.jobhunter.domain.dto.ResultPaginationDTO;
+import vn.tranphudev.jobhunter.domain.response.ResultPaginationDTO;
 import vn.tranphudev.jobhunter.service.CompanyService;
 import vn.tranphudev.jobhunter.util.annotaion.ApiMessage;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v1")

@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 
 import vn.tranphudev.jobhunter.domain.Company;
 import vn.tranphudev.jobhunter.domain.User;
-import vn.tranphudev.jobhunter.domain.dto.Meta;
-import vn.tranphudev.jobhunter.domain.dto.ResultPaginationDTO;
+import vn.tranphudev.jobhunter.domain.response.ResultPaginationDTO;
 import vn.tranphudev.jobhunter.repository.CompanyRepositoty;
 
 @Service
@@ -30,7 +29,7 @@ public class CompanyService {
     public ResultPaginationDTO handleGetCompany(Specification<Company> spec, Pageable pageable) {
         Page<Company> pCompany = this.companyRepositoty.findAll(spec, pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
-        Meta mt = new Meta();
+        ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
 
         mt.setPage(pCompany.getNumber() + 1);
         mt.setPageSize(pCompany.getSize());
