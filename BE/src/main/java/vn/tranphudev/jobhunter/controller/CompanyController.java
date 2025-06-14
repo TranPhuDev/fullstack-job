@@ -47,8 +47,9 @@ public class CompanyController {
 
     // get all company
     @GetMapping("/companies")
-    @ApiMessage("Fecth all companies")
-    public ResponseEntity<ResultPaginationDTO> getCompany(@Filter Specification<Company> spec, Pageable pageable) {
+    @ApiMessage("Fetch companies")
+    public ResponseEntity<ResultPaginationDTO> getCompany(
+            @Filter Specification<Company> spec, Pageable pageable) {
 
         return ResponseEntity.ok(this.companyService.handleGetCompany(spec, pageable));
     }

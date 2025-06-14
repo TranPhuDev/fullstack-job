@@ -27,8 +27,8 @@ public class CompanyService {
         return this.companyRepositoty.save(company);
     }
 
-   public ResultPaginationDTO handleGetCompany(Specification<Company> spec, Pageable pageable) {
-        Page<Company> pCompany = this.companyRepositoty.findAll(pageable);
+    public ResultPaginationDTO handleGetCompany(Specification<Company> spec, Pageable pageable) {
+        Page<Company> pCompany = this.companyRepositoty.findAll(spec, pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
         Meta mt = new Meta();
 
@@ -42,6 +42,7 @@ public class CompanyService {
         rs.setResult(pCompany.getContent());
         return rs;
     }
+
     public Company handleUpdateCompany(Company company) {
         Optional<Company> companyOptional = this.companyRepositoty.findById(company.getId());
         if (companyOptional.isPresent()) {
