@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import vn.tranphudev.jobhunter.domain.Company;
 
 @Repository
-public interface CompanyRepositoty extends JpaRepository<Company, Long>, JpaSpecificationExecutor<Company> {
+public interface CompanyRepository extends JpaRepository<Company, Long>, JpaSpecificationExecutor<Company> {
 
 }

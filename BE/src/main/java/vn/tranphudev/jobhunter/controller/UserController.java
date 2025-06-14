@@ -56,7 +56,7 @@ public class UserController {
 
     @DeleteMapping("/users/{id}")
     @ApiMessage("Delete a user")
-    public ResponseEntity<Void> deleteUser(@PathVariable("id") long id)
+    public ResponseEntity<ResUserDTO> deleteUser(@PathVariable("id") long id)
             throws IdInvalidException {
         User currentUser = this.userService.handleGetUserById(id);
         if (currentUser == null) {
@@ -64,7 +64,7 @@ public class UserController {
         }
 
         this.userService.handleDeleteUser(id);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(this.userService.convertToResUserDTO(currentUser));
     }
 
     @GetMapping("/users")

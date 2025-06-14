@@ -11,23 +11,26 @@ import org.springframework.stereotype.Service;
 import vn.tranphudev.jobhunter.domain.Company;
 import vn.tranphudev.jobhunter.domain.User;
 import vn.tranphudev.jobhunter.domain.response.ResultPaginationDTO;
-import vn.tranphudev.jobhunter.repository.CompanyRepositoty;
+import vn.tranphudev.jobhunter.repository.CompanyRepository;
+import vn.tranphudev.jobhunter.repository.UserRepository;
 
 @Service
 public class CompanyService {
 
-    private final CompanyRepositoty companyRepositoty;
+    private final CompanyRepository companyRepository;
+    private final UserRepository userRepository;
 
-    public CompanyService(CompanyRepositoty companyRepositoty) {
-        this.companyRepositoty = companyRepositoty;
+    public CompanyService(CompanyRepository companyRepository, UserRepository userRepository) {
+        this.companyRepository = companyRepository;
+        this.userRepository = userRepository;
     }
 
     public Company handleCreateCompany(Company company) {
-        return this.companyRepositoty.save(company);
+        return this.companyRepository.save(company);
     }
 
     public ResultPaginationDTO handleGetCompany(Specification<Company> spec, Pageable pageable) {
-        Page<Company> pCompany = this.companyRepositoty.findAll(spec, pageable);
+        Page<Company> pCompany = this.companyRepository.findAll(spec, pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
         ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
 
@@ -43,7 +46,7 @@ public class CompanyService {
     }
 
     public Company handleUpdateCompany(Company company) {
-        Optional<Company> companyOptional = this.companyRepositoty.findById(company.getId());
+        Optional<Company> companyOptional = this.companyRepository.findById(company.getId());
         if (companyOptional.isPresent()) {
             Company currentCompany = companyOptional.get();
             currentCompany.setName(company.getName());
@@ -51,7 +54,7 @@ public class CompanyService {
             currentCompany.setAddress(company.getAddress());
             currentCompany.setLogo(company.getLogo());
 
-            return this.companyRepositoty.save(currentCompany);
+            return this.companyRepository.save(currentCompany);
 
         }
 
@@ -59,6 +62,18 @@ public class CompanyService {
     }
 
     public void handleDeleteCompany(long id) {
-        this.companyRepositoty.deleteById(id);
+        Optional<Company> comOptional = this.companyRepository.findById(id);
+        if (comOptional.isPresent()) {
+            Company com = comOptional.get();
+            // fetch all user belong to this company
+            List<User> users = this.userRepository.findByCompany(com);
+            this.userRepository.deleteAll(users);
+        }
+        this.companyRepository.deleteById(id);
     }
+
+    public Optional<Company> findById(long id) {
+        return this.companyRepository.findById(id);
+    }
+
 }
