@@ -34,6 +34,7 @@ public class CompanyController {
 
     // create company
     @PostMapping("/companies")
+    @ApiMessage("Create companies success")
     public ResponseEntity<Company> createNewCompany(@Valid @RequestBody Company company) {
         Company newCompany = this.companyService.handleCreateCompany(company);
         return ResponseEntity.status(HttpStatus.CREATED).body(newCompany);
