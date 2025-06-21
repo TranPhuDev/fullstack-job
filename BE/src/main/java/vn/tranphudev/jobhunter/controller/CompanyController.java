@@ -1,5 +1,7 @@
 package vn.tranphudev.jobhunter.controller;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -18,9 +20,7 @@ import vn.tranphudev.jobhunter.domain.response.ResultPaginationDTO;
 import vn.tranphudev.jobhunter.service.CompanyService;
 import vn.tranphudev.jobhunter.util.annotaion.ApiMessage;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -56,11 +56,4 @@ public class CompanyController {
         return ResponseEntity.ok(updateCompany);
     }
 
-    // delete company
-    @DeleteMapping("/companies/{id}")
-    public ResponseEntity<String> deleteCompany(@PathVariable("id") long id) {
-
-        this.companyService.handleDeleteCompany(id);
-        return ResponseEntity.ok("delete success");
-    }
 }
