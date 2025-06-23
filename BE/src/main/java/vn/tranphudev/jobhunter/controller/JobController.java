@@ -54,7 +54,7 @@ public class JobController {
         }
 
         return ResponseEntity.ok()
-                .body(this.jobService.handleUpdateJob(job));
+                .body(this.jobService.handleUpdateJob(job, currentJob.get()));
     }
 
     // delete job

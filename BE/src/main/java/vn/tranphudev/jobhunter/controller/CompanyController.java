@@ -21,6 +21,7 @@ import vn.tranphudev.jobhunter.service.CompanyService;
 import vn.tranphudev.jobhunter.util.annotaion.ApiMessage;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -47,6 +48,14 @@ public class CompanyController {
             @Filter Specification<Company> spec, Pageable pageable) {
 
         return ResponseEntity.ok(this.companyService.handleGetCompany(spec, pageable));
+    }
+
+    // get cpmpany by id
+    @GetMapping("/companies/{id}")
+    @ApiMessage("fetch company by id")
+    public ResponseEntity<Company> fetchCompanyById(@PathVariable("id") long id) {
+        Optional<Company> cOptional = this.companyService.findById(id);
+        return ResponseEntity.ok().body(cOptional.get());
     }
 
     // update company
