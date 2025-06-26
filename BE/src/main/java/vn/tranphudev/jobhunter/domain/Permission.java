@@ -16,6 +16,7 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vn.tranphudev.jobhunter.util.error.SecurityUtil;
 
@@ -23,7 +24,16 @@ import vn.tranphudev.jobhunter.util.error.SecurityUtil;
 @Table(name = "permissions")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Permission {
+
+    public Permission(String name, String apiPath, String method, String module) {
+        this.name = name;
+        this.apiPath = apiPath;
+        this.method = method;
+        this.module = module;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
