@@ -46,7 +46,8 @@ public class SecurityConfiguration {
             CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         String[] whiteList = {
                 "/",
-                "/api/v1/auth/login", "/api/v1/auth/refresh", "/storage/**", "/api/v1/auth/register"
+                "/api/v1/auth/login", "/api/v1/auth/refresh", "/storage/**", "/api/v1/auth/register",
+                "/api/v1/email/**",
 
         };
 

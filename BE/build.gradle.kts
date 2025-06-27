@@ -34,10 +34,7 @@ dependencies {
 }
 
 tasks.withType<Test> {
-	useJUnitPlatform(),
-
+	useJUnitPlatform()
 }
 
-tasks.withType<JavaExec> {
-    jvmArgs("--add-opens", "java.base/java.time=ALL-UNNAMED")
-}
+
