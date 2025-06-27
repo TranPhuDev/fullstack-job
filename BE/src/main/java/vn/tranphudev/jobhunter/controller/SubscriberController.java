@@ -13,6 +13,7 @@ import vn.tranphudev.jobhunter.domain.Subscriber;
 import vn.tranphudev.jobhunter.service.SubscriberService;
 import vn.tranphudev.jobhunter.util.annotaion.ApiMessage;
 import vn.tranphudev.jobhunter.util.error.IdInvalidException;
+import vn.tranphudev.jobhunter.util.error.SecurityUtil;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -44,6 +45,16 @@ public class SubscriberController {
             throw new IdInvalidException("Id " + subsRequest.getId() + " không tồn tại");
         }
         return ResponseEntity.ok().body(this.subscriberService.update(subsDB, subsRequest));
+    }
+
+    @PostMapping("/subscribers/skills")
+    @ApiMessage("Get subscriber's skill")
+    public ResponseEntity<Subscriber> getSubscribersSkill() throws IdInvalidException {
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+
+        return ResponseEntity.ok().body(this.subscriberService.findByEmail(email));
     }
 
 }
