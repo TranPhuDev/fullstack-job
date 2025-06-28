@@ -1,147 +1,35 @@
-import { useEffect, useState } from 'react';
-import {
-  createBrowserRouter,
-  Outlet,
-  RouterProvider,
-} from "react-router-dom";
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { callFetchAccount } from 'config/api';
-import NotFound from 'components/share/not.found';
-// import Loading from 'components/share/loading';
-// import LoginPage from 'pages/auth/login';
-// import RegisterPage from 'pages/auth/register';
-// import LayoutAdmin from 'components/admin/layout.admin';
-// import ProtectedRoute from 'components/share/protected-route.ts';
-import Header from 'components/client/header.client';
-import Footer from 'components/client/footer.client';
-import HomePage from 'pages/home';
-import 'styles/app.module.scss';
-// import DashboardPage from './pages/admin/dashboard';
-// import CompanyPage from './pages/admin/company';
-// import PermissionPage from './pages/admin/permission';
-// import ResumePage from './pages/admin/resume';
-// import RolePage from './pages/admin/role';
-// import UserPage from './pages/admin/user';
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
-const LayoutClient = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-
-  return (
-    <div className='layout-app'>
-      <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <Outlet context={[searchTerm, setSearchTerm]} />
-      <Footer />
-    </div>
-  )
-}
-
-export default function App() {
-  const dispatch = useAppDispatch();
-  const isLoading = useAppSelector(state => state.account.isLoading)
-
-  const getAccount = async () => {
-    if (
-      window.location.pathname === '/login'
-      || window.location.pathname === '/register'
-    )
-      return;
-
-    const res = await callFetchAccount();
-    if (res && res.data) {
-      // dispatch(doGetAccountAction(res.data))
-    }
-  }
-
-  useEffect(() => {
-    getAccount();
-  }, [])
-
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <LayoutClient />,
-      errorElement: <NotFound />,
-      children: [
-        { index: true, element: <HomePage /> },
-
-
-      ],
-    },
-
-    // {
-    //   path: "/admin",
-    //   element: <LayoutAdmin />,
-    //   errorElement: <NotFound />,
-    //   children: [
-    //     {
-    //       index: true, element:
-    //         <ProtectedRoute>
-    //           <DashboardPage />
-    //         </ProtectedRoute>
-    //     },
-    //     {
-    //       path: "company",
-    //       element:
-    //         <ProtectedRoute>
-    //           <CompanyPage />
-    //         </ProtectedRoute>
-    //     },
-    //     {
-    //       path: "user",
-    //       element:
-    //         <ProtectedRoute>
-    //           <UserPage />
-    //         </ProtectedRoute>
-    //     },
-
-    //     {
-    //       path: "resume",
-    //       element:
-    //         <ProtectedRoute>
-    //           <ResumePage />
-    //         </ProtectedRoute>
-    //     },
-    //     {
-    //       path: "permission",
-    //       element:
-    //         <ProtectedRoute>
-    //           <PermissionPage />
-    //         </ProtectedRoute>
-    //     },
-    //     {
-    //       path: "role",
-    //       element:
-    //         <ProtectedRoute>
-    //           <RolePage />
-    //         </ProtectedRoute>
-    //     }
-    //   ],
-    // },
-
-
-    // {
-    //   path: "/login",
-    //   element: <LoginPage />,
-    // },
-
-    // {
-    //   path: "/register",
-    //   element: <RegisterPage />,
-    // },
-  ]);
+function App() {
+  const [count, setCount] = useState(0)
 
   return (
     <>
-      {
-        // isLoading === false
-        //   || window.location.pathname === '/login'
-        //   || window.location.pathname === '/register'
-        //   || window.location.pathname === '/'
-        //   ?
-        <RouterProvider router={router} />
-        // :
-        // <Loading />
-      }
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React _@hoidanit_</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
     </>
   )
 }
+
+export default App
