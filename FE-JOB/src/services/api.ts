@@ -1,4 +1,4 @@
-import { IAccount, IBackendRes, IUser } from '@/types/global';
+
 import axios from 'services/axios.customize'
 
 export const loginAPI = (values: { [key: string]: any }) => {
