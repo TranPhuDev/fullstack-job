@@ -13,6 +13,15 @@ import 'styles/global.scss'
 import HomePage from 'pages/client/home';
 import { App } from 'antd';
 import { AppProvider } from 'components/context/app.context';
+import LayoutAdmin from "components/layout/layout.admin.tsx"
+import ProtectedRoute from '@/components/checkAuth/auth';
+import CompanyPage from './pages/admin/manage.company';
+import DashBoardPage from './pages/admin/dashboard';
+import UserPage from './pages/admin/manage.user';
+import JobPage from './pages/admin/manage.job';
+import ResumePage from './pages/admin/manage.resume';
+import PermissionPage from './pages/admin/manage.permisson';
+import RolePage from './pages/admin/manage.role';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,8 +35,43 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <AboutPage />,
-      }
+      },
     ]
+  },
+  {
+    path: "admin",
+    element: <LayoutAdmin />,
+    children: [
+      { index: true, element: (<ProtectedRoute><DashBoardPage /></ProtectedRoute>) },
+      {
+        path: "company",
+        element: (<ProtectedRoute><CompanyPage /></ProtectedRoute>),
+      },
+      {
+        path: "user",
+        element: (<ProtectedRoute><UserPage /></ProtectedRoute>),
+      },
+      {
+        path: "job",
+        element: (<ProtectedRoute><JobPage /></ProtectedRoute>),
+      },
+      {
+        path: "resume",
+        element: (<ProtectedRoute><ResumePage /></ProtectedRoute>),
+      },
+      {
+        path: "permission",
+        element: (<ProtectedRoute><PermissionPage /></ProtectedRoute>),
+      },
+      {
+        path: "role",
+        element: (<ProtectedRoute><RolePage /></ProtectedRoute>),
+      },
+      {
+        path: "/admin",
+        element: (<ProtectedRoute><div>Admin page</div></ProtectedRoute>),
+      },
+    ],
   },
   {
     path: "/login",

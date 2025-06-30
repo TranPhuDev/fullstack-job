@@ -16,3 +16,19 @@ export const registerAPI = (values: { [key: string]: any }) => {
     return axios.post<IBackendRes<IUser>>(urlBackEnd, values)
 }
 
+
+export const fetchAccountAPI = () => {
+    const urlBackEnd = "/api/v1/auth/account"
+    return axios.get<IBackendRes<IGetAccount>>(urlBackEnd, {
+        headers: {
+            delay: 1000
+        }
+    })
+}
+
+
+export const logoutAPI = () => {
+    const urlBackEnd = "/api/v1/auth/logout"
+    return axios.post<IBackendRes<IAccount>>(urlBackEnd)
+}
+
