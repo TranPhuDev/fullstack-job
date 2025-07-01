@@ -15,6 +15,10 @@ instance.interceptors.request.use(function (config) {
     const token = localStorage.getItem("access_token");
     const auth = token ? `Bearer ${token}` : '';
     config.headers['Authorization'] = auth;
+    if (!config.headers.Accept && config.headers["Content-Type"]) {
+        config.headers.Accept = "application/json";
+        config.headers["Content-Type"] = "application/json; charset=utf-8";
+    }
     return config;
 }, function (error) {
     // Do something with request error

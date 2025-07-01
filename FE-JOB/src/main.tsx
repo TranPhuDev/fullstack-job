@@ -11,7 +11,7 @@ import LoginPage from 'pages/client/auth/login';
 import RegisterPage from 'pages/client/auth/register';
 import 'styles/global.scss'
 import HomePage from 'pages/client/home';
-import { App } from 'antd';
+import { App, ConfigProvider } from 'antd';
 import { AppProvider } from 'components/context/app.context';
 import LayoutAdmin from "components/layout/layout.admin.tsx"
 import ProtectedRoute from '@/components/checkAuth/auth';
@@ -22,6 +22,8 @@ import JobPage from './pages/admin/manage.job';
 import ResumePage from './pages/admin/manage.resume';
 import PermissionPage from './pages/admin/manage.permisson';
 import RolePage from './pages/admin/manage.role';
+import enUS from 'antd/locale/en_US';
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -88,7 +90,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App>
       <AppProvider>
-        <RouterProvider router={router} />
+        <ConfigProvider locale={enUS}>
+          <RouterProvider router={router} />
+        </ConfigProvider>
       </AppProvider>
     </App>
   </StrictMode>,

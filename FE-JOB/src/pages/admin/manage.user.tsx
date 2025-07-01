@@ -1,6 +1,9 @@
+import TableUser from "@/components/user/table.user"
+
 const UserPage = () => {
     return (<>
-        <>User page</>
+        <TableUser />
+
     </>)
 }
 
