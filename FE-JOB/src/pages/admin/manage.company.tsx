@@ -1,6 +1,8 @@
+import TableCompany from "@/components/company/table.company"
+
 const CompanyPage = () => {
     return (<>
-        <>Company page</>
+        <TableCompany />
     </>)
 }
 
