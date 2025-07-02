@@ -69,6 +69,9 @@ export const callUpdateUser = (values: { [key: string]: any }) => {
     return axios.put<IBackendRes<IUser>>(urlBackEnd, values)
 }
 
+export const callDeleteUser = (id: string) => {
+    return axios.delete(`/api/v1/users/${id}`);
+}
 
 //Module Company 
 export const callFetchCompany = (query: string) => {
@@ -80,3 +83,9 @@ export const callFetchCompany = (query: string) => {
 export const callFetchRole = (query: string) => {
     return axios.get<IBackendRes<IModelPaginate<IRole>>>(`/api/v1/roles?${query}`);
 }
+
+export const callDeleteSingleFile = (fileName: string, folder: string) => {
+    return axios.delete(`/api/v1/files`, {
+        params: { fileName, folder }
+    });
+};

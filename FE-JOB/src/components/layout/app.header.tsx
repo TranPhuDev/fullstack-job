@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCurrentApp } from "../context/app.context";
 import styles from './Header.module.scss';
 import { logoutAPI } from 'services/api';
+import defaultAvatar from 'assets/images/default-avatar.jpg';
 
 const skillData = [
     'Java', 'PHP', 'JavaScript', 'HTML5', 'Manager', 'SQL', 'Android', 'iOS', 'MySQL', 'Tester',
@@ -99,7 +100,7 @@ const AppHeader = () => {
                 {isAuthenticated ? (
                   <div className={styles.avatarBox}>
                     <img
-                      src={user?.avatar || "/default-avatar.png"}
+                      src={user?.avatar ? `${import.meta.env.VITE_BACKEND_URL}/storage/avatar/${user.avatar}` : defaultAvatar}
                       alt="avatar"
                       className={styles.avatar}
                       tabIndex={0}
@@ -108,7 +109,7 @@ const AppHeader = () => {
                       <div className={styles.userInfo}>
                         <div className={styles.avatarLarge}>
                           {user?.avatar
-                            ? <img src={user.avatar} alt="avatar" />
+                            ? <img src={`${import.meta.env.VITE_BACKEND_URL}/storage/avatar/${user.avatar}`} alt="avatar" />
                             : <span>{user?.name?.[0] || "U"}</span>
                           }
                         </div>

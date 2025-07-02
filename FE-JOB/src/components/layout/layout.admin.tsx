@@ -15,6 +15,7 @@ import { Button, Dropdown, Layout, Menu, MenuProps, Result, Space, theme } from 
 import { Link, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import { useCurrentApp } from 'components/context/app.context';
 import { logoutAPI } from 'services/api';
+import defaultAvatar from 'assets/images/default-avatar.jpg';
 
 
 
@@ -84,7 +85,6 @@ const items: MenuItem[] = [
 const SideBarAdmin = () => {
     const { user, setUser, isAuthenticated, setIsAuthenticated } = useCurrentApp();
 
-    // const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${user?.avatar}`
 
     const location = useLocation();
     const [activeMenu, setActiveMenu] = useState('');
@@ -138,6 +138,8 @@ const SideBarAdmin = () => {
         )
     }
 
+    const isValidAvatar = user?.avatar && user.avatar !== '-' && user.avatar !== 'null' && user.avatar.trim() !== '';
+
     return (<>
 
         <Layout>
@@ -168,10 +170,13 @@ const SideBarAdmin = () => {
                         />
                         {isAuthenticated ? <Dropdown menu={{ items: dropdownItems }} trigger={['click']} placement="bottomRight" arrow={{ pointAtCenter: true }}>
                             <a onClick={(e) => e.preventDefault()}>
-                                <Space style={{ color: "rgb(151 151 151)" }}>
-                                    <div style={{ marginRight: "40px", display: "flex", alignItems: "center" }}>
-                                        {user?.role?.name}
-                                    </div>
+                                <Space style={{ color: "rgb(151 151 151)", display: 'flex', alignItems: 'center' }}>
+                                    <img
+                                        src={isValidAvatar ? `${import.meta.env.VITE_BACKEND_URL}/storage/avatar/${user.avatar}` : defaultAvatar}
+                                        alt="avatar"
+                                        style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', marginRight: 8, border: '1px solid #eee', display: 'flex', alignItems: 'center' }}
+                                    />
+                                    <span style={{ fontWeight: 500, marginRight: 100 }}>{user?.name}</span>
                                 </Space>
                             </a>
                         </Dropdown> : " "}

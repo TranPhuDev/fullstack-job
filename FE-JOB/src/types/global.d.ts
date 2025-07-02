@@ -74,6 +74,7 @@ declare global {
         age?: number;
         gender?: string;
         address?: string;
+        avatar?: string;
         role?: {
             id: string;
             name: string;

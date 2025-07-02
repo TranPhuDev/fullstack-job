@@ -1,5 +1,5 @@
-import { callFetchUser } from '@/services/api';
-import { DeleteOutlined, EditOutlined, EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
+import { callFetchUser, callDeleteUser } from '@/services/api';
+import { DeleteOutlined, EditOutlined, EllipsisOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { Button, Dropdown, Popconfirm, Space, Tag } from 'antd';
@@ -10,9 +10,22 @@ import { data } from 'react-router-dom';
 import { sfLike } from 'spring-filter-query-builder';
 import CreateUser from './create.user';
 import UpdateUser from './update.user';
+import defaultAvatar from 'assets/images/default-avatar.jpg'
+import { App } from 'antd';
+import DetailUser from './detail.user';
 
+export const waitTimePromise = async (time: number = 1000) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(true);
+        }, time);
+    });
+};
+export const waitTime = async (time: number = 1000) => {
+    await waitTimePromise(time);
+};
 export default function TableUser() {
-
+    const { message } = App.useApp();
 
     const columns: ProColumns<IUser>[] = [
         {
@@ -24,6 +37,23 @@ export default function TableUser() {
                     <>
                         {(index + 1) + (meta.page - 1) * (meta.pageSize)}
                     </>)
+            },
+            hideInSearch: true,
+        },
+        {
+            title: 'Avatar',
+            dataIndex: 'avatar',
+            width: 70,
+            render: (avatar, record) => {
+                const isValidAvatar = avatar && avatar !== '-' && avatar !== 'null';
+                return (
+                    <img
+                        src={isValidAvatar ? `${import.meta.env.VITE_BACKEND_URL}/storage/avatar/${avatar}` : defaultAvatar}
+                        alt={record.name}
+                        style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', background: '#f0f0f0' }}
+                        onError={e => { e.currentTarget.src = defaultAvatar; }}
+                    />
+                );
             },
             hideInSearch: true,
         },
@@ -78,12 +108,19 @@ export default function TableUser() {
             width: 50,
             render: (_value, entity) => (
                 <Space>
+                    <EyeOutlined
+                        style={{ fontSize: 20, marginRight: 10, color: '#1677ff', cursor: 'pointer' }}
+                        onClick={() => {
+                            setDataDetail(entity);
+                            setOpenModalDetail(true);
+                        }}
+                    />
                     <EditOutlined
                         style={{
                             fontSize: 20,
                             color: '#ffa500',
                         }}
-                        type=""
+
                         onClick={() => {
                             setOpenModalUpdate(true);
                             setDataUpdate(entity);
@@ -93,7 +130,7 @@ export default function TableUser() {
                         placement="leftTop"
                         title={"Xác nhận xóa user"}
                         description={"Bạn có chắc chắn muốn xóa user này ?"}
-                        // onConfirm={() => handleDeleteUser(entity.id)}
+                        onConfirm={() => entity.id && handleDeleteUser(entity.id)}
                         okText="Xác nhận"
                         cancelText="Hủy"
                     >
@@ -164,15 +201,26 @@ export default function TableUser() {
     const [openModalUpdate, setOpenModalUpdate,] = useState<boolean>(false)
     const [dataUpdate, setDataUpdate] = useState<IUser | null>(null)
 
+    const [openModalDetail, setOpenModalDetail] = useState(false);
+    const [dataDetail, setDataDetail] = useState<IUser | null>(null);
 
     const actionRef = useRef<ActionType | undefined>(undefined);
     const [meta, setMeta] = useState({
         page: 1,
-        pageSize: 5,
+        pageSize: 8,
         pages: 0,
         total: 0
     });
 
+    const handleDeleteUser = async (id: string) => {
+        const res = await callDeleteUser(id);
+        if (res && res.data) {
+            message.success('Xóa user thành công');
+            refreshTable();
+        } else {
+            message.error('Xóa user thất bại');
+        }
+    };
 
     return (
         <div>
@@ -181,6 +229,7 @@ export default function TableUser() {
                 actionRef={actionRef}
                 cardBordered
                 request={async (params, sort, filter) => {
+                    await waitTime(500);
                     const query = buildQuery(params, sort, filter);
                     const res = await callFetchUser(query);
                     const data = res?.data as IModelPaginate<IUser>;
@@ -219,7 +268,7 @@ export default function TableUser() {
             />
             <CreateUser openModal={openModal} setOpenModal={setOpenModal} refreshTable={refreshTable} />
             <UpdateUser openModalUpdate={openModalUpdate} setOpenModalUpdate={setOpenModalUpdate} refreshTable={refreshTable} setDataUpdate={setDataUpdate} dataUpdate={dataUpdate} />
-
+            <DetailUser open={openModalDetail} onClose={() => setOpenModalDetail(false)} user={dataDetail} />
         </div>
     );
 };

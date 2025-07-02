@@ -1,9 +1,13 @@
 import { ProForm, ProFormDigit, ProFormSelect, ProFormText } from "@ant-design/pro-components";
-import { App, Col, Form, Modal, Row } from "antd";
+import { App, Col, Form, Modal, Row, Upload } from "antd";
 import { FormProps } from "antd";
 import { useState, useEffect } from "react";
 import { DebounceSelect } from "./debounce.select";
 import { callFetchCompany, callFetchRole, callUpdateUser } from "@/services/api";
+import { v4 as uuidv4 } from 'uuid';
+import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
+import defaultAvatar from 'assets/images/default-avatar.jpg';
+import { callUploadSingleFile, callDeleteSingleFile } from "@/services/api";
 
 
 interface IProps {
@@ -45,7 +49,10 @@ const UpdateUser = (props: IProps) => {
 
     const [roles, setRoles] = useState<ICompanySelect[]>([]);
 
-
+    const [dataAvatar, setDataAvatar] = useState<{ name: string; uid: string }[]>([]);
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+    const [previewTitle, setPreviewTitle] = useState('');
 
     //gui form
     const [form] = Form.useForm();
@@ -53,6 +60,12 @@ const UpdateUser = (props: IProps) => {
     // Đổ dữ liệu vào form khi mở modal cập nhật
     useEffect(() => {
         if (dataUpdate) {
+            // Set avatar preview nếu có
+            if (dataUpdate.avatar) {
+                setDataAvatar([{ name: dataUpdate.avatar, uid: uuidv4() }]);
+            } else {
+                setDataAvatar([]);
+            }
             const roleValue = dataUpdate.role
                 ? { label: dataUpdate.role.name, value: dataUpdate.role.id }
                 : undefined;
@@ -71,6 +84,7 @@ const UpdateUser = (props: IProps) => {
             setRoles([]);
             setCompanies([]);
             form.resetFields();
+            setDataAvatar([]);
         }
     }, [dataUpdate]);
 
@@ -91,6 +105,7 @@ const UpdateUser = (props: IProps) => {
             id: dataUpdate?.id,
             role: formRole ? { id: formRole.value || formRole } : undefined,
             company: formCompany ? { id: formCompany.value || formCompany } : undefined,
+            avatar: dataAvatar[0]?.name,
         };
         const res = await callUpdateUser(payload);
         if (res && res.data) {
@@ -127,6 +142,71 @@ const UpdateUser = (props: IProps) => {
             }));
         }
         return [];
+    };
+
+    // Upload avatar mới
+    const handleUploadFileLogo: UploadProps['customRequest'] = async ({ file, onSuccess, onError }) => {
+        // Nếu đã có avatar cũ, xóa trước
+        if (dataAvatar[0]?.name) {
+            try {
+                await callDeleteSingleFile(dataAvatar[0].name, "avatar");
+            } catch (e) {}
+        }
+        const res = await callUploadSingleFile(file, "avatar");
+        if (res && res.data) {
+            setDataAvatar([{ name: res.data.fileName, uid: uuidv4() }]);
+            if (onSuccess) onSuccess('ok');
+        } else {
+            if (onError) {
+                setDataAvatar([]);
+                const error = new Error(res.message);
+                onError(error);
+            }
+        }
+    };
+
+    const handleRemoveFile = () => {
+        setDataAvatar([]);
+    };
+
+    const handlePreview = async (file: UploadFile) => {
+        if (!file.originFileObj) {
+            if (file.url) {
+                setPreviewImage(file.url);
+                setPreviewOpen(true);
+                setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+            }
+            return;
+        }
+        getBase64(file.originFileObj, (url: string) => {
+            setPreviewImage(url || '');
+            setPreviewOpen(true);
+            setPreviewTitle(file.name || (file.url ? file.url.substring(file.url.lastIndexOf('/') + 1) : ''));
+        });
+    };
+
+    const getBase64 = (img: File | Blob, callback: (url: string) => void) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result as string));
+        reader.readAsDataURL(img);
+    };
+
+    const beforeUpload = (file: File) => {
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        if (!isJpgOrPng) {
+            message.error('You can only upload JPG/PNG file!');
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('Image must smaller than 2MB!');
+        }
+        return isJpgOrPng && isLt2M;
+    };
+
+    const handleChange: UploadProps['onChange'] = (info) => {
+        if (info.file.status === 'error') {
+            message.error(info?.file?.error?.event?.message ?? "Đã có lỗi xảy ra khi upload file.")
+        }
     };
 
     return (
@@ -267,6 +347,36 @@ const UpdateUser = (props: IProps) => {
                                 rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
                                 placeholder="Nhập địa chỉ"
                             />
+                        </Col>
+                        <Col lg={12} md={12} sm={24} xs={24}>
+                            <Form.Item label="Avatar" name="avatar">
+                                <Upload
+                                    name="avatar"
+                                    listType="picture-circle"
+                                    showUploadList={true}
+                                    customRequest={handleUploadFileLogo}
+                                    fileList={dataAvatar.map(item => ({
+                                        uid: item.uid,
+                                        name: item.name,
+                                        status: 'done',
+                                        url: item.name ? `${import.meta.env.VITE_BACKEND_URL}/storage/avatar/${item.name}` : defaultAvatar
+                                    }))}
+                                    onRemove={handleRemoveFile}
+                                    onPreview={handlePreview}
+                                    beforeUpload={beforeUpload}
+                                    onChange={handleChange}
+                                >
+                                    {dataAvatar.length >= 1 ? null : <div>Upload</div>}
+                                </Upload>
+                                <Modal
+                                    open={previewOpen}
+                                    title={previewTitle}
+                                    footer={null}
+                                    onCancel={() => setPreviewOpen(false)}
+                                >
+                                    <img alt="avatar" style={{ width: '100%' }} src={previewImage} />
+                                </Modal>
+                            </Form.Item>
                         </Col>
                     </Row>
                 </Form>

@@ -1,9 +1,13 @@
 import { ProForm, ProFormDigit, ProFormSelect, ProFormText } from "@ant-design/pro-components";
-import { App, Button, Col, Divider, Form, Input, Modal, Row } from "antd";
+import { App, Button, Col, Divider, Form, Input, Modal, Row, Upload } from "antd";
 import { FormProps } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DebounceSelect } from "./debounce.select";
-import { callCreateUser, callFetchCompany, callFetchRole } from "@/services/api";
+import { callCreateUser, callFetchCompany, callFetchRole, callUploadSingleFile } from "@/services/api";
+import { v4 as uuidv4 } from 'uuid';
+import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
+import defaultAvatar from 'assets/images/default-avatar.jpg'
+
 // import { createUserAPI } from "services/api";
 
 
@@ -11,7 +15,6 @@ interface IProps {
     openModal: boolean;
     setOpenModal: (v: boolean) => void;
     refreshTable: () => void;
-
 }
 
 type FieldType = {
@@ -21,6 +24,7 @@ type FieldType = {
     gender?: string;
     age?: string
     phone?: string;
+    avatar?: string;
     role?: ICompanySelect;
     company?: ICompanySelect;
 };
@@ -30,6 +34,11 @@ export interface ICompanySelect {
     label: string;
     value: string;
     key?: string;
+}
+
+interface IAvatarUser {
+    name: string;
+    uid: string;
 }
 
 
@@ -42,6 +51,14 @@ const CreateUser = (props: IProps) => {
 
     const { message, notification } = App.useApp();
 
+    const [dataAvatar, setDataAvatar] = useState<IAvatarUser[]>([]);
+
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+    const [previewTitle, setPreviewTitle] = useState('');
+
+
+
 
 
 
@@ -49,6 +66,11 @@ const CreateUser = (props: IProps) => {
     //gui form
     const [form] = Form.useForm();
 
+    useEffect(() => {
+        if (openModal) {
+            setDataAvatar([]);
+        }
+    }, [openModal]);
 
     const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
         setIsSubmit(true)
@@ -57,6 +79,7 @@ const CreateUser = (props: IProps) => {
             ...values,
             role: values.role ? { id: values.role.value } : undefined,
             company: values.company ? { id: values.company.value } : undefined,
+            avatar: dataAvatar[0]?.name
         };
 
         const res = await callCreateUser(payload);
@@ -97,6 +120,75 @@ const CreateUser = (props: IProps) => {
         return [];
     };
 
+    //upload file 
+    const handleUploadFileLogo: UploadProps['customRequest'] = async ({ file, onSuccess, onError }) => {
+        const res = await callUploadSingleFile(file, "avatar");
+        if (res && res.data) {
+            setDataAvatar([{
+                name: res.data.fileName,
+                uid: uuidv4()
+            }])
+            if (onSuccess) onSuccess('ok')
+        } else {
+            if (onError) {
+                setDataAvatar([])
+                const error = new Error(res.message);
+                onError(error);
+            }
+        }
+    };
+
+    const handleRemoveFile = () => {
+        setDataAvatar([])
+    }
+
+    const handlePreview = async (file: UploadFile) => {
+        if (!file.originFileObj) {
+            if (file.url) {
+                setPreviewImage(file.url);
+                setPreviewOpen(true);
+                setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+            }
+            return;
+        }
+        getBase64(file.originFileObj, (url: string) => {
+            setPreviewImage(url || '');
+            setPreviewOpen(true);
+            setPreviewTitle(file.name || (file.url ? file.url.substring(file.url.lastIndexOf('/') + 1) : ''));
+        });
+    };
+
+    const getBase64 = (img: File | Blob, callback: (url: string) => void) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result as string));
+        reader.readAsDataURL(img);
+    };
+
+    const beforeUpload = (file: File) => {
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        if (!isJpgOrPng) {
+            message.error('You can only upload JPG/PNG file!');
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('Image must smaller than 2MB!');
+        }
+        return isJpgOrPng && isLt2M;
+    };
+
+    const handleChange: UploadProps['onChange'] = (info) => {
+        if (info.file.status === 'uploading') {
+            // setLoadingUpload(true);
+        }
+        if (info.file.status === 'done') {
+            // setLoadingUpload(false);
+        }
+        if (info.file.status === 'error') {
+            // setLoadingUpload(false);
+            message.error(info?.file?.error?.event?.message ?? "Đã có lỗi xảy ra khi upload file.")
+        }
+    };
+
 
     return (
         <>
@@ -105,7 +197,7 @@ const CreateUser = (props: IProps) => {
                 maskClosable={false}
                 title="Add New User"
                 open={openModal}
-                onCancel={() => { setOpenModal(false); form.resetFields(); }}
+                onCancel={() => { setOpenModal(false); form.resetFields(); setDataAvatar([]); }}
                 onOk={() => { form.submit() }}
                 confirmLoading={isSubmit}
                 okText={"Tạo mới"}
@@ -219,6 +311,36 @@ const CreateUser = (props: IProps) => {
                                 placeholder="Nhập địa chỉ"
                             />
                         </Col>
+                        <Col span={24} style={{ marginTop: 16 }}>
+                            <Form.Item label="Avatar" name="avatar">
+                                <Upload
+                                    name="avatar"
+                                    listType="picture-circle"
+                                    showUploadList={true}
+                                    customRequest={handleUploadFileLogo}
+                                    fileList={dataAvatar.map(item => ({
+                                        uid: item.uid,
+                                        name: item.name,
+                                        status: 'done',
+                                        url: item.name ? `${import.meta.env.VITE_BACKEND_URL}/storage/avatar/${item.name}` : defaultAvatar
+                                    }))}
+                                    onRemove={handleRemoveFile}
+                                    onPreview={handlePreview}
+                                    beforeUpload={beforeUpload}
+                                    onChange={handleChange}
+                                >
+                                    {dataAvatar.length >= 1 ? null : <div>Upload</div>}
+                                </Upload>
+                                <Modal
+                                    open={previewOpen}
+                                    title={previewTitle}
+                                    footer={null}
+                                    onCancel={() => setPreviewOpen(false)}
+                                >
+                                    <img alt="avatar" style={{ width: '100%' }} src={previewImage} />
+                                </Modal>
+                            </Form.Item>
+                        </Col>
                     </Row>
                 </Form>
 
@@ -230,3 +352,4 @@ const CreateUser = (props: IProps) => {
 
 
 export default CreateUser
+
