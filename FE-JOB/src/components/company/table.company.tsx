@@ -9,6 +9,8 @@ import dayjs from 'dayjs';
 import CreateCompany from './create.company';
 import UpdateCompany from './update.company';
 import DetailCompany from './detail.company';
+import { sfLike } from 'spring-filter-query-builder';
+import queryString from 'query-string';
 export const waitTimePromise = async (time: number = 1000) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -125,22 +127,42 @@ export default function TableCompany() {
       page: params.current,
       size: params.pageSize,
       filter: ""
-    };
+    }
+
     const clone = { ...params };
-    if (clone.name) q.filter = `${clone.name}`;
+    if (clone.name) q.filter = `${sfLike("name", clone.name)}`;
+    if (clone.address) {
+      q.filter = clone.name ?
+        q.filter + " and " + `${sfLike("address", clone.address)}`
+        : `${sfLike("address", clone.address)}`;
+    }
+
     if (!q.filter) delete q.filter;
-    let temp = new URLSearchParams(q).toString();
+    let temp = queryString.stringify(q);
+
     let sortBy = "";
     if (sort && sort.name) {
       sortBy = sort.name === 'ascend' ? "sort=name,asc" : "sort=name,desc";
     }
+    if (sort && sort.email) {
+      sortBy = sort.email === 'ascend' ? "sort=email,asc" : "sort=email,desc";
+    }
+    if (sort && sort.createdAt) {
+      sortBy = sort.createdAt === 'ascend' ? "sort=createdAt,asc" : "sort=createdAt,desc";
+    }
+    if (sort && sort.updatedAt) {
+      sortBy = sort.updatedAt === 'ascend' ? "sort=updatedAt,asc" : "sort=updatedAt,desc";
+    }
+
+    //mặc định sort theo updatedAt
     if (Object.keys(sortBy).length === 0) {
       temp = `${temp}&sort=updatedAt,desc`;
     } else {
       temp = `${temp}&${sortBy}`;
     }
+
     return temp;
-  };
+  }
 
   const refreshTable = () => {
     actionRef.current?.reload();

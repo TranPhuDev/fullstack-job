@@ -11,7 +11,7 @@ interface CompanyData {
   name?: string;
   address?: string;
   description?: string;
-  logo?: string;
+  logo: string;
   createdAt?: string;
   updatedAt?: string;
 }

@@ -23,7 +23,8 @@ import ResumePage from './pages/admin/manage.resume';
 import PermissionPage from './pages/admin/manage.permisson';
 import RolePage from './pages/admin/manage.role';
 import enUS from 'antd/locale/en_US';
-
+import JobTabs from './components/job/job_manage/job.tab';
+import ViewUpsertJob from './components/job/job_manage/upsert.job';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -55,7 +56,16 @@ const router = createBrowserRouter([
       },
       {
         path: "job",
-        element: (<ProtectedRoute><JobPage /></ProtectedRoute>),
+        children: [
+          {
+            index: true,
+            element: <ProtectedRoute><JobTabs /></ProtectedRoute>
+          },
+          {
+            path: "upsert", element:
+              <ProtectedRoute><ViewUpsertJob /></ProtectedRoute>
+          }
+        ]
       },
       {
         path: "resume",

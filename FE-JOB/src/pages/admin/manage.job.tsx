@@ -1,6 +1,8 @@
+import TableJob from "@/components/job/job_manage/table.job"
+
 const JobPage = () => {
     return (<>
-        <>Job page</>
+        <TableJob />
     </>)
 }
 

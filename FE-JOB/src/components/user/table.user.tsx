@@ -6,7 +6,6 @@ import { Button, Dropdown, Popconfirm, Space, Tag } from 'antd';
 import dayjs from 'dayjs';
 import queryString from 'query-string';
 import { useRef, useState } from 'react';
-import { data } from 'react-router-dom';
 import { sfLike } from 'spring-filter-query-builder';
 import CreateUser from './create.user';
 import UpdateUser from './update.user';

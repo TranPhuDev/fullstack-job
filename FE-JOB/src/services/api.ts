@@ -94,6 +94,46 @@ export const callFetchCompanyById = (id: string) => {
     return axios.get<IBackendRes<ICompany>>(`/api/v1/companies/${id}`);
 }
 
+//Module skill
+export const callCreateSkill = (data: { name: string }) => {
+    return axios.post<IBackendRes<ISkill>>('/api/v1/skills', { ...data })
+
+}
+
+
+export const callUpdateSkill = (data: { name: string }, id: string) => {
+    return axios.put<IBackendRes<ISkill>>(`/api/v1/skills`, { ...data, id  })
+}
+
+export const callDeleteSkill = (id: string) => {
+    return axios.delete<IBackendRes<ISkill>>(`/api/v1/skills/${id}`);
+}
+
+export const callFetchAllSkill = (query: string) => {
+    return axios.get<IBackendRes<IModelPaginate<ISkill>>>(`/api/v1/skills?${query}`);
+}
+
+//Module Job
+export const callCreateJob = (job: IJob) => {
+    return axios.post<IBackendRes<IJob>>('/api/v1/jobs', { ...job })
+}
+
+export const callUpdateJob = (job: IJob, id: string) => {
+    return axios.put<IBackendRes<IJob>>(`/api/v1/jobs`, { id, ...job })
+}
+
+export const callDeleteJob = (id: string) => {
+    return axios.delete<IBackendRes<IJob>>(`/api/v1/jobs/${id}`);
+}
+
+export const callFetchJob = (query: string) => {
+    return axios.get<IBackendRes<IModelPaginate<IJob>>>(`/api/v1/jobs?${query}`);
+}
+
+export const callFetchJobById = (id: string) => {
+    return axios.get<IBackendRes<IJob>>(`/api/v1/jobs/${id}`);
+}
+
 
 //Module Role
 export const callFetchRole = (query: string) => {
