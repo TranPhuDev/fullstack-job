@@ -18,12 +18,12 @@ import ProtectedRoute from '@/components/checkAuth/auth';
 import CompanyPage from './pages/admin/manage.company';
 import DashBoardPage from './pages/admin/dashboard';
 import UserPage from './pages/admin/manage.user';
-import JobPage from './pages/admin/manage.job';
 import ResumePage from './pages/admin/manage.resume';
 import PermissionPage from './pages/admin/manage.permisson';
 import RolePage from './pages/admin/manage.role';
 import enUS from 'antd/locale/en_US';
 import JobTabs from './components/job/job_manage/job.tab';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import ViewUpsertJob from './components/job/job_manage/upsert.job';
 const router = createBrowserRouter([
   {

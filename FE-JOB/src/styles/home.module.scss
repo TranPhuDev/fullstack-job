@@ -1,0 +1,226 @@
+.homeBanner {
+  width: 100vw;
+  height: 200px;
+  background: linear-gradient(90deg, #464644 60%, #362e2f 100%);
+
+}
+
+.searchBanner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchForm {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputGroup {
+  display: flex;
+  width: 100%;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  gap: 18px;
+  justify-content: center;
+}
+
+.selectWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center; // căn giữa theo chiều dọc
+  gap: 10px; // cách đều các phần tử theo chiều ngang (bạn có thể tăng/giảm giá trị này)
+  width: 220px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 12px;
+  background: #f7f7f7;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  height: 56px;
+  position: relative;
+  z-index: 10 !important;
+}
+
+.activeSelectWrapper {
+  z-index: 20 !important;
+}
+
+.inactiveSelectWrapper {
+  z-index: 0 !important;
+}
+
+.selectCity {
+  font-weight: 500;
+  color: #222;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0 10px;
+  gap: 8px;
+}
+
+.selectCityText {
+  flex: 1;
+  min-width: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.locationIcon {
+  font-size: 16px;
+  color: #888;
+  flex-shrink: 0;
+}
+
+.selectIcon {
+  color: #888;
+  font-size: 22px;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+.selectIcon:hover {
+  cursor: pointer;
+}
+
+.searchInput {
+  flex: 1;
+  border: 1.5px solid #e0e0e0;
+  outline: none;
+  font-size: 1rem;
+  padding: 0 18px;
+  height: 56px;
+  background: #fff;
+  color: #222;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: background 0.2s, border 0.2s;
+  z-index: 10;
+}
+
+.activeSearchInput {
+  z-index: 20 !important;
+  position: relative;
+}
+
+.inactiveSearchInput {
+  z-index: 0 !important;
+  position: relative;
+}
+
+.searchInput:focus {
+  background: #f7f7f7;
+  border-color: #e74c3c;
+}
+
+.searchBtn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  outline: none;
+  min-width: 150px;
+  font-weight: 600;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  height: 56px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.searchBtn:hover,
+.searchBtn:focus {
+  background: #c0392b;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(231, 76, 60, 0.12);
+}
+
+.customDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin-top: 5px;
+  background: #fff;
+  border: 3px solid #f1ecec;
+  border-radius: 8px;
+  z-index: 11;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.customDropdownOption {
+  padding: 10px 16px;
+  cursor: pointer;
+  background: #fff;
+  transition: background 0.2s;
+}
+
+.customDropdownOptionSelected {
+  background: #f7f7f7;
+}
+
+.customDropdownOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.39);
+  z-index: 9;
+  opacity: 0;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;
+}
+
+.inputOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 8;
+  opacity: 0;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;
+}
+
+.overlayShow {
+  opacity: 1 !important;
+}
+
+.overlayHide {
+  opacity: 0 !important;
+}
+
+@media (max-width: 900px) {
+  .searchForm {
+    max-width: 100%;
+  }
+
+  .inputGroup {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .searchInput,
+  .searchBtn {
+    width: 100%;
+    min-width: 0;
+    border-radius: 10px;
+    height: 48px;
+    font-size: 1rem;
+  }
+
+  .searchBtn {
+    margin-top: 4px;
+  }
+}

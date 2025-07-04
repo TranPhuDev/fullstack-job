@@ -5,20 +5,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(90deg, #181818 60%, #3a1417 100%);
+  background: linear-gradient(90deg, #464644 60%, #362e2f 100%);
   padding: 0 48px 0 32px;
   font-size: 16px;
   box-sizing: border-box;
+  border-bottom: 1px solid #ffffff1a;
 }
 
 .left {
   display: flex;
   align-items: center;
 }
+
 .logo {
-  height: 32px;
-  margin-right: 4px;
+  height: 150px;
+  margin-right: 12px;
 }
+
 .brand {
   color: #fff;
   font-weight: bold;
@@ -26,6 +29,7 @@
   letter-spacing: -2px;
   margin-right: 24px;
 }
+
 .menu {
   display: flex;
   gap: 32px;
@@ -33,6 +37,7 @@
   margin: 0;
   padding: 0;
 }
+
 .menuItem {
   color: #ccc;
   font-weight: 500;
@@ -40,9 +45,11 @@
   position: relative;
   transition: color 0.2s;
 }
+
 .menuItem:hover {
   color: #fff;
 }
+
 .arrow {
   font-size: 20px;
   text-align: center;
@@ -55,15 +62,18 @@
   align-items: center;
   gap: 28px;
 }
+
 .action {
   color: #fff;
   font-weight: 600;
   cursor: pointer;
   transition: color 0.2s;
 }
+
 .action:hover {
   color: #e74c3c;
 }
+
 .lang {
   color: #fff;
   font-size: 15px;
@@ -72,9 +82,11 @@
   opacity: 0.8;
   transition: opacity 0.2s;
 }
+
 .lang:hover {
   opacity: 1;
 }
+
 .divider {
   color: #fff;
   margin: 0 4px;
@@ -89,7 +101,7 @@
   background: #181818;
   color: #fff;
   min-width: 700px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   z-index: 100;
   padding: 0;
   margin-top: 0;
@@ -113,6 +125,7 @@
   display: flex;
   flex-direction: column;
 }
+
 .megaMenuLeft li {
   padding: 16px 20px;
   cursor: pointer;
@@ -122,6 +135,7 @@
   font-size: 14px;
   font-family: 'Montserrat', Arial, sans-serif;
 }
+
 .megaMenuLeft li.active,
 .megaMenuLeft li:hover {
   background: #353535;
@@ -142,6 +156,7 @@
   gap: 0;
   margin-bottom: 16px;
 }
+
 .skillsGrid span {
   padding: 6px 0 6px 12px;
   display: flex;
@@ -158,6 +173,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .skillsGrid span:hover {
   background: #353535;
   color: #fff;
@@ -176,16 +192,25 @@
   cursor: pointer;
   transition: color 0.2s;
 }
+
 .seeAll.cityAlign {
   text-align: right;
 }
+
 .seeAll:hover {
   color: #fff;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px);}
-  to { opacity: 1; transform: translateY(0);}
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .companyGrid {
@@ -203,7 +228,7 @@
 .cityLeft {
   text-align: left;
   padding: 6px 0 6px 12px;
- font-size: 14px;
+  font-size: 14px;
 }
 
 .menuLabel {
@@ -216,6 +241,7 @@
   display: flex;
   align-items: center;
 }
+
 .avatarBox::after {
   content: '';
   position: absolute;
@@ -226,6 +252,7 @@
   height: 12px;
   z-index: 99;
 }
+
 .avatar {
   width: 32px;
   height: 32px;
@@ -234,6 +261,7 @@
   border: 2px solid #fff;
   cursor: pointer;
 }
+
 .userCard {
   display: none;
   position: absolute;
@@ -244,13 +272,15 @@
   background: #fff;
   color: #222;
   border-radius: 8px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
   z-index: 100;
   padding: 16px 0 8px 0;
 }
+
 .avatarBox:hover .userCard {
   display: block;
 }
+
 .userInfo {
   display: flex;
   align-items: center;
@@ -258,6 +288,7 @@
   border-bottom: 1px solid #eee;
   margin-bottom: 8px;
 }
+
 .avatarLarge {
   width: 40px;
   height: 40px;
@@ -272,25 +303,30 @@
   margin-right: 12px;
   overflow: hidden;
 }
+
 .avatarLarge img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .userName {
   color: #222;
   font-weight: 600;
   font-size: 18px;
 }
+
 .userEmail {
   color: #888;
   font-size: 14px;
 }
+
 .userMenu {
   display: flex;
   flex-direction: column;
   margin-top: 8px;
 }
+
 .userMenuItem {
   display: flex;
   align-items: center;
@@ -301,6 +337,7 @@
   cursor: pointer;
   transition: background 0.2s;
 }
+
 .userMenuItem:hover {
   background: #f5f5f5;
 }
