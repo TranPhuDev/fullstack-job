@@ -5,11 +5,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(90deg, #464644 60%, #362e2f 100%);
+  background: linear-gradient(90deg, #3E5151 60%, #DECBA4 100%);
   padding: 0 48px 0 32px;
   font-size: 16px;
   box-sizing: border-box;
   border-bottom: 1px solid #ffffff1a;
+}
+
+.stickyHeader {
+  position: sticky;
+  top: 0;
+  z-index: 12;
 }
 
 .left {

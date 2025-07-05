@@ -1,0 +1,159 @@
+.featuredEmployerWrapper {
+  display: flex;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+  align-items: stretch;
+  min-height: 180px;
+  margin: 16px 0;
+  margin-top: -92px;
+}
+
+.bannerSection {
+  position: relative;
+  min-width: 220px;
+  max-width: 260px;
+  width: 22%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: #f7f7f7;
+  overflow: visible; // Cho phép logo tràn ra ngoài
+}
+
+.bannerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 180px;
+}
+
+.featuredLabel {
+  position: absolute;
+  top: 12px;
+  left: -3px;
+  background: #ff9800;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 6px 18px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.infoSection {
+  flex: 1.2;
+  padding: 24px 18px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 220px;
+  padding-left: 110px; // hoặc 100px, miễn là lớn hơn right của logo + bán kính logo
+}
+
+.companyLogo {
+  position: absolute;
+  right: -92px; // Điều chỉnh để logo lấn ra ngoài mép phải banner
+  top: 50%;
+  transform: translateY(-50%);
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+  background: #fff;
+  z-index: 2;
+}
+
+.companyName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.companyLocation {
+  color: #555;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.companyDesc {
+  color: #444;
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.jobsLink {
+  color: #1976d2;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1rem;
+  margin-top: 4px;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #0d47a1;
+    text-decoration: underline;
+  }
+}
+
+.jobsSection {
+  flex: 1.1;
+  border-left: 1px dashed #e0e0e0;
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 220px;
+}
+
+.jobItem {
+  display: flex;
+  align-items: center;
+  color: #000;
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 12px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.jobIcon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+  color: #F60D00;
+}
+
+@media (max-width: 900px) {
+  .featuredEmployerWrapper {
+    flex-direction: column;
+    min-height: unset;
+  }
+
+  .bannerSection,
+  .infoSection,
+  .jobsSection {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    padding: 12px !important;
+  }
+
+  .bannerImage {
+    min-height: 120px;
+    height: 120px;
+  }
+
+  .jobsSection {
+    border-left: none;
+    border-top: 1px dashed #e0e0e0;
+  }
+}

@@ -1,8 +1,12 @@
+.containerBg {
+  background-color: #f7f7f7;
+  
+}
+
 .homeBanner {
   width: 100vw;
   height: 200px;
-  background: linear-gradient(90deg, #464644 60%, #362e2f 100%);
-
+  background: linear-gradient(90deg, #3E5151 60%, #DECBA4 100%);
 }
 
 .searchBanner {
@@ -15,8 +19,9 @@
   width: 100%;
   max-width: 1100px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  margin-bottom: 100px;
 }
 
 .inputGroup {
@@ -45,7 +50,7 @@
 }
 
 .activeSelectWrapper {
-  z-index: 20 !important;
+  z-index: 2100 !important;
 }
 
 .inactiveSelectWrapper {
@@ -104,10 +109,11 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   transition: background 0.2s, border 0.2s;
   z-index: 10;
+  position: relative;
 }
 
 .activeSearchInput {
-  z-index: 20 !important;
+  z-index: 2100 !important;
   position: relative;
 }
 
@@ -118,15 +124,16 @@
 
 .searchInput:focus {
   background: #f7f7f7;
-  border-color: #e74c3c;
+  border-color: #4f483a;
+  box-shadow: 0 0 0 5px rgba(181, 178, 172, 0.727);
 }
 
 .searchBtn {
-  background: #e74c3c;
+  background: #887f6c;
   color: #fff;
   border: none;
   outline: none;
-  min-width: 150px;
+  min-width: 220px;
   font-weight: 600;
   font-size: 20px;
   display: flex;
@@ -140,7 +147,7 @@
 
 .searchBtn:hover,
 .searchBtn:focus {
-  background: #c0392b;
+  background: #645e4f;
   color: #fff;
   box-shadow: 0 4px 16px rgba(231, 76, 60, 0.12);
 }
@@ -169,26 +176,15 @@
   background: #f7f7f7;
 }
 
-.customDropdownOverlay {
+.customDropdownOverlay,
+.inputOverlay {
+  z-index: 2000 !important;
   position: fixed;
-  top: 0;
   left: 0;
+  top: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.39);
-  z-index: 9;
-  opacity: 0;
-  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;
-}
-
-.inputOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 8;
   opacity: 0;
   transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;
 }
@@ -199,6 +195,36 @@
 
 .overlayHide {
   opacity: 0 !important;
+}
+
+.homeTopSection {
+  position: relative;
+  width: 100%;
+  margin-bottom: 48px;
+}
+
+.featuredEmployerOverlap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+
+.jobsLink {
+  color: #1976d2;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1rem;
+  margin-top: 4px;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #0d47a1;
+    text-decoration: none; // Không gạch chân khi hover
+  }
 }
 
 @media (max-width: 900px) {

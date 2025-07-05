@@ -16,7 +16,7 @@ const ProtectedRoute = (props: IProps) => {
             status="404"
             title="Not login"
             subTitle="Bạn vui lòng đăng nhập để sử dụng tính năng này."
-            extra={<Button type="primary"><Link to="/login">Đăng nhập</Link></Button>}
+            extra={<Button type="primary"><Link style={{textDecoration : "none"}} to="/login">Đăng nhập</Link></Button>}
         />)
     }
 
@@ -31,7 +31,7 @@ const ProtectedRoute = (props: IProps) => {
                 extra={<Button type="primary">
 
 
-                    <Link to={"/"}>Back Home</Link>
+                    <Link style={{textDecoration : "none"}} to={"/"}>Back Home</Link>
                 </Button>}
             />)
         }

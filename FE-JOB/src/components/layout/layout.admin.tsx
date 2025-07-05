@@ -24,21 +24,6 @@ const { Header, Sider, Content, Footer } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
 
 
-
-// function getItem(
-//     label: React.ReactNode,
-//     key: React.Key,
-//     icon?: React.ReactNode,
-//     children?: MenuItem[],
-// ): MenuItem {
-//     return {
-//         key,
-//         icon,
-//         children,
-//         label,
-//     } as MenuItem;
-// }
-//[getItem('Team 1', '6'), getItem('Team 2', '8')] them menu con
 const items: MenuItem[] = [
     {
         key: '/admin',
@@ -108,7 +93,7 @@ const SideBarAdmin = () => {
             key: 'account',
         },
         {
-            label: <Link to="/">Trang chủ</Link>,
+            label: <Link style={{ textDecoration: "none" }} to="/">Trang chủ</Link>,
             key: 'homepage',
         }, {
             label: <label style={{ cursor: "pointer" }} onClick={() => handleLogout()}>
@@ -169,7 +154,7 @@ const SideBarAdmin = () => {
                             }}
                         />
                         {isAuthenticated ? <Dropdown menu={{ items: dropdownItems }} trigger={['click']} placement="bottomRight" arrow={{ pointAtCenter: true }}>
-                            <a onClick={(e) => e.preventDefault()}>
+                            <a style={{ textDecoration: "none" }} onClick={(e) => e.preventDefault()}>
                                 <Space style={{ color: "rgb(151 151 151)", display: 'flex', alignItems: 'center' }}>
                                     <img
                                         src={isValidAvatar ? `${import.meta.env.VITE_BACKEND_URL}/storage/avatar/${user.avatar}` : defaultAvatar}

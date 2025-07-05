@@ -61,7 +61,7 @@ const AppHeader = () => {
     };
 
     return (
-        <header className={styles.header}>
+        <header className={styles.header + ' ' + styles.stickyHeader}>
             <div className={styles.left}>
                 <img src={logo} alt="itviec logo" className={styles.logo} />
                 {/* <span className={styles.brand}>viec</span> */}
