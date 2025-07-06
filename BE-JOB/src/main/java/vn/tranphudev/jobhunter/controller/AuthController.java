@@ -80,7 +80,8 @@ public class AuthController {
                     currentUserDB.getId(),
                     currentUserDB.getEmail(),
                     currentUserDB.getName(),
-                    currentUserDB.getRole());
+                    currentUserDB.getRole(),
+                    currentUserDB.getAvatar());
             res.setUser(userLogin);
         }
 
@@ -110,7 +111,12 @@ public class AuthController {
 
     @GetMapping("/auth/account")
     @ApiMessage("fetch account")
-    public ResponseEntity<ResLoginDTO.UserGetAccount> getAccount() {
+    public ResponseEntity<ResLoginDTO.UserGetAccount> getAccount(
+            @RequestHeader(value = "delay", required = false) Long delay) throws InterruptedException {
+        // Tạo độ trễ nếu được yêu cầu
+        if (delay != null && delay > 0) {
+            Thread.sleep(delay);
+        }
         String email = SecurityUtil.getCurrentUserLogin().isPresent()
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
@@ -124,6 +130,7 @@ public class AuthController {
             userLogin.setEmail(currentUserDB.getEmail());
             userLogin.setName(currentUserDB.getName());
             userLogin.setRole(currentUserDB.getRole());
+            userLogin.setAvatar(currentUserDB.getAvatar());
 
             userGetAccount.setUser(userLogin);
         }
@@ -156,7 +163,8 @@ public class AuthController {
                     currentUserDB.getId(),
                     currentUserDB.getEmail(),
                     currentUserDB.getName(),
-                    currentUserDB.getRole());
+                    currentUserDB.getRole(),
+                    currentUserDB.getAvatar());
             res.setUser(userLogin);
         }
 

@@ -76,4 +76,17 @@ public class CompanyService {
         return this.companyRepository.findById(id);
     }
 
+    public Company handleDeleteAndReturnCompany(long id) {
+        Optional<Company> comOptional = this.companyRepository.findById(id);
+        if (comOptional.isPresent()) {
+            Company com = comOptional.get();
+            // fetch all user belong to this company
+            List<User> users = this.userRepository.findByCompany(com);
+            this.userRepository.deleteAll(users);
+            this.companyRepository.deleteById(id);
+            return com;
+        }
+        return null;
+    }
+
 }

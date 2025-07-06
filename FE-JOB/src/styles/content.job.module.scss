@@ -6,10 +6,11 @@
   flex-direction: column;
   gap: 16px;
   padding: 8px 0;
-  min-height: 600px;
+  // min-height: 600px;
 }
 
 .jobItem {
+  position: relative;
   padding: 16px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -24,8 +25,31 @@
   }
 }
 
+.hotTag {
+  display: inline-block;
+  background-color: #ff9800; /* màu cam */
+  color: white;
+  font-weight: bold;
+  padding: 5px 10px;
+  right : -450px;
+  position: relative;
+  border-radius: 3px 0 0 3px;
+}
+
+.hotTag::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 100%;
+  width: 0;
+  height: 0;
+  border-top: 10px solid #ff9800; /* cùng màu nền */
+  border-left: 10px solid transparent;
+}
+
+
 .selected {
-  border: 2px solid #ff424e;
+  border: 1px solid #ff424e;
   background: #fff6f7;
   box-shadow: 0 2px 8px #ff424e22;
 }
@@ -61,6 +85,7 @@
   font-weight: 500;
   font-size: 14px;
   margin-top: 2px;
+
 }
 
 .normalDesc {
@@ -90,7 +115,7 @@
   font-weight: 500;
   font-size: 18px;
   color: #525050;
-  
+
 }
 
 .detailLocation {
@@ -155,15 +180,18 @@
   cursor: pointer;
   transition: background 0.2s;
 }
+
 .applyBtn:hover {
   background: #e02d3b;
 }
+
 .applyRow {
   display: flex;
   align-items: center;
   gap: 12px;
   margin: 18px 0 16px 0;
 }
+
 .heartBtn {
   background: #fff;
   border: none;
@@ -180,9 +208,11 @@
   font-size: 1.5em;
   padding: 0;
 }
+
 .heartBtn:hover .heartIcon {
   color: #ff424e !important;
 }
+
 .heartIcon {
   font-size: 1.6em;
   transition: color 0.2s;
@@ -195,6 +225,7 @@
   gap: 4px;
   margin: 8px 0 12px 0;
 }
+
 .detailMetaItem {
   display: flex;
   align-items: center;
@@ -211,16 +242,160 @@
   border-bottom: 2px dotted #d1cdcd;
   padding-bottom: 12px;
 }
-.detailWorkplace, .detailTime, .detailLocation {
+
+.horizontal{
+  padding-top: 14px;
+  border-bottom: 2px dotted #d1cdcd;
+}
+
+
+.detailWorkplace{
+  margin-bottom: 4px;
+}
+
+.detailWorkplace,
+.detailTime,
+.detailLocation {
   display: flex;
   align-items: center;
   font-size: 0.98em;
 }
-.detailWorkplace, .detailTime, .detailLocation {
+
+.detailWorkplace,
+.detailTime,
+.detailLocation {
   color: #4b4949;
   font-weight: 600;
 
 }
-.detailWorkplace svg, .detailTime svg, .detailLocation svg {
+
+.detailWorkplace svg,
+.detailTime svg,
+.detailLocation svg {
   color: #888 !important;
+}
+
+.detailLabel {
+  font-weight: 600;
+  color: #4b4949;
+
+}
+
+.detailInfoReq {
+  border-bottom: 2px dotted #d1cdcd;
+  padding-bottom: 15px;
+}
+
+.reason {
+  margin-top: 32px;
+  border-bottom: 2px dotted #d1cdcd;
+  padding-bottom: 15px;
+
+
+}
+.reasonTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.reasonList {
+  list-style: none;
+  padding-left: 0;
+}
+.reasonList li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 12px;
+  font-size: 1.15rem;
+}
+.reasonList li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  background: #ff424e;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.detailScrollable {
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 10px;
+  /* Scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: #b1acad #f1f1f1;
+}
+.detailScrollable::-webkit-scrollbar {
+  width: 6px;
+  background: #f1f1f1;
+  border-radius: 8px;
+}
+.detailScrollable::-webkit-scrollbar-thumb {
+  background: #ff424e;
+  border-radius: 8px;
+}
+.detailScrollable::-webkit-scrollbar-thumb:hover {
+  background: #d12b3a;
+}
+.detailScrollable::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+.jobMeta {
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
+.jobTitleRow {
+  display: flex;
+  align-items: center;
+  color: #888;
+  font-size: 1.08rem;
+  margin-bottom: 2px;
+}
+.jobLink {
+  color: #656464;
+  text-decoration: underline dotted;
+  margin-left: 6px;
+  transition: color 0.2s;
+  font-size: 14px;
+  font-weight: 500;
+}
+.jobLink:hover {
+  color: #ff424e;
+  text-decoration: underline;
+}
+.metaIcon {
+  color: #b1acad;
+  font-size: 16px;
+  vertical-align: middle;
+  margin-bottom: 1px;
+}
+.jobInfoRow span {
+  display: flex;
+  align-items: center;
+}
+.boldGray, .grayText {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 14px;
+  color : #656464;
+  margin-left: 4px;
+}
+.jobInfoRow {
+  display: flex;
+  align-items: center;
+  color: #888;
+  font-size: 1.05rem;
+}
+
+.dot {
+  margin: 0 8px;
+  color: #b1acad;
+  font-size: 1.2em;
+  user-select: none;
 }

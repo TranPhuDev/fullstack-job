@@ -99,6 +99,23 @@ public class JobService {
             }
         }
 
+        // Update all fields
+        if (j.getName() != null)
+            jobInDB.setName(j.getName());
+        jobInDB.setSalary(j.getSalary());
+        jobInDB.setQuantity(j.getQuantity());
+        if (j.getLocation() != null)
+            jobInDB.setLocation(j.getLocation());
+        if (j.getLevel() != null)
+            jobInDB.setLevel(j.getLevel());
+        if (j.getStartDate() != null)
+            jobInDB.setStartDate(j.getStartDate());
+        if (j.getEndDate() != null)
+            jobInDB.setEndDate(j.getEndDate());
+        jobInDB.setActive(j.isActive());
+        if (j.getDescription() != null)
+            jobInDB.setDescription(j.getDescription());
+
         // convert response
         ResUpdateJobDTO dto = new ResUpdateJobDTO();
         dto.setId(j.getId());

@@ -20,6 +20,7 @@ import vn.tranphudev.jobhunter.domain.response.ResultPaginationDTO;
 import vn.tranphudev.jobhunter.service.CompanyService;
 import vn.tranphudev.jobhunter.util.annotaion.ApiMessage;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -46,7 +47,6 @@ public class CompanyController {
     @ApiMessage("Fetch companies")
     public ResponseEntity<ResultPaginationDTO> getCompany(
             @Filter Specification<Company> spec, Pageable pageable) {
-
         return ResponseEntity.ok(this.companyService.handleGetCompany(spec, pageable));
     }
 
@@ -65,4 +65,10 @@ public class CompanyController {
         return ResponseEntity.ok(updateCompany);
     }
 
+    // delete company
+    @DeleteMapping("/companies/{id}")
+    public ResponseEntity<Company> deleteCompany(@PathVariable("id") long id) {
+        Company deletedCompany = companyService.handleDeleteAndReturnCompany(id);
+        return ResponseEntity.ok(deletedCompany);
+    }
 }

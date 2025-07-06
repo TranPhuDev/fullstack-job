@@ -43,6 +43,11 @@ public class UserService {
             Role r = this.roleService.fetchById(user.getRole().getId());
             user.setRole(r != null ? r : null);
         }
+
+        // Xử lý avatar mặc định: nếu null hoặc rỗng thì set null
+        if (user.getAvatar() == null || user.getAvatar().trim().isEmpty()) {
+            user.setAvatar(null);
+        }
         return this.userRepository.save(user);
     }
 
@@ -85,6 +90,7 @@ public class UserService {
             currentUser.setGender(reqUser.getGender());
             currentUser.setAge(reqUser.getAge());
             currentUser.setName(reqUser.getName());
+            currentUser.setAvatar(reqUser.getAvatar());
 
             // check company
             if (reqUser.getCompany() != null) {
@@ -123,6 +129,7 @@ public class UserService {
         res.setCreatedAt(user.getCreatedAt());
         res.setGender(user.getGender());
         res.setAddress(user.getAddress());
+        res.setAvatar(user.getAvatar());
 
         if (user.getCompany() != null) {
             com.setId(user.getCompany().getId());
@@ -140,6 +147,8 @@ public class UserService {
         res.setUpdatedAt(user.getUpdatedAt());
         res.setGender(user.getGender());
         res.setAddress(user.getAddress());
+        res.setAvatar(user.getAvatar());
+
         return res;
     }
 
@@ -165,6 +174,7 @@ public class UserService {
         res.setAge(user.getAge());
         res.setUpdatedAt(user.getUpdatedAt());
         res.setCreatedAt(user.getCreatedAt());
+        res.setAvatar(user.getAvatar());
         res.setGender(user.getGender());
         res.setAddress(user.getAddress());
         return res;

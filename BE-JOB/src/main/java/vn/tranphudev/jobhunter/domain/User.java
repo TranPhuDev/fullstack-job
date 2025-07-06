@@ -45,6 +45,8 @@ public class User {
 
     private int age;
 
+    private String avatar;
+
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
     private String address;
