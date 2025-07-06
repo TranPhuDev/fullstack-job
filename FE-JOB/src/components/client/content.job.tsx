@@ -10,7 +10,7 @@ const mockJobs = [
     company: "Goline Corporation",
     location: "Hà Nội",
     tags: ["JavaScript", "Bootstrap", "CSS", "HTML", "ReactJS", "TypeScript"],
-    attractive: "You'll love it",
+    attractive: true,
     description: "Làm việc với các công nghệ mới nhất. Lĩnh vực chứng khoán, tài chính hấp dẫn. Liên tục được đào tạo chuyên môn, kĩ năng.",
     detail: `- Làm việc với các công nghệ mới nhất\n- Lĩnh vực chứng khoán, tài chính hấp dẫn\n- Liên tục được đào tạo chuyên môn, kĩ năng`,
   },
@@ -20,7 +20,7 @@ const mockJobs = [
     company: "TymeX",
     location: "TP Hồ Chí Minh",
     tags: ["AWS", "AWS Lambda", "Kafka", "Java", "Microservices"],
-    attractive: "You'll love it",
+    attractive: true,
     description: "You'll love it",
     detail: `- Quản lý hệ thống cloud\n- Lãnh đạo team DevOps\n- Làm việc với AWS Lambda, Kafka, Java, Microservices`,
   },
@@ -30,8 +30,7 @@ const mockJobs = [
     company: "ABC Corp",
     location: "Hà Nội",
     tags: ["Security", "Networking", "System", "Risk"],
-    attractive: "You'll love it",
-    
+    attractive: true,
     description: "Cơ hội phát triển chuyên sâu về bảo mật",
     detail: `- Đánh giá rủi ro hệ thống\n- Triển khai giải pháp bảo mật\n- Làm việc với các hệ thống lớn`,
   },
@@ -41,8 +40,7 @@ const mockJobs = [
     company: "ABC Corp",
     location: "Hà Nội",
     tags: ["Security", "Networking", "System", "Risk"],
-    attractive: "You'll love it",
-    
+    attractive: true,
     description: "Cơ hội phát triển chuyên sâu về bảo mật",
     detail: `- Đánh giá rủi ro hệ thống\n- Triển khai giải pháp bảo mật\n- Làm việc với các hệ thống lớn`,
   },
@@ -52,8 +50,7 @@ const mockJobs = [
     company: "ABC Corp",
     location: "Hà Nội",
     tags: ["Security", "Networking", "System", "Risk"],
-    attractive: "You'll love it",
-  
+    attractive: true,
     description: "Cơ hội phát triển chuyên sâu về bảo mật",
     detail: `- Đánh giá rủi ro hệ thống\n- Triển khai giải pháp bảo mật\n- Làm việc với các hệ thống lớn`,
   },
@@ -63,8 +60,7 @@ const mockJobs = [
     company: "ABC Corp",
     location: "Hà Nội",
     tags: ["Security", "Networking", "System", "Risk"],
-    attractive: "You'll love it",
-
+    attractive: true,
     description: "Cơ hội phát triển chuyên sâu về bảo mật",
     detail: `- Đánh giá rủi ro hệ thống\n- Triển khai giải pháp bảo mật\n- Làm việc với các hệ thống lớn`,
   },
@@ -98,43 +94,22 @@ const ContentJob = () => {
                     : styles.jobItem
                 }
               >
-                <div className={styles.hotTag}>HOT</div>
                 <div className={styles.jobTitle}>{job.title}</div>
                 <div className={styles.jobListCompanyRow}>
                   <div className={styles.companyLogo} style={{ width: 40, height: 40, fontSize: '1.2rem' }}>
                     {job.company?.[0] || "?"}
                   </div>
-                  <div className={styles.jobCompany}>{job.company}-{job.location}</div>
-                </div>
-                <div className={styles.attractive}>
-                  {job.attractive}
-                </div>
-                <div className={styles.horizontal}></div>
-                <div className={styles.jobMeta}>
-                  <div className={styles.jobTitleRow}>
-                    <FiBriefcase className={styles.metaIcon} />
-                    <a href="#" className={styles.jobLink}>Lập trình viên Game</a>
-                  </div>
-                  <div className={styles.jobInfoRow}>
-                    <span>
-                      <span className={styles.metaIcon}>
-                        <svg width="16" height="16" viewBox="0 0 16 16"><path fill="#b1acad" d="M8 1.333a2.667 2.667 0 0 0-2.667 2.667v1.333H4A2.667 2.667 0 0 0 1.333 8v4A2.667 2.667 0 0 0 4 14.667h8A2.667 2.667 0 0 0 14.667 12V8A2.667 2.667 0 0 0 12 5.333h-.667V4A2.667 2.667 0 0 0 8 1.333zm0 1.334A1.333 1.333 0 0 1 9.333 4v1.333H6.667V4A1.333 1.333 0 0 1 8 2.667zM4 6.667h8A1.333 1.333 0 0 1 13.333 8v4A1.333 1.333 0 0 1 12 13.333H4A1.333 1.333 0 0 1 2.667 12V8A1.333 1.333 0 0 1 4 6.667zm2.667 2.666a.667.667 0 1 0 0 1.334.667.667 0 0 0 0-1.334z"/></svg>
-                      </span>
-                      <span className={styles.boldGray}>Tại văn phòng</span>
-                    </span>
-                    <span className={styles.dot}>•</span>
-                    <span>
-                      <FiMapPin className={styles.metaIcon} />
-                      <span className={styles.grayText}>TP Hồ Chí Minh</span>
-                    </span>
-                  </div>
+                  <div className={styles.jobCompany}>{job.company} - {job.location}</div>
                 </div>
                 <div className={styles.tagList}>
                   {job.tags.map((tag) => (
                     <span key={tag} className={styles.tag}>{tag}</span>
                   ))}
                 </div>
-
+                <div className={job.attractive ? styles.attractive : styles.normalDesc}>
+                  {job.attractive ? <span style={{ marginRight: 4 }}>💲</span> : null}
+                  {job.attractive ? "Very attractive!!!" : job.description}
+                </div>
               </div>
             ))}
           </div>
@@ -150,8 +125,9 @@ const ContentJob = () => {
               <div className={styles.detailInfoBlock}>
                 <h2 className={styles.detailTitle}>{selectedJob.title}</h2>
                 <div className={styles.detailCompany}>{selectedJob.company}</div>
-                <div className={styles.attractive}>
-                  {selectedJob.attractive}
+                <div className={selectedJob.attractive ? styles.attractive : styles.normalDesc}>
+                  {selectedJob.attractive ? <span style={{ marginRight: 4 }}>💲</span> : null}
+                  {selectedJob.attractive ? "Very attractive!!!" : selectedJob.description}
                 </div>
               </div>
             </div>
@@ -172,7 +148,7 @@ const ContentJob = () => {
               </button>
             </div>
             <hr />
-            <div className={styles.detailScrollable}>
+            <div className="container mx-0 px-0">
               <div className={styles.detailInfoRow}>
                 <div className={styles.detailLocation}>
                   <FiMapPin style={{ marginRight: 6, fontSize: '1.1em', verticalAlign: 'middle' }} />
@@ -201,24 +177,20 @@ const ContentJob = () => {
                   <div className={styles.tagList}>
                     <span>Kỹ sư đám mây</span>
                   </div>
+
                 </div>
                 <div className={`${styles.detailSkill} d-flex align-items-center`}>
                   <span className={`${styles.detailLabel} me-5`}>Lĩnh vực: </span>
                   <div className={styles.tagList}>
                     <span>Dịch vụ và tư vấn IT</span>
                   </div>
+
                 </div>
               </div>
-              <div className={styles.reason}>
-                <div className={styles.reasonTitle}>3 Lý do để gia nhập công ty</div>
-                <ul className={styles.reasonList}>
-                  <li>Chế độ bảo hiểm PVI cao cấp</li>
-                  <li>Du lịch nghỉ dưỡng hằng năm</li>
-                  <li>Thưởng hấp dẫn vào các dịp lễ, Tết</li>
-                </ul>
+              <div className={`${styles.reason}`}>
+                
               </div>
             </div>
-
           </div>
         </div>
       </div>
