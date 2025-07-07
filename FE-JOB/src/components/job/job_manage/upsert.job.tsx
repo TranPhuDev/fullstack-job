@@ -40,6 +40,23 @@ const LOCATION_OPTIONS = [
     { label: "Đà Nẵng", value: "Đà Nẵng" },
 ];
 
+const WORKPLACE_OPTIONS = [
+    { label: "Remote", value: "Remote" },
+    { label: "Onsite", value: "Onsite" },
+    { label: "Office", value: "Office" },
+];
+
+const EXPERTISE_OPTIONS = [
+    { label: "Frontend", value: "Frontend" },
+    { label: "Backend", value: "Backend" },
+    { label: "Fullstack", value: "Fullstack" },
+    { label: "Mobile", value: "Mobile" },
+    { label: "Data Science", value: "Data Science" },
+    { label: "DevOps", value: "DevOps" },
+    { label: "UI/UX Design", value: "UI/UX Design" },
+    { label: "QA", value: "QA" },
+];
+
 interface ISkillSelect {
     label: string;
     value: string;
@@ -139,6 +156,8 @@ const ViewUpsertJob = () => {
             salary: values.salary,
             quantity: values.quantity,
             level: values.level,
+            expertise: values.expertise,
+            workplace: values.workplace,
             description: value,
             startDate: /[0-9]{2}[/][0-9]{2}[/][0-9]{4}$/.test(values.startDate) ? dayjs(values.startDate, 'DD/MM/YYYY').toDate() : values.startDate,
             endDate: /[0-9]{2}[/][0-9]{2}[/][0-9]{4}$/.test(values.endDate) ? dayjs(values.endDate, 'DD/MM/YYYY').toDate() : values.endDate,
@@ -310,6 +329,24 @@ const ViewUpsertJob = () => {
                                     fieldProps={{ format: "DD/MM/YYYY" }}
                                     rules={[{ required: true, message: "Vui lòng chọn ngày kết thúc" }]}
                                     placeholder="dd/mm/yyyy"
+                                />
+                            </Col>
+                            <Col span={24} md={6}>
+                                <ProFormSelect
+                                    name="workplace"
+                                    label="Nơi làm việc"
+                                    options={WORKPLACE_OPTIONS}
+                                    placeholder="Chọn nơi làm việc"
+                                    rules={[{ required: true, message: "Vui lòng chọn nơi làm việc!" }]}
+                                />
+                            </Col>
+                            <Col span={24} md={6}>
+                                <ProFormSelect
+                                    name="expertise"
+                                    label="Chuyên môn"
+                                    options={EXPERTISE_OPTIONS}
+                                    placeholder="Chọn chuyên môn"
+                                    rules={[{ required: true, message: "Vui lòng chọn chuyên môn!" }]}
                                 />
                             </Col>
                             <Col span={24} md={6}>

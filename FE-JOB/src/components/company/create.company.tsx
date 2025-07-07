@@ -1,10 +1,45 @@
-import { Modal, Form, Input, Upload, Col, Row } from 'antd';
+import { Modal, Form, Input, Upload, Col, Row, FormProps, App } from 'antd';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { callCreateCompany, callUploadSingleFile } from '@/services/api';
-import { ProCard } from '@ant-design/pro-components';
+import { ProCard, ProFormSelect } from '@ant-design/pro-components';
 import { Editor } from '@tinymce/tinymce-react';
+
+export const WORKING_TIME_OPTIONS = [
+  { label: 'Thứ 2 - Thứ 6', value: 'Thứ 2 - Thứ 6' },
+  { label: 'Thứ 2 - Thứ 7', value: 'Thứ 2 - Thứ 7' },
+  { label: 'Cả tuần', value: 'Cả tuần' },
+];
+
+export const FIELD_OPTIONS = [
+  { label: 'Công nghệ', value: 'Công nghệ' },
+  { label: 'Tài chính', value: 'Tài chính' },
+  { label: 'Chăm sóc sức khỏe', value: 'Chăm sóc sức khỏe' },
+  { label: 'Giáo dục', value: 'Giáo dục' },
+];
+export const SCALE_OPTIONS = [
+  { label: '1-50', value: '1-50' },
+  { label: '50-100', value: '50-100' },
+  { label: '1000+', value: '1000+' },
+];
+
+export const OVERTIME_OPTIONS = [
+  { label: 'OT có tăng lương', value: 'OT có tăng lương' },
+  { label: 'OT không tăng lương', value: 'OT không tăng lương' },
+  { label: 'Không có OT', value: 'Không có OT' },
+];
+
+type FieldType = {
+  name?: string;
+  address?: string;
+  description?: string;
+  logo?: string[];
+  workingTime?: string;
+  field?: string;
+  scale?: string;
+  overTime?: string;
+}
 
 interface CreateCompanyProps {
   openModal: boolean;
@@ -14,6 +49,7 @@ interface CreateCompanyProps {
 
 const CreateCompany = ({ openModal, setOpenModal, refreshTable }: CreateCompanyProps) => {
   const [form] = Form.useForm();
+  const { message, notification } = App.useApp();
   const [isSubmit, setIsSubmit] = useState(false);
   const [logo, setLogo] = useState<UploadFile[]>([]);
   const [description, setDescription] = useState<string>(''); // <- lưu mô tả từ TinyMCE
@@ -38,20 +74,21 @@ const CreateCompany = ({ openModal, setOpenModal, refreshTable }: CreateCompanyP
 
   const handleRemove = () => setLogo([]);
 
-  const onFinish = async (values: { name: string; address: string }) => {
+  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     setIsSubmit(true);
-    const res = await callCreateCompany(
-      values.name,
-      values.address,
-      description ?? '',
-      logo[0]?.name || ''
-    );
+    const res = await callCreateCompany(values);
     if (res && res.data) {
+      message.success("Tạo mới công ty thành công");
       setOpenModal(false);
       form.resetFields();
       setLogo([]);
       setDescription('');
       refreshTable();
+    } else {
+      notification.error({
+        message: 'Có lỗi xảy ra',
+        description: res.message || 'Có lỗi xảy ra khi tạo mới công ty',
+      });
     }
     setIsSubmit(false);
   };
@@ -89,6 +126,42 @@ const CreateCompany = ({ openModal, setOpenModal, refreshTable }: CreateCompanyP
             >
               <Input />
             </Form.Item>
+          </Col>
+          <Col span={24} md={6}>
+            <ProFormSelect
+              name="workingTime"
+              label="Thời gian làm việc"
+              options={WORKING_TIME_OPTIONS}
+              placeholder="Chọn thời gian làm việc"
+              rules={[{ required: true, message: "Vui lòng chọn thời gian làm việc!" }]}
+            />
+          </Col>
+          <Col span={24} md={6}>
+            <ProFormSelect
+              name="field"
+              label="Lĩnh vực"
+              options={FIELD_OPTIONS}
+              placeholder="Chọn lĩnh vực"
+              rules={[{ required: true, message: "Vui lòng chọn lĩnh vực!" }]}
+            />
+          </Col>
+          <Col span={24} md={6}>
+            <ProFormSelect
+              name="scale"
+              label="Quy mô"
+              options={SCALE_OPTIONS}
+              placeholder="Chọn quy mô"
+              rules={[{ required: true, message: "Vui lòng chọn quy mô!" }]}
+            />
+          </Col>
+          <Col span={24} md={6}>
+            <ProFormSelect
+              name="overTime"
+              label="Làm thêm giờ"
+              options={OVERTIME_OPTIONS}
+              placeholder="Chọn làm thêm giờ"
+              rules={[{ required: true, message: "Vui lòng chọn làm thêm giờ!" }]}
+            />
           </Col>
         </Row>
         <ProCard title="Mô tả" style={{ marginBottom: 16 }}>

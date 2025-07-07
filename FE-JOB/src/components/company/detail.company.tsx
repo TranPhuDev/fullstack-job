@@ -6,6 +6,10 @@ interface CompanyData {
   name?: string;
   address?: string;
   description?: string;
+  workingTime?: string;
+  field?: string;
+  scale?: string;
+  overTime?: string;
   logo?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -38,6 +42,10 @@ const DetailCompany = ({ open, onClose, company }: DetailCompanyProps) => {
       <Descriptions column={1} bordered size="small">
         <Descriptions.Item label="Tên công ty">{company?.name}</Descriptions.Item>
         <Descriptions.Item label="Địa chỉ">{company?.address}</Descriptions.Item>
+        <Descriptions.Item label="Lĩnh vực">{company?.field}</Descriptions.Item>
+        <Descriptions.Item label="Làm thêm giờ">{company?.overTime}</Descriptions.Item>
+        <Descriptions.Item label="Quy mô">{company?.scale}</Descriptions.Item>
+        <Descriptions.Item label="Thời gian làm việc">{company?.workingTime}</Descriptions.Item>
         <Descriptions.Item label="Mô tả">
           <div
             style={{ whiteSpace: 'pre-line' }}

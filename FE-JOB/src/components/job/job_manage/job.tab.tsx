@@ -4,7 +4,6 @@ import TableSkill from "../skill_manage/table.skill";
 
 const JobTabs = () => {
     const onChange = (key: string) => {
-        // console.log(key);
     };
 
     const items: TabsProps['items'] = [

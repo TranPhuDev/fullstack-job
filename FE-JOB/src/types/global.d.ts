@@ -45,6 +45,10 @@ declare global {
         id?: string;
         name?: string;
         address?: string;
+        workingTime?: string;
+        field?: string;
+        scale?: string;
+        overTime?: string;
         logo: string;
         description?: string;
         createdBy?: string;

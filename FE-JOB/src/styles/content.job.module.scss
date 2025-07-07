@@ -27,11 +27,12 @@
 
 .hotTag {
   display: inline-block;
-  background-color: #ff9800; /* màu cam */
+  background-color: #ff9800;
+  /* màu cam */
   color: white;
   font-weight: bold;
   padding: 5px 10px;
-  right : -450px;
+  right: -450px;
   position: relative;
   border-radius: 3px 0 0 3px;
 }
@@ -43,7 +44,8 @@
   top: 100%;
   width: 0;
   height: 0;
-  border-top: 10px solid #ff9800; /* cùng màu nền */
+  border-top: 10px solid #ff9800;
+  /* cùng màu nền */
   border-left: 10px solid transparent;
 }
 
@@ -243,13 +245,13 @@
   padding-bottom: 12px;
 }
 
-.horizontal{
+.horizontal {
   padding-top: 14px;
   border-bottom: 2px dotted #d1cdcd;
 }
 
 
-.detailWorkplace{
+.detailWorkplace {
   margin-bottom: 4px;
 }
 
@@ -293,21 +295,25 @@
 
 
 }
+
 .reasonTitle {
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 16px;
 }
+
 .reasonList {
   list-style: none;
   padding-left: 0;
 }
+
 .reasonList li {
   position: relative;
   padding-left: 24px;
   margin-bottom: 12px;
   font-size: 1.15rem;
 }
+
 .reasonList li::before {
   content: '';
   position: absolute;
@@ -328,18 +334,22 @@
   scrollbar-width: thin;
   scrollbar-color: #b1acad #f1f1f1;
 }
+
 .detailScrollable::-webkit-scrollbar {
   width: 6px;
   background: #f1f1f1;
   border-radius: 8px;
 }
+
 .detailScrollable::-webkit-scrollbar-thumb {
   background: #ff424e;
   border-radius: 8px;
 }
+
 .detailScrollable::-webkit-scrollbar-thumb:hover {
   background: #d12b3a;
 }
+
 .detailScrollable::-webkit-scrollbar-button {
   display: none;
   height: 0;
@@ -350,6 +360,7 @@
   margin-top: 10px;
   margin-bottom: 8px;
 }
+
 .jobTitleRow {
   display: flex;
   align-items: center;
@@ -357,6 +368,7 @@
   font-size: 1.08rem;
   margin-bottom: 2px;
 }
+
 .jobLink {
   color: #656464;
   text-decoration: underline dotted;
@@ -365,27 +377,38 @@
   font-size: 14px;
   font-weight: 500;
 }
+
 .jobLink:hover {
   color: #ff424e;
   text-decoration: underline;
 }
+
 .metaIcon {
   color: #b1acad;
   font-size: 16px;
   vertical-align: middle;
   margin-bottom: 1px;
 }
+
+
+.gameIcon{
+  margin-top: 4px;
+}
+
 .jobInfoRow span {
   display: flex;
   align-items: center;
 }
-.boldGray, .grayText {
+
+.boldGray,
+.grayText {
   display: inline-block;
   vertical-align: middle;
   font-size: 14px;
-  color : #656464;
+  color: #656464;
   margin-left: 4px;
 }
+
 .jobInfoRow {
   display: flex;
   align-items: center;
@@ -398,4 +421,8 @@
   color: #b1acad;
   font-size: 1.2em;
   user-select: none;
+}
+
+.level{
+  margin-bottom: 5px;
 }

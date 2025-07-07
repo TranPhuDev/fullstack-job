@@ -78,12 +78,12 @@ export const callFetchCompany = (query: string) => {
     return axios.get<IBackendRes<IModelPaginate<ICompany>>>(`/api/v1/companies?${query}`);
 }
 
-export const callCreateCompany = (name: string, address: string, description: string, logo: string) => {
-    return axios.post<IBackendRes<ICompany>>('/api/v1/companies', { name, address, description, logo })
+export const callCreateCompany = (values: { [key: string]: any }) => {
+    return axios.post<IBackendRes<ICompany>>('/api/v1/companies', values)
 }
 
-export const callUpdateCompany = (id: string, name: string, address: string, description: string, logo: string) => {
-    return axios.put<IBackendRes<ICompany>>(`/api/v1/companies`, { id, name, address, description, logo })
+export const callUpdateCompany = (id: string, name: string, address: string, workingTime: string, field: string, scale: string, overTime: string, description: string, logo: string) => {
+    return axios.put<IBackendRes<ICompany>>(`/api/v1/companies`, { id, name, address, workingTime, field, scale, overTime, description, logo })
 }
 
 export const callDeleteCompany = (id: string) => {
@@ -102,7 +102,7 @@ export const callCreateSkill = (data: { name: string }) => {
 
 
 export const callUpdateSkill = (data: { name: string }, id: string) => {
-    return axios.put<IBackendRes<ISkill>>(`/api/v1/skills`, { ...data, id  })
+    return axios.put<IBackendRes<ISkill>>(`/api/v1/skills`, { ...data, id })
 }
 
 export const callDeleteSkill = (id: string) => {
