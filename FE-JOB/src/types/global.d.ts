@@ -108,6 +108,8 @@ declare global {
         salary: number;
         quantity: number;
         level: string;
+        workplace: string;
+        expertise: string;
         description: string;
         startDate: Date;
         endDate: Date;

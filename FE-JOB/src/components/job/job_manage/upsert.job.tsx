@@ -55,6 +55,7 @@ const EXPERTISE_OPTIONS = [
     { label: "DevOps", value: "DevOps" },
     { label: "UI/UX Design", value: "UI/UX Design" },
     { label: "QA", value: "QA" },
+    { label: "Tester", value: "Tester" }
 ];
 
 interface ISkillSelect {

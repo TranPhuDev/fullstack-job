@@ -10,6 +10,7 @@ import { callFetchJob, callDeleteJob } from '@/services/api';
 import { sfLike } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { useNavigate } from 'react-router-dom';
+import DetailJob from './detail.job';
 export const waitTimePromise = async (time: number = 1000) => {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -29,6 +30,8 @@ export default function TableJob() {
     const actionRef = useRef<ActionType | undefined>(undefined);
     const [meta, setMeta] = useState({ page: 1, pageSize: 8, pages: 0, total: 0 });
     const navigate = useNavigate();
+    const [openModalDetail, setOpenModalDetail] = useState(false);
+    const [dataDetail, setDataDetail] = useState<IJob | null>(null);
 
     const columns: ProColumns<IJob>[] = [
         {
@@ -119,7 +122,8 @@ export default function TableJob() {
                     <EyeOutlined
                         style={{ fontSize: 20, marginRight: 10, color: '#1677ff', cursor: 'pointer' }}
                         onClick={() => {
-
+                            setDataDetail(entity);
+                            setOpenModalDetail(true);
                         }}
                     />
                     <EditOutlined
@@ -224,53 +228,55 @@ export default function TableJob() {
     };
 
     return (
-        <div>
-            <ProTable<IJob>
-                columns={columns}
-                actionRef={actionRef}
-                cardBordered
+        <>
+            <div>
+                <ProTable<IJob>
+                    columns={columns}
+                    actionRef={actionRef}
+                    cardBordered
 
-                request={async (params, sort) => {
-                    await waitTime(500);
-                    const query = buildQuery(params, sort);
-                    const res = await callFetchJob(query);
-                    const data = res?.data;
-                    if (data && data.meta) {
-                        setMeta(data.meta);
-                    }
-                    // Nếu mỗi job có trường company là object, map lại để lấy companyName (dùng cho hiển thị, không thay đổi kiểu IJob)
-                    const jobs = data?.result?.map((job: IJob) => ({
-                        ...job,
-                        companyName: job.company && typeof job.company === 'object' && 'name' in job.company ? (job.company as { name?: string }).name || '' : '',
-                    }));
-                    return {
-                        data: jobs, // dùng jobs đã map
-                        success: true,
-                        total: data?.meta?.total,
-                    };
-                }}
-                scroll={{ x: true }}
-                pagination={{
-                    current: meta.page,
-                    pageSize: meta.pageSize,
-                    showSizeChanger: true,
-                    total: meta.total,
-                    showTotal: (total, range) => { return (<div>{range[0]} - {range[1]} trên {total} rows</div>) }
-                }}
-                dateFormatter="string"
-                headerTitle="Table Job"
-                toolBarRender={() => [
-                    <Button
-                        key="button"
-                        icon={<PlusOutlined />}
-                        onClick={() => navigate('upsert')}
-                        type="primary"
-                    >
-                        Thêm mới
-                    </Button>
-                ]}
-            />
-
-        </div>
+                    request={async (params, sort) => {
+                        await waitTime(500);
+                        const query = buildQuery(params, sort);
+                        const res = await callFetchJob(query);
+                        const data = res?.data;
+                        if (data && data.meta) {
+                            setMeta(data.meta);
+                        }
+                        // Nếu mỗi job có trường company là object, map lại để lấy companyName (dùng cho hiển thị, không thay đổi kiểu IJob)
+                        const jobs = data?.result?.map((job: IJob) => ({
+                            ...job,
+                            companyName: job.company && typeof job.company === 'object' && 'name' in job.company ? (job.company as { name?: string }).name || '' : '',
+                        }));
+                        return {
+                            data: jobs, // dùng jobs đã map
+                            success: true,
+                            total: data?.meta?.total,
+                        };
+                    }}
+                    scroll={{ x: true }}
+                    pagination={{
+                        current: meta.page,
+                        pageSize: meta.pageSize,
+                        showSizeChanger: true,
+                        total: meta.total,
+                        showTotal: (total, range) => { return (<div>{range[0]} - {range[1]} trên {total} rows</div>) }
+                    }}
+                    dateFormatter="string"
+                    headerTitle="Table Job"
+                    toolBarRender={() => [
+                        <Button
+                            key="button"
+                            icon={<PlusOutlined />}
+                            onClick={() => navigate('upsert')}
+                            type="primary"
+                        >
+                            Thêm mới
+                        </Button>
+                    ]}
+                />
+            </div>
+            <DetailJob openModalDetail={openModalDetail} setOpenModalDetail={setOpenModalDetail} dataDetail={dataDetail} />
+        </>
     );
 }
