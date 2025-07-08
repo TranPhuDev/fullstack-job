@@ -64,6 +64,8 @@ public class JobService {
         dto.setQuantity(currentJob.getQuantity());
         dto.setLocation(currentJob.getLocation());
         dto.setLevel(currentJob.getLevel());
+        dto.setExpertise(currentJob.getExpertise());
+        dto.setWorkplace(currentJob.getWorkplace());
         dto.setStartDate(currentJob.getStartDate());
         dto.setEndDate(currentJob.getEndDate());
         dto.setActive(currentJob.isActive());
@@ -108,6 +110,10 @@ public class JobService {
             jobInDB.setLocation(j.getLocation());
         if (j.getLevel() != null)
             jobInDB.setLevel(j.getLevel());
+        if (j.getExpertise() != null)
+            jobInDB.setExpertise(j.getExpertise());
+        if (j.getWorkplace() != null)
+            jobInDB.setWorkplace(j.getWorkplace());
         if (j.getStartDate() != null)
             jobInDB.setStartDate(j.getStartDate());
         if (j.getEndDate() != null)
@@ -124,6 +130,8 @@ public class JobService {
         dto.setQuantity(j.getQuantity());
         dto.setLocation(j.getLocation());
         dto.setLevel(j.getLevel());
+        dto.setExpertise(j.getExpertise());
+        dto.setWorkplace(j.getWorkplace());
         dto.setStartDate(j.getStartDate());
         dto.setEndDate(j.getEndDate());
         dto.setActive(j.isActive());

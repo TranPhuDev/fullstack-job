@@ -94,6 +94,11 @@ export const callFetchCompanyById = (id: string) => {
     return axios.get<IBackendRes<ICompany>>(`/api/v1/companies/${id}`);
 }
 
+
+export const callFetchCompanyWithJobs = () => {
+    return axios.get<IBackendRes<ICompanyWithJobs[]>>(`/api/v1/companies-with-jobs`);
+}
+
 //Module skill
 export const callCreateSkill = (data: { name: string }) => {
     return axios.post<IBackendRes<ISkill>>('/api/v1/skills', { ...data })

@@ -4,6 +4,7 @@ import { AiOutlineDollarCircle } from "react-icons/ai";
 import styles from "../../styles/content.job.module.scss";
 import { MdLaptopChromebook } from "react-icons/md";
 import { callFetchJob } from '@/services/api';
+import Pagination from '@/components/common/Pagination';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import "dayjs/locale/vi";
@@ -13,21 +14,37 @@ const ContentJob = () => {
   const [jobs, setJobs] = useState<IJob[]>([]);
   const [selectedJob, setSelectedJob] = useState<IJob | null>(null);
   const [favoriteJobs, setFavoriteJobs] = useState<string[]>([]);
+  const [meta, setMeta] = useState({ page: 1, pageSize: 10, total: 0 });
+  const topRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const res = await callFetchJob('page=1&size=10');
-        const data = res?.data?.result || [];
-        setJobs(data);
-        setSelectedJob(data[0] || null);
-      } catch {
-        setJobs([]);
-        setSelectedJob(null);
+    fetchJobs(meta.page, meta.pageSize);
+    // eslint-disable-next-line
+  }, [meta.page, meta.pageSize]);
+
+  const fetchJobs = async (page: number, pageSize: number) => {
+    try {
+      const res = await callFetchJob(`page=${page}&size=${pageSize}`);
+      const data = res?.data?.result || [];
+      const total = res?.data?.meta?.total || 0;
+      setJobs(data);
+      setSelectedJob(data[0] || null);
+      setMeta((prev) => ({ ...prev, total }));
+    } catch {
+      setJobs([]);
+      setSelectedJob(null);
+      setMeta((prev) => ({ ...prev, total: 0 }));
+    }
+  };
+
+  const handlePageChange = (page: number) => {
+    setMeta((prev) => ({ ...prev, page }));
+    setTimeout(() => {
+      if (topRef.current) {
+        window.scrollTo({ top: topRef.current.offsetTop, behavior: 'smooth' });
       }
-    };
-    fetchJobs();
-  }, []);
+    }, 0);
+  };
 
   const isFavorite = selectedJob && favoriteJobs.includes(selectedJob.id || '');
   const handleToggleFavorite = () => {
@@ -51,7 +68,7 @@ const ContentJob = () => {
   };
 
   return (
-    <div className="container mt-3">
+    <div className="container mt-3" ref={topRef}>
       <div className="row">
         {/* Danh sách job bên trái */}
         <div className="col-5 ">
@@ -122,6 +139,7 @@ const ContentJob = () => {
               </div>
             ))}
           </div>
+
         </div>
 
         {/* Chi tiết job bên phải */}
@@ -205,17 +223,55 @@ const ContentJob = () => {
                     </div>
                   </div>
                   <div className={styles.reason}>
-                    <div className={styles.reasonTitle}>3 Lý do để gia nhập công ty</div>
-                    <ul className={styles.reasonList}>
-                      <li>Chế độ bảo hiểm PVI cao cấp</li>
-                      <li>Du lịch nghỉ dưỡng hằng năm</li>
-                      <li>Thưởng hấp dẫn vào các dịp lễ, Tết</li>
-                    </ul>
+                    <div dangerouslySetInnerHTML={{ __html: selectedJob.description || '' }} />
+                    
                   </div>
+                  {selectedJob.company && (() => {
+                      const companyInfo = typeof selectedJob.company === 'object' && selectedJob.company ? selectedJob.company as { scale?: string, field?: string, workingTime?: string, overTime?: string } : {};
+                      return (
+                        <div className={styles.companyInfoGrid} style={{
+                          display: 'grid',
+                          gridTemplateColumns: 'repeat(3, 1fr)',
+                          gap: '16px',
+                          marginTop: 24,
+                        }}>
+                          <div>
+                            <div style={{ color: '#888', fontWeight: 500, fontSize: 15 }}>Mô hình công ty</div>
+                            <div style={{ fontWeight: 600, fontSize: 17 }}>{companyInfo.scale || 'N/A'}</div>
+                          </div>
+                          <div>
+                            <div style={{ color: '#888', fontWeight: 500, fontSize: 15 }}>Lĩnh vực công ty</div>
+                            <div style={{ fontWeight: 600, fontSize: 17 }}>{companyInfo.field || 'N/A'}</div>
+                          </div>
+                          <div>
+                            <div style={{ color: '#888', fontWeight: 500, fontSize: 15 }}>Quy mô công ty</div>
+                            <div style={{ fontWeight: 600, fontSize: 17 }}>{companyInfo.scale || 'N/A'}</div>
+                          </div>
+                          <div>
+                            <div style={{ color: '#888', fontWeight: 500, fontSize: 15 }}>Thời gian làm việc</div>
+                            <div style={{ fontWeight: 600, fontSize: 17 }}>{companyInfo.workingTime || 'N/A'}</div>
+                          </div>
+                          <div>
+                            <div style={{ color: '#888', fontWeight: 500, fontSize: 15 }}>Làm việc ngoài giờ</div>
+                            <div style={{ fontWeight: 600, fontSize: 17 }}>{companyInfo.overTime || 'N/A'}</div>
+                          </div>
+                        </div>
+                      );
+                    })()}
                 </div>
               </>
             )}
           </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-12">
+        <Pagination
+            current={meta.page}
+            total={meta.total}
+            pageSize={meta.pageSize}
+            onChange={handlePageChange}
+          />
         </div>
       </div>
     </div>

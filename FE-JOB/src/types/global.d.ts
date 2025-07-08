@@ -122,6 +122,20 @@ declare global {
         updatedAt?: string;
     }
 
+    export interface ICompanyWithJobs {
+        id: string;
+        name: string;
+        logo: string;
+        address: string;
+        description: string;
+        workingTime: string;
+        field: string;
+        scale: string;
+        overTime: string;
+        jobCount: number;
+        jobNames: string[];
+    }
+
     export interface IResume {
         id?: string;
         email: string;

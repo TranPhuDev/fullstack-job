@@ -2,6 +2,7 @@ package vn.tranphudev.jobhunter.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import vn.tranphudev.jobhunter.domain.Company;
 import vn.tranphudev.jobhunter.domain.User;
 import vn.tranphudev.jobhunter.domain.response.ResultPaginationDTO;
+import vn.tranphudev.jobhunter.domain.response.job.CompanyWithJobsDTO;
 import vn.tranphudev.jobhunter.repository.CompanyRepository;
 import vn.tranphudev.jobhunter.repository.UserRepository;
 
@@ -51,6 +53,10 @@ public class CompanyService {
             Company currentCompany = companyOptional.get();
             currentCompany.setName(company.getName());
             currentCompany.setDescription(company.getDescription());
+            currentCompany.setWorkingTime(company.getWorkingTime());
+            currentCompany.setField(company.getField());
+            currentCompany.setScale(company.getScale());
+            currentCompany.setOverTime(company.getOverTime());
             currentCompany.setAddress(company.getAddress());
             currentCompany.setLogo(company.getLogo());
 
@@ -89,4 +95,22 @@ public class CompanyService {
         return null;
     }
 
+    public List<CompanyWithJobsDTO> getCompaniesWithAtLeastNJobs(int minJobCount) {
+        List<Company> companies = companyRepository.findAll(); // hoặc findAll(pageable).getContent()
+        return companies.stream()
+                .filter(c -> c.getJobs() != null && c.getJobs().size() >= minJobCount)
+                .map(c -> new CompanyWithJobsDTO(
+                        c.getId(),
+                        c.getName(),
+                        c.getLogo(),
+                        c.getAddress(),
+                        c.getDescription(),
+                        c.getWorkingTime(),
+                        c.getField(),
+                        c.getScale(),
+                        c.getOverTime(),
+                        (long) c.getJobs().size(),
+                        c.getJobs().stream().map(job -> job.getName()).collect(Collectors.toList())))
+                .collect(Collectors.toList());
+    }
 }

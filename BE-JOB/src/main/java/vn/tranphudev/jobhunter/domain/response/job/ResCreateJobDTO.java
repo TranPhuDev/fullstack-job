@@ -18,6 +18,9 @@ public class ResCreateJobDTO {
     private double salary;
 
     private int quantity;
+    private String expertise;
+
+    private String workplace;
 
     private LevelEnum level;
 

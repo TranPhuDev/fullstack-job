@@ -43,6 +43,9 @@ public class Job {
     @Enumerated(EnumType.STRING)
     private LevelEnum level;
 
+    private String expertise;
+    private String workplace;
+
     @Column(columnDefinition = "MEDIUMTEXT")
     private String description;
 

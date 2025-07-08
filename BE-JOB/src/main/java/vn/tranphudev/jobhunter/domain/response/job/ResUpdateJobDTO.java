@@ -20,6 +20,8 @@ public class ResUpdateJobDTO {
     private int quantity;
 
     private LevelEnum level;
+    private String expertise;
+    private String workplace;
 
     private Instant startDate;
     private Instant endDate;

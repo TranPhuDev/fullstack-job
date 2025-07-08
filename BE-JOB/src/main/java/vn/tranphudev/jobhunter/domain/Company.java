@@ -39,6 +39,14 @@ public class Company {
 
     private String logo;
 
+    private String workingTime;
+
+    private String field;
+
+    private String scale;
+
+    private String overTime;
+
     private Instant createdAt;
 
     private Instant updatedAt;

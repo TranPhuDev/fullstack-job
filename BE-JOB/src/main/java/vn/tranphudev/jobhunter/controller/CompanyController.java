@@ -17,12 +17,14 @@ import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
 import vn.tranphudev.jobhunter.domain.Company;
 import vn.tranphudev.jobhunter.domain.response.ResultPaginationDTO;
+import vn.tranphudev.jobhunter.domain.response.job.CompanyWithJobsDTO;
 import vn.tranphudev.jobhunter.service.CompanyService;
 import vn.tranphudev.jobhunter.util.annotaion.ApiMessage;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -70,5 +72,10 @@ public class CompanyController {
     public ResponseEntity<Company> deleteCompany(@PathVariable("id") long id) {
         Company deletedCompany = companyService.handleDeleteAndReturnCompany(id);
         return ResponseEntity.ok(deletedCompany);
+    }
+
+    @GetMapping("/companies-with-jobs")
+    public ResponseEntity<List<CompanyWithJobsDTO>> getCompaniesWithJobs() {
+        return ResponseEntity.ok(companyService.getCompaniesWithAtLeastNJobs(3));
     }
 }

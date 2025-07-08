@@ -17,6 +17,8 @@ export const FIELD_OPTIONS = [
   { label: 'Tài chính', value: 'Tài chính' },
   { label: 'Chăm sóc sức khỏe', value: 'Chăm sóc sức khỏe' },
   { label: 'Giáo dục', value: 'Giáo dục' },
+  { label: 'Thương mại điện tử', value: 'Thương mại điện tử' },
+  { label: 'Giải trí', value: 'Giải trí' },
 ];
 export const SCALE_OPTIONS = [
   { label: '1-50', value: '1-50' },
