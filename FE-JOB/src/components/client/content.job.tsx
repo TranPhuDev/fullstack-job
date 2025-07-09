@@ -3,11 +3,15 @@ import { FiMapPin, FiClock, FiBriefcase } from "react-icons/fi";
 import { AiOutlineDollarCircle } from "react-icons/ai";
 import styles from "../../styles/content.job.module.scss";
 import { MdLaptopChromebook } from "react-icons/md";
-import { callFetchJob } from '@/services/api';
+import { callFetchJob, callFetchJobById } from '@/services/api';
 import Pagination from '@/components/common/Pagination';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import "dayjs/locale/vi";
+import ApplyModal from "./modal.apply";
+import { useLocation, Link } from "react-router-dom";
+import { useCurrentApp } from "@/components/context/app.context";
+import ContentJobRight from "./content.job.right";
 dayjs.extend(relativeTime);
 
 const ContentJob = () => {
@@ -16,6 +20,32 @@ const ContentJob = () => {
   const [favoriteJobs, setFavoriteJobs] = useState<string[]>([]);
   const [meta, setMeta] = useState({ page: 1, pageSize: 10, total: 0 });
   const topRef = React.useRef<HTMLDivElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [jobDetail, setJobDetail] = useState<IJob | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { isAuthenticated } = useCurrentApp();
+
+
+  let location = useLocation();
+  let params = new URLSearchParams(location.search);
+  const id = params?.get("id");
+
+
+  useEffect(() => {
+    const init = async () => {
+      if (id) {
+        setIsLoading(true)
+        const res = await callFetchJobById(id);
+        if (res?.data) {
+          setJobDetail(res.data)
+        }
+        setIsLoading(false)
+      }
+    }
+    init();
+  }, [id]);
+
+
 
   useEffect(() => {
     fetchJobs(meta.page, meta.pageSize);
@@ -46,7 +76,7 @@ const ContentJob = () => {
     }, 0);
   };
 
-  const isFavorite = selectedJob && favoriteJobs.includes(selectedJob.id || '');
+  const isFavorite = !!selectedJob && favoriteJobs.includes(selectedJob.id || '');
   const handleToggleFavorite = () => {
     if (!selectedJob || !selectedJob.id) return;
     setFavoriteJobs((prev) =>
@@ -139,134 +169,24 @@ const ContentJob = () => {
               </div>
             ))}
           </div>
-
         </div>
 
         {/* Chi tiết job bên phải */}
         <div className="col-7">
-          <div className={styles.detailWrapper}>
-            {selectedJob && (
-              <>
-                <div className={styles.detailHeaderRow}>
-                  <div className={styles.companyLogo}>
-                    {selectedJob.company?.logo ? (
-                      <img
-                        src={`${import.meta.env.VITE_BACKEND_URL}/storage/company/${selectedJob.company.logo}`}
-                        alt={selectedJob.company.name}
-                        style={{ width: '100%', height: '100%' }}
-                      />
-                    ) : (
-                      selectedJob.company?.name?.[0] || "?"
-                    )}
-                  </div>
-                  <div className={styles.detailInfoBlock}>
-                    <h2 className={styles.detailTitle}>{selectedJob.name}</h2>
-                    <div className={styles.detailCompany}>{selectedJob.company?.name}</div>
-                    <div className={styles.attractive} style={{ display: 'flex', alignItems: 'center' }}>
-                      <AiOutlineDollarCircle style={{ fontSize: 22, marginRight: 8 }} />
-                      <span style={{ lineHeight: 1 }}>You'll love it</span>
-                    </div>
-                  </div>
-                </div>
-                {/* Nút ứng tuyển và icon yêu thích */}
-                <div className={styles.applyRow}>
-                  <button className={styles.applyBtn}>
-                    Ứng tuyển
-                  </button>
-                  <button
-                    className={styles.heartBtn}
-                    onClick={handleToggleFavorite}
-                    aria-label={isFavorite ? "Bỏ yêu thích" : "Thêm vào yêu thích"}
-                    type="button"
-                  >
-                    <span className={styles.heartIcon} style={{ color: isFavorite ? '#ff424e' : '#bbb' }}>
-                      {isFavorite ? '♥' : '♡'}
-                    </span>
-                  </button>
-                </div>
-                <hr />
-                <div className={styles.detailScrollable}>
-                  <div className={styles.detailInfoRow}>
-                    <div className={styles.detailLocation}>
-                      <FiMapPin style={{ marginRight: 6, fontSize: '1.1em', verticalAlign: 'middle' }} />
-                      {mapLocation(selectedJob.location)}
-                    </div>
-                    <div className={styles.detailWorkplace}>
-                      <FiBriefcase style={{ marginRight: 6, marginBottom: '4px', fontSize: '1em', verticalAlign: 'middle' }} />
-                      {selectedJob.workplace ? selectedJob.workplace.charAt(0).toUpperCase() + selectedJob.workplace.slice(1).toLowerCase() : ''}
-                    </div>
-                    <div className={styles.detailTime}>
-                      <FiClock style={{ marginRight: 6, fontSize: '1em', verticalAlign: 'middle' }} />
-                      {selectedJob.updatedAt ? dayjs(selectedJob.updatedAt).locale('vi').fromNow() : ''}
-                    </div>
-                  </div>
-                  <div className={`${styles.detailInfoReq}`}>
-                    <div className={`${styles.detailSkill} d-flex align-items-center`}>
-                      <span className={`${styles.detailLabel} me-5`}>Kỹ năng: </span>
-                      <div className={styles.tagList}>
-                        {selectedJob.skills?.map((skill) => (
-                          <span key={skill.id} className={styles.tag}>{skill.name}</span>
-                        ))}
-                      </div>
-                    </div>
-                    <div className={`${styles.detailSkill} d-flex align-items-center`}>
-                      <span className={`${styles.detailLabel} me-5`}>Chuyên môn: </span>
-                      <div className={styles.tagList}>
-                        <span>{selectedJob.expertise}</span>
-                      </div>
-                    </div>
-                    <div className={`${styles.detailSkill} d-flex align-items-center`}>
-                      <span className={`${styles.detailLabel} me-5`}>Lĩnh vực: </span>
-                      <div className={styles.tagList}>
-                        <span>{typeof selectedJob.company === 'object' && selectedJob.company && 'field' in selectedJob.company ? (selectedJob.company as { field?: string }).field || 'N/A' : 'N/A'}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.reason}>
-                    <div dangerouslySetInnerHTML={{ __html: selectedJob.description || '' }} />
-                    
-                  </div>
-                  {selectedJob.company && (() => {
-                      const companyInfo = typeof selectedJob.company === 'object' && selectedJob.company ? selectedJob.company as { scale?: string, field?: string, workingTime?: string, overTime?: string } : {};
-                      return (
-                        <div className={styles.companyInfoGrid} style={{
-                          display: 'grid',
-                          gridTemplateColumns: 'repeat(3, 1fr)',
-                          gap: '16px',
-                          marginTop: 24,
-                        }}>
-                          <div>
-                            <div style={{ color: '#888', fontWeight: 500, fontSize: 15 }}>Mô hình công ty</div>
-                            <div style={{ fontWeight: 600, fontSize: 17 }}>{companyInfo.scale || 'N/A'}</div>
-                          </div>
-                          <div>
-                            <div style={{ color: '#888', fontWeight: 500, fontSize: 15 }}>Lĩnh vực công ty</div>
-                            <div style={{ fontWeight: 600, fontSize: 17 }}>{companyInfo.field || 'N/A'}</div>
-                          </div>
-                          <div>
-                            <div style={{ color: '#888', fontWeight: 500, fontSize: 15 }}>Quy mô công ty</div>
-                            <div style={{ fontWeight: 600, fontSize: 17 }}>{companyInfo.scale || 'N/A'}</div>
-                          </div>
-                          <div>
-                            <div style={{ color: '#888', fontWeight: 500, fontSize: 15 }}>Thời gian làm việc</div>
-                            <div style={{ fontWeight: 600, fontSize: 17 }}>{companyInfo.workingTime || 'N/A'}</div>
-                          </div>
-                          <div>
-                            <div style={{ color: '#888', fontWeight: 500, fontSize: 15 }}>Làm việc ngoài giờ</div>
-                            <div style={{ fontWeight: 600, fontSize: 17 }}>{companyInfo.overTime || 'N/A'}</div>
-                          </div>
-                        </div>
-                      );
-                    })()}
-                </div>
-              </>
-            )}
-          </div>
+          <ContentJobRight
+            selectedJob={selectedJob}
+            setJobDetail={setJobDetail}
+            setIsModalOpen={setIsModalOpen}
+            isFavorite={isFavorite}
+            handleToggleFavorite={handleToggleFavorite}
+            isAuthenticated={isAuthenticated}
+          />
         </div>
+
       </div>
       <div className="row">
         <div className="col-12">
-        <Pagination
+          <Pagination
             current={meta.page}
             total={meta.total}
             pageSize={meta.pageSize}
@@ -274,6 +194,11 @@ const ContentJob = () => {
           />
         </div>
       </div>
+      <ApplyModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        jobDetail={jobDetail}
+      />
     </div>
   );
 };

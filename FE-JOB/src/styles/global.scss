@@ -1,11 +1,19 @@
-
-*{
+* {
   margin: 0;
 }
 
 body {
   overflow-x: hidden !important;
 }
+
+li::marker {
+  color: red;
+}
+
+h4 {
+  font-weight: 650 !important;
+}
+
 
 
 

@@ -11,7 +11,6 @@ const FeaturedEmployer = () => {
     const fetchData = async () => {
       const res = await callFetchCompanyWithJobs();
       if (res && res.data && res.data.length > 0) {
-        console.log(res);
         setCompany(res.data[0]);
       }
     };

@@ -140,6 +140,41 @@ export const callFetchJobById = (id: string) => {
 }
 
 
+
+//Module Resume
+export const callCreateResume = (url: string, jobId: any, email: string, userId: string | number) => {
+    return axios.post<IBackendRes<IResume>>('/api/v1/resumes', {
+        email, url,
+        status: "PENDING",
+        user: {
+            "id": userId
+        },
+        job: {
+            "id": jobId
+        }
+    })
+}
+
+export const callUpdateResumeStatus = (id: any, status: string) => {
+    return axios.put<IBackendRes<IResume>>(`/api/v1/resumes`, { id, status })
+}
+
+export const callDeleteResume = (id: string) => {
+    return axios.delete<IBackendRes<IResume>>(`/api/v1/resumes/${id}`);
+}
+
+export const callFetchResume = (query: string) => {
+    return axios.get<IBackendRes<IModelPaginate<IResume>>>(`/api/v1/resumes?${query}`);
+}
+
+export const callFetchResumeById = (id: string) => {
+    return axios.get<IBackendRes<IResume>>(`/api/v1/resumes/${id}`);
+}
+
+export const callFetchResumeByUser = () => {
+    return axios.post<IBackendRes<IModelPaginate<IResume>>>(`/api/v1/resumes/by-user`);
+}
+
 //Module Role
 export const callFetchRole = (query: string) => {
     return axios.get<IBackendRes<IModelPaginate<IRole>>>(`/api/v1/roles?${query}`);

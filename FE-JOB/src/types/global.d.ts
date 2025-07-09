@@ -102,6 +102,7 @@ declare global {
         company?: {
             id: string;
             name: string;
+            address: string;
             logo?: string;
         }
         location: string;

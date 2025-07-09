@@ -1,6 +1,8 @@
+import TableResume from "@/components/resumes/table.resume"
+
 const ResumePage = () => {
     return (<>
-        <>Resume page</>
+        <TableResume/>
     </>)
 }
 

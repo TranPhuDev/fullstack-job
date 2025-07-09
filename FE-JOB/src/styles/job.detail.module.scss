@@ -1,0 +1,48 @@
+.containerJob {
+    background-color: #f7f7f7;
+}
+.companyCard {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #eee;
+  padding: 20px;
+  margin-top: 10px;
+}
+.companyHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.companyLogo {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #f5f5f5;
+}
+.companyName {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.companyRating {
+  margin-top: 4px;
+  font-size: 1.1rem;
+}
+.companyDesc {
+  margin: 12px 0;
+  color: #444;
+  font-size: 0.98rem;
+}
+.companyInfoRow {
+  display: flex;
+  justify-content: space-between;
+  color: #888;
+  font-size: 0.97rem;
+  margin-bottom: 6px;
+  border-bottom: 1px dotted #eee;
+  padding-bottom: 3px;
+}
+.companyInfoRow span:last-child {
+  color: #222;
+  font-weight: 600;
+}

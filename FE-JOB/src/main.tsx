@@ -25,12 +25,14 @@ import enUS from 'antd/locale/en_US';
 import JobTabs from './components/job/job_manage/job.tab';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ViewUpsertJob from './components/job/job_manage/upsert.job';
+import ClientDetailJobPage from './pages/client/job.detail';
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: "job/:id", element: <ClientDetailJobPage /> },
       {
         path: "/book",
         element: <BookPage />,

@@ -42,6 +42,7 @@
   font-weight: bold;
   padding: 5px 10px;
   right: -450px;
+  top: -7px;
   position: relative;
   border-radius: 3px 0 0 3px;
 }
@@ -58,11 +59,46 @@
   border-left: 10px solid transparent;
 }
 
+.superHotTag {
+  display: inline-block;
+  background-color: #ff424e;
+  /* màu đỏ */
+  color: white;
+  font-weight: bold;
+  padding: 5px 10px;
+  right: -387px;
+  top: -7px;
+  position: relative;
+  border-radius: 3px 0 0 3px;
+}
+
+.superHotTag::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 100%;
+  width: 0;
+  height: 0;
+  border-top: 10px solid #ff424e;
+  /* cùng màu nền */
+  border-left: 10px solid transparent;
+}
+
 
 .selected {
   border: 1px solid #ff424e;
   background: #fff6f7;
   box-shadow: 0 2px 8px #ff424e22;
+}
+
+.detailTitle {
+  color: #222;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.detailTitle:hover {
+  color: #ff424e;
 }
 
 .jobTitle {
@@ -128,7 +164,7 @@
   font-size: 18px;
   color: #525050;
   margin-bottom: 8px;
-   
+
 
 }
 

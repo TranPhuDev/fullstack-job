@@ -3,7 +3,6 @@ import styles from '../../styles/home.module.scss';
 import { FiSearch, FiChevronDown, FiMapPin } from 'react-icons/fi';
 import FeaturedEmployer from '@/components/client/featured.employer';
 import ContentJob from '@/components/client/content.job';
-import Pagination from '@/components/common/Pagination';
 
 const cities = [
   { value: '', label: 'Tất cả thành phố' },
@@ -146,6 +145,7 @@ const HomePage = () => {
       <div className={styles.containerBg}>
 
         <div className={styles.featuredEmployerOverlap}>
+
           <FeaturedEmployer />
         </div>
 
