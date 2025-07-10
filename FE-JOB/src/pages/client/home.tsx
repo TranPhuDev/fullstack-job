@@ -6,9 +6,10 @@ import ContentJob from '@/components/client/content.job';
 
 const cities = [
   { value: '', label: 'Tất cả thành phố' },
-  { value: 'hanoi', label: 'Hà Nội' },
-  { value: 'hcm', label: 'Hồ Chí Minh' },
-  { value: 'danang', label: 'Đà Nẵng' },
+  { value: 'HANOI', label: 'Hà Nội' },
+  { value: 'HOCHIMINH', label: 'Hồ Chí Minh' },
+  { value: 'DANANG', label: 'Đà Nẵng' },
+  { value: 'OTHER', label: 'Khác'}
 ];
 
 const HomePage = () => {
@@ -19,6 +20,9 @@ const HomePage = () => {
   const [isHidingInputOverlay, setIsHidingInputOverlay] = useState(false);
   const [isShowingInputOverlay, setIsShowingInputOverlay] = useState(false);
   const [selected, setSelected] = useState(cities[0]);
+  const [searchCity, setSearchCity] = useState<string>("");
+  const [keyword, setKeyword] = useState<string>("");
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
   const wrapperRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -56,6 +60,15 @@ const HomePage = () => {
     }
   }, [showInputOverlay]);
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSearchCity(selected.value);
+    setSearchKeyword(keyword);
+    // Blur the button to remove :active state
+    const btn = document.activeElement as HTMLElement;
+    if (btn && btn.tagName === 'BUTTON') btn.blur();
+  };
+
   return (
     <div className={styles.homeTopSection}>
       <div className={styles.homeBanner + ' ' + styles.searchBanner}>
@@ -73,7 +86,7 @@ const HomePage = () => {
             (isShowingInputOverlay ? ' ' + styles.overlayShow : '')
           }></div>
         )}
-        <form className={styles.searchForm}>
+        <form className={styles.searchForm} onSubmit={handleSearch}>
           <div className={styles.inputGroup}>
             <div
               className={
@@ -130,6 +143,8 @@ const HomePage = () => {
                 (showInputOverlay ? ' ' + styles.activeSearchInput : showDropdown ? ' ' + styles.inactiveSearchInput : '')
               }
               placeholder="Nhập từ khoá theo kỹ năng, chức vụ, công ty..."
+              value={keyword}
+              onChange={e => setKeyword(e.target.value)}
               onFocus={() => {
                 if (!showInputOverlay) {
                   setShowInputOverlay(true);
@@ -152,7 +167,7 @@ const HomePage = () => {
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <ContentJob />
+              <ContentJob city={searchCity} keyword={searchKeyword} />
             </div>
           </div>
         </div>

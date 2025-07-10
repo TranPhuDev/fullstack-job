@@ -172,6 +172,10 @@
   transition: background 0.2s;
 }
 
+.customDropdownOption:hover {
+  background: #e6e9d5;
+}
+
 .customDropdownOptionSelected {
   background: #f7f7f7;
 }

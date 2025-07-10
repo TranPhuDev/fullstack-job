@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useCurrentApp } from "@/components/context/app.context";
 import styles from "../../styles/job.detail.module.scss";
+import ApplyModal from "@/components/client/modal.apply";
 
 type CompanyFull = {
     id: string;
@@ -23,7 +24,8 @@ const ClientDetailJobPage = () => {
     const { id } = useParams(); // lấy id từ URL /job/:id
     const { isAuthenticated } = useCurrentApp();
     const [showFullDesc, setShowFullDesc] = useState(false);
-    const [rating, setRating] = useState(() => (Math.random() * 2 + 3).toFixed(1)); // 3.0 - 5.0
+    const [rating, setRating] = useState(() => (Math.random() * 2 + 3).toFixed(1)); 
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const randomRating = () => {
       const newRating = (Math.random() * 2 + 3).toFixed(1);
       setRating(newRating);
@@ -49,7 +51,7 @@ const ClientDetailJobPage = () => {
                         <ContentJobRight
                             selectedJob={jobDetail}
                             setJobDetail={setJobDetail}
-                            setIsModalOpen={() => { }}
+                            setIsModalOpen={setIsModalOpen}
                             isFavorite={false}
                             handleToggleFavorite={() => { }}
                             isAuthenticated={isAuthenticated}
@@ -128,6 +130,11 @@ const ClientDetailJobPage = () => {
                     </div>
                 </div>
             </div>
+            <ApplyModal
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                jobDetail={jobDetail}
+            />
         </div>
     );
 }

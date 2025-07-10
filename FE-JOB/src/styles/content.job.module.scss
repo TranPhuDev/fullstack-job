@@ -474,3 +474,39 @@
 .level {
   margin-bottom: 5px;
 }
+
+// Giao diện không có dữ liệu
+.noDataWrapper {
+  width: 100%;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px #00000010;
+  margin: 32px 0;
+}
+
+.noDataContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.noDataIcon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 8px;
+  color: #e0e0e0;
+}
+
+.noDataText {
+  color: #b1acad;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.5px;
+}

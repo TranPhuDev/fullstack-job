@@ -79,12 +79,21 @@ const ContentJobRight: React.FC<ContentJobRightProps> = ({
           <hr />
           <div className={styles.detailScrollable}>
             <div className={styles.detailInfoRow}>
+
+              <div className={styles.detailLocation}>
+                <FiBriefcase style={{ marginRight: 6, fontSize: '1.1em', verticalAlign: 'middle' }} />
+                {selectedJob.level}
+              </div>
+
               <div className={styles.detailLocation}>
                 <FiMapPin style={{ marginRight: 6, fontSize: '1.1em', verticalAlign: 'middle' }} />
                 {selectedJob.company?.address}
               </div>
               <div className={styles.detailWorkplace}>
-                <FiBriefcase style={{ marginRight: 6, marginBottom: '4px', fontSize: '1em', verticalAlign: 'middle' }} />
+                {/* <FiBriefcase style={{ marginRight: 6, marginBottom: '4px', fontSize: '1em', verticalAlign: 'middle' }} />
+                 */}
+                <svg style={{ marginRight: 6, fontSize: '1.1em', verticalAlign: 'middle', marginBottom: '2px' }} width="16" height="16" viewBox="0 0 16 16"><path fill="#b1acad" d="M8 1.333a2.667 2.667 0 0 0-2.667 2.667v1.333H4A2.667 2.667 0 0 0 1.333 8v4A2.667 2.667 0 0 0 4 14.667h8A2.667 2.667 0 0 0 14.667 12V8A2.667 2.667 0 0 0 12 5.333h-.667V4A2.667 2.667 0 0 0 8 1.333zm0 1.334A1.333 1.333 0 0 1 9.333 4v1.333H6.667V4A1.333 1.333 0 0 1 8 2.667zM4 6.667h8A1.333 1.333 0 0 1 13.333 8v4A1.333 1.333 0 0 1 12 13.333H4A1.333 1.333 0 0 1 2.667 12V8A1.333 1.333 0 0 1 4 6.667zm2.667 2.666a.667.667 0 1 0 0 1.334.667.667 0 0 0 0-1.334z" /></svg>
+
                 {selectedJob.workplace ? selectedJob.workplace.charAt(0).toUpperCase() + selectedJob.workplace.slice(1).toLowerCase() : ''}
               </div>
               <div className={styles.detailTime}>
