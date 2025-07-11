@@ -73,6 +73,14 @@ export const callDeleteUser = (id: string) => {
     return axios.delete(`/api/v1/users/${id}`);
 }
 
+// Đổi mật khẩu user
+export const callChangePassword = (currentPassword: string, newPassword: string) => {
+    return axios.post<IBackendRes<IUser>>('/api/v1/users/change-password', {
+        currentPassword,
+        newPassword,
+    });
+}
+
 //Module Company 
 export const callFetchCompany = (query: string) => {
     return axios.get<IBackendRes<IModelPaginate<ICompany>>>(`/api/v1/companies?${query}`);
