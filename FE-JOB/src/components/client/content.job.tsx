@@ -10,15 +10,12 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import "dayjs/locale/vi";
 import ApplyModal from "./modal.apply";
 import { useLocation, Link } from "react-router-dom";
-import { useCurrentApp } from "@/components/context/app.context";
+import { useCurrentApp } from "../context/app.context";
 import ContentJobRight from "./content.job.right";
 dayjs.extend(relativeTime);
 
-interface ContentJobProps {
-  city?: string;
-  keyword?: string;
-}
-const ContentJob: React.FC<ContentJobProps> = ({ city, keyword }) => {
+const ContentJob: React.FC = () => {
+  const { filter } = useCurrentApp();
   const [jobs, setJobs] = useState<IJob[]>([]);
   const [selectedJob, setSelectedJob] = useState<IJob | null>(null);
   const [favoriteJobs, setFavoriteJobs] = useState<string[]>([]);
@@ -26,46 +23,46 @@ const ContentJob: React.FC<ContentJobProps> = ({ city, keyword }) => {
   const topRef = React.useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [jobDetail, setJobDetail] = useState<IJob | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { isAuthenticated } = useCurrentApp();
-
 
   let location = useLocation();
   let params = new URLSearchParams(location.search);
   const id = params?.get("id");
 
-
   useEffect(() => {
     const init = async () => {
       if (id) {
-        setIsLoading(true)
         const res = await callFetchJobById(id);
         if (res?.data) {
           setJobDetail(res.data)
         }
-        setIsLoading(false)
       }
     }
     init();
   }, [id]);
 
-
-
   useEffect(() => {
-    fetchJobs(meta.page, meta.pageSize, city, keyword);
+    fetchJobs(meta.page, meta.pageSize);
     // eslint-disable-next-line
-  }, [meta.page, meta.pageSize, city, keyword]);
+  }, [meta.page, meta.pageSize, filter]);
 
-  const fetchJobs = async (page: number, pageSize: number, city?: string, keyword?: string) => {
+  const fetchJobs = async (page: number, pageSize: number) => {
     try {
       let query = `page=${page}&size=${pageSize}`;
       const filters: string[] = [];
-      if (city && city !== "") {
-        filters.push(`location~'${city}'`);
+      if (filter.city && filter.city !== "") {
+        filters.push(`location~'${filter.city}'`);
       }
-      if (keyword && keyword.trim() !== "") {
-        const kw = keyword.trim();
-        filters.push(`(skills.name~'${kw}' or level~'${kw}' or company.name~'${kw}')`);
+      if (filter.company && filter.company !== "") {
+        filters.push(`company.name~'${filter.company}'`);
+      }
+      if (filter.skill && filter.skill !== "") {
+        filters.push(`skills.name~'${filter.skill}'`);
+      }
+      if (filter.level && filter.level !== "") {
+        filters.push(`level~'${filter.level}'`);
+      }
+      if (filter.keyword && filter.keyword !== "") {
+        filters.push(`(skills.name~'${filter.keyword}' or level~'${filter.keyword}' or company.name~'${filter.keyword}')`);
       }
       if (filters.length > 0) {
         query += `&filter=${filters.join(" and ")}`;
@@ -167,9 +164,7 @@ const ContentJob: React.FC<ContentJobProps> = ({ city, keyword }) => {
                     </div>
                     <div className={styles.attractive} style={{ display: 'flex', alignItems: 'center' }}>
                       <AiOutlineDollarCircle style={{ fontSize: 22, marginRight: 8 }} />
-                      <span style={{ lineHeight: 1 }}> {isAuthenticated
-                        ? `You'll love it - ${job.salary ? job.salary.toLocaleString('vi-VN') + ' đ' : ''}`
-                        : "Đăng nhập để xem mức lương"}</span>
+                      <span style={{ lineHeight: 1 }}> {job.salary ? job.salary.toLocaleString('vi-VN') + ' đ' : ''}</span>
                     </div>
                     <div className={styles.horizontal}></div>
                     <div className={styles.jobMeta}>
@@ -213,7 +208,7 @@ const ContentJob: React.FC<ContentJobProps> = ({ city, keyword }) => {
                 setIsModalOpen={setIsModalOpen}
                 isFavorite={isFavorite}
                 handleToggleFavorite={handleToggleFavorite}
-                isAuthenticated={isAuthenticated}
+                isAuthenticated={true}
               />
             </div>
           </>

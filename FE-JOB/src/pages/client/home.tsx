@@ -3,13 +3,15 @@ import styles from '../../styles/home.module.scss';
 import { FiSearch, FiChevronDown, FiMapPin } from 'react-icons/fi';
 import FeaturedEmployer from '@/components/client/featured.employer';
 import ContentJob from '@/components/client/content.job';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useCurrentApp } from '@/components/context/app.context';
 
 const cities = [
   { value: '', label: 'Tất cả thành phố' },
   { value: 'HANOI', label: 'Hà Nội' },
   { value: 'HOCHIMINH', label: 'Hồ Chí Minh' },
   { value: 'DANANG', label: 'Đà Nẵng' },
-  { value: 'OTHER', label: 'Khác'}
+  { value: 'OTHER', label: 'Khác' }
 ];
 
 const HomePage = () => {
@@ -20,11 +22,16 @@ const HomePage = () => {
   const [isHidingInputOverlay, setIsHidingInputOverlay] = useState(false);
   const [isShowingInputOverlay, setIsShowingInputOverlay] = useState(false);
   const [selected, setSelected] = useState(cities[0]);
-  const [searchCity, setSearchCity] = useState<string>("");
   const [keyword, setKeyword] = useState<string>("");
-  const [searchKeyword, setSearchKeyword] = useState<string>("");
   const wrapperRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { setFilter } = useCurrentApp();
+  const navigate = useNavigate();
+
+  // Đọc parameter company từ URL
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const companyParam = params.get("company");
 
   // Đóng dropdown khi click ra ngoài
   useEffect(() => {
@@ -60,10 +67,20 @@ const HomePage = () => {
     }
   }, [showInputOverlay]);
 
+  // Khi vào trang, nếu có companyParam trên URL thì set filter
+  useEffect(() => {
+    if (companyParam) {
+      setFilter(prev => ({ ...prev, company: companyParam }));
+    }
+  }, [companyParam, setFilter]);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    setSearchCity(selected.value);
-    setSearchKeyword(keyword);
+    setFilter({
+      city: selected.value,
+      keyword: keyword
+    });
+    navigate('/');
     // Blur the button to remove :active state
     const btn = document.activeElement as HTMLElement;
     if (btn && btn.tagName === 'BUTTON') btn.blur();
@@ -127,6 +144,7 @@ const HomePage = () => {
                         setShowDropdown(false);
                         setIsHidingDropdownOverlay(false);
                         setIsShowingDropdownOverlay(false);
+                        // KHÔNG setFilter, KHÔNG navigate ở đây!
                       }}
                     >
                       {city.label}
@@ -160,14 +178,13 @@ const HomePage = () => {
       <div className={styles.containerBg}>
 
         <div className={styles.featuredEmployerOverlap}>
-
           <FeaturedEmployer />
         </div>
 
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <ContentJob city={searchCity} keyword={searchKeyword} />
+              <ContentJob />
             </div>
           </div>
         </div>

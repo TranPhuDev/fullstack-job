@@ -58,7 +58,7 @@ const FeaturedEmployer = () => {
           }
           return <div className={styles.companyDesc}>{firstSentence}</div>;
         })()}
-        <Link to="#" className={styles.jobsLink}>
+        <Link to={`/?company=${encodeURIComponent(company.name)}`} className={styles.jobsLink}>
           Xem {company.jobCount} việc làm &nbsp; <FiArrowRightCircle />
         </Link>
       </div>
@@ -67,7 +67,7 @@ const FeaturedEmployer = () => {
         {company.jobNames.map((title, idx) => (
           <div key={idx} className={styles.jobItem}>
             <FiArrowRightCircle className={styles.jobIcon} />
-            <span>{title}</span>
+            <Link to={`/job/${company.jobIds[idx]}`} className={styles.jobLinkToDetail}>{title}</Link>
           </div>
         ))}
       </div>

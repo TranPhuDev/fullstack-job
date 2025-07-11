@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCurrentApp } from "../context/app.context";
 import styles from './Header.module.scss';
 import { logoutAPI, callFetchAllSkill, callFetchCompany } from 'services/api';
@@ -10,7 +10,9 @@ const levelData = [
     'Intern', 'Fresher', 'Junior', 'Middle', 'Senior'
 ];
 const cityData = [
-    'Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng'
+    { label: 'Hà Nội', value: 'HANOI' },
+    { label: 'Hồ Chí Minh', value: 'HOCHIMINH' },
+    { label: 'Đà Nẵng', value: 'DANANG' }
 ];
 
 const AppHeader = () => {
@@ -22,7 +24,7 @@ const AppHeader = () => {
         { label: 'Việc làm IT theo thành phố', data: cityData },
     ]);
     const navigate = useNavigate();
-    const { isAuthenticated, user, setUser, setIsAuthenticated } = useCurrentApp();
+    const { isAuthenticated, user, setUser, setIsAuthenticated, setFilter } = useCurrentApp();
 
     useEffect(() => {
         // Fetch skills
@@ -60,11 +62,25 @@ const AppHeader = () => {
         }
     };
 
+    // Hàm set filter khi click vào item
+    const handleFilterClick = (item: any) => {
+        // Nếu là thành phố thì item là object {label, value}
+        const value = item?.value || item;
+        setFilter(prev => ({
+            ...prev,
+            skill: activeIndex === 0 ? value : undefined,
+            level: activeIndex === 1 ? value : undefined,
+            company: activeIndex === 2 ? value : undefined,
+            city: activeIndex === 3 ? value : undefined,
+        }));
+    };
+
     return (
         <header className={styles.header + ' ' + styles.stickyHeader}>
             <div className={styles.left}>
-                <img src={logo} alt="itviec logo" className={styles.logo} />
-                {/* <span className={styles.brand}>viec</span> */}
+                <Link to="/" className={styles.logoLink}>
+                    <img src={logo} alt="it job" className={styles.logo} />
+                </Link>
                 <ul className={styles.menu}>
                     <li className={styles.menuItem}>
                         <span className={styles.menuLabel}>
@@ -82,21 +98,27 @@ const AppHeader = () => {
                                     </li>
                                 ))}
                             </ul>
-                            <div className={styles.megaMenuRight}>
+                            <div style={{ width: '100%' }}>
                                 <div className={
-                                    activeIndex === 2
-                                        ? `${styles.skillsGrid} ${styles.companyGrid}`
-                                        : activeIndex === 3
-                                            ? `${styles.skillsGrid} ${styles.cityGrid}`
-                                            : styles.skillsGrid
+                                    activeIndex === 1
+                                        ? `${styles.skillsGrid} ${styles.levelGrid}`
+                                        : activeIndex === 2
+                                            ? `${styles.skillsGrid} ${styles.companyGrid}`
+                                            : activeIndex === 3
+                                                ? `${styles.skillsGrid} ${styles.cityGrid}`
+                                                : styles.skillsGrid
                                 }>
-                                    {menuLeft[activeIndex].data.map((skill: string) => (
-                                        <span key={skill}>{skill}</span>
+                                    {menuLeft[activeIndex].data.map((item: any) => (
+                                        <span
+                                            key={item.value || item.label || item}
+                                            onClick={() => handleFilterClick(item)}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            {item.label || item}
+                                        </span>
                                     ))}
                                 </div>
-                                <div className={
-                                    activeIndex === 3 ? `${styles.seeAll} ${styles.cityLeft}` : styles.seeAll
-                                }>
+                                <div className={styles.seeAll}>
                                     {activeIndex === 3 ? 'Thành phố khác' : 'Xem tất cả'}
                                 </div>
                             </div>

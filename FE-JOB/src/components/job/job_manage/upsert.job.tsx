@@ -35,9 +35,9 @@ import { DebounceSelect } from "@/components/user/debounce.select";
 import { ICompanySelect } from "@/components/user/create.user";
 
 const LOCATION_OPTIONS = [
-    { label: "Hà Nội", value: "Hà Nội" },
-    { label: "Hồ Chí Minh", value: "Hồ Chí Minh" },
-    { label: "Đà Nẵng", value: "Đà Nẵng" },
+    { label: "Hà Nội", value: "HANOI" },
+    { label: "Hồ Chí Minh", value: "HOCHIMINH" },
+    { label: "Đà Nẵng", value: "DANANG" },
 ];
 
 const WORKPLACE_OPTIONS = [
@@ -154,6 +154,7 @@ const ViewUpsertJob = () => {
             company: {
                 id: cp && cp.length > 0 ? cp[0] : "",
                 name: values.company.label,
+                address: "", // Add required address field
                 logo: cp && cp.length > 1 ? cp[1] : ""
             },
             location: values.location,

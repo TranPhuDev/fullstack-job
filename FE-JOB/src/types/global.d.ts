@@ -135,6 +135,7 @@ declare global {
         overTime: string;
         jobCount: number;
         jobNames: string[];
+        jobIds: number[];
     }
 
     export interface IResume {

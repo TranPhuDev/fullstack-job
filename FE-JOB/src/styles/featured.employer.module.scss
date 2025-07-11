@@ -133,6 +133,15 @@
   color: #F60D00;
 }
 
+.jobLinkToDetail {
+  color: #000;
+  text-decoration: none;
+}
+
+.jobLinkToDetail:hover {
+  color: #62625f;
+}
+
 @media (max-width: 900px) {
   .featuredEmployerWrapper {
     flex-direction: column;
