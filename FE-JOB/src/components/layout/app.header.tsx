@@ -6,6 +6,7 @@ import { logoutAPI, callFetchAllSkill, callFetchCompany } from 'services/api';
 import defaultAvatar from 'assets/images/default-avatar.jpg';
 import logo from 'assets/images/EI.png';
 import ManageAccount from '../client/manage.account';
+import SubModal from '../client/modal.sub';
 
 const levelData = [
     'Intern', 'Fresher', 'Junior', 'Middle', 'Senior'
@@ -25,7 +26,8 @@ const AppHeader = () => {
         { label: 'Việc làm IT theo thành phố', data: cityData },
     ]);
     const navigate = useNavigate();
-    const [openMangeAccount, setOpenManageAccount] = useState<boolean>(false);
+    const [openManageAccount, setOpenManageAccount] = useState<boolean>(false);
+    const [openSubModal, setOpenSubModal] = useState<boolean>(false);
     const { isAuthenticated, user, setUser, setIsAuthenticated, setFilter } = useCurrentApp();
 
     useEffect(() => {
@@ -171,7 +173,8 @@ const AppHeader = () => {
                                         </div>
                                     )}
                                     <div className={styles.userMenuItem} onClick={() => setOpenManageAccount(true)}>Hồ Sơ</div>
-                                    <div className={styles.userMenuItem}>Nhận Jobs qua Email</div>
+                                    <div className={styles.userMenuItem}>Công việc yêu thích</div>
+                                    <div className={styles.userMenuItem} onClick={() => setOpenSubModal(true)}>Nhận Jobs qua Email</div>
                                     <div className={styles.userMenuItem} onClick={handleLogout}>Đăng xuất</div>
                                 </div>
                             </div>
@@ -190,8 +193,12 @@ const AppHeader = () => {
                 </div>
             </header>
             <ManageAccount
-                open={openMangeAccount}
+                open={openManageAccount}
                 onClose={setOpenManageAccount}
+            />
+            <SubModal
+                open={openSubModal}
+                onClose={setOpenSubModal}
             />
         </>
     );
