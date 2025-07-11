@@ -22,9 +22,12 @@ import vn.tranphudev.jobhunter.domain.response.ResCreateUserDTO;
 import vn.tranphudev.jobhunter.domain.response.ResUpdateUserDTO;
 import vn.tranphudev.jobhunter.domain.response.ResUserDTO;
 import vn.tranphudev.jobhunter.domain.response.ResultPaginationDTO;
+import vn.tranphudev.jobhunter.domain.request.ReqChangePasswordDTO;
 import vn.tranphudev.jobhunter.service.UserService;
 import vn.tranphudev.jobhunter.util.annotaion.ApiMessage;
 import vn.tranphudev.jobhunter.util.error.IdInvalidException;
+import vn.tranphudev.jobhunter.util.error.SecurityUtil;
+import vn.tranphudev.jobhunter.domain.response.ResUpdatePasswordDTO;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -94,5 +97,21 @@ public class UserController {
             throw new IdInvalidException("User với id = " + user.getId() + " không tồn tại");
         }
         return ResponseEntity.ok(this.userService.convertToResUpdateUserDTO(updateUser));
+    }
+
+    @PostMapping("/users/change-password")
+    @ApiMessage("Change user password")
+    public ResponseEntity<?> changePassword(@RequestBody ReqChangePasswordDTO req) {
+        String email = SecurityUtil.getCurrentUserLogin().orElse(null);
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Bạn chưa đăng nhập");
+        }
+        ResUpdatePasswordDTO result = userService.changePasswordAndReturnDTO(email, req.getCurrentPassword(),
+                req.getNewPassword());
+        if (result != null) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu cũ không đúng");
+        }
     }
 }

@@ -110,7 +110,8 @@ public class CompanyService {
                         c.getScale(),
                         c.getOverTime(),
                         (long) c.getJobs().size(),
-                        c.getJobs().stream().map(job -> job.getName()).collect(Collectors.toList())))
+                        c.getJobs().stream().map(job -> job.getName()).collect(Collectors.toList()),
+                        c.getJobs().stream().map(job -> job.getId()).collect(Collectors.toList())))
                 .collect(Collectors.toList());
     }
 }

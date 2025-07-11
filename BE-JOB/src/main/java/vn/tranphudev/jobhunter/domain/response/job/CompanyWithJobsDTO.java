@@ -14,10 +14,11 @@ public class CompanyWithJobsDTO {
     private String overTime;
     private Long jobCount;
     private List<String> jobNames;
+    private List<Long> jobIds;
 
     public CompanyWithJobsDTO(Long id, String name, String logo, String address, String description,
             String workingTime, String field, String scale, String overTime,
-            Long jobCount, List<String> jobNames) {
+            Long jobCount, List<String> jobNames, List<Long> jobIds) {
         this.id = id;
         this.name = name;
         this.logo = logo;
@@ -29,6 +30,7 @@ public class CompanyWithJobsDTO {
         this.overTime = overTime;
         this.jobCount = jobCount;
         this.jobNames = jobNames;
+        this.jobIds = jobIds;
     }
 
     // Getters & Setters
@@ -76,6 +78,10 @@ public class CompanyWithJobsDTO {
         return jobNames;
     }
 
+    public List<Long> getJobIds() {
+        return jobIds;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -118,5 +124,9 @@ public class CompanyWithJobsDTO {
 
     public void setJobNames(List<String> jobNames) {
         this.jobNames = jobNames;
+    }
+
+    public void setJobIds(List<Long> jobIds) {
+        this.jobIds = jobIds;
     }
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vn.tranphudev.jobhunter.domain.Role;
+import vn.tranphudev.jobhunter.util.constant.GenderEnum;
 
 @Getter
 @Setter
@@ -24,6 +25,9 @@ public class ResLoginDTO {
         private long id;
         private String email;
         private String name;
+        private int age;
+        private GenderEnum gender;
+        private String address;
         private Role role;
         private String avatar;
     }
@@ -44,6 +48,9 @@ public class ResLoginDTO {
         private long id;
         private String email;
         private String name;
+        private int age;
+        private GenderEnum gender;
+        private String address;
     }
 
 }

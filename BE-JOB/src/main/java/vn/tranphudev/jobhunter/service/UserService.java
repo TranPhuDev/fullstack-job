@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import vn.tranphudev.jobhunter.domain.Company;
@@ -16,6 +17,7 @@ import vn.tranphudev.jobhunter.domain.response.ResCreateUserDTO;
 import vn.tranphudev.jobhunter.domain.response.ResUpdateUserDTO;
 import vn.tranphudev.jobhunter.domain.response.ResUserDTO;
 import vn.tranphudev.jobhunter.domain.response.ResultPaginationDTO;
+import vn.tranphudev.jobhunter.domain.response.ResUpdatePasswordDTO;
 import vn.tranphudev.jobhunter.repository.UserRepository;
 
 @Service
@@ -24,11 +26,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final CompanyService companyService;
     private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, CompanyService companyService, RoleService roleService) {
+    public UserService(UserRepository userRepository, CompanyService companyService, RoleService roleService,
+            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.companyService = companyService;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User handleCreateUser(User user) {
@@ -116,6 +121,34 @@ public class UserService {
 
     public boolean isEmailExist(String email) {
         return this.userRepository.existsByEmail(email);
+    }
+
+    public boolean changePassword(String email, String currentPassword, String newPassword) {
+        User user = this.userRepository.findByEmail(email);
+        if (user == null)
+            return false;
+        if (!passwordEncoder.matches(currentPassword, user.getPassword()))
+            return false;
+        user.setPassword(passwordEncoder.encode(newPassword));
+        this.userRepository.save(user);
+        return true;
+    }
+
+    public ResUpdatePasswordDTO changePasswordAndReturnDTO(String email, String currentPassword, String newPassword) {
+        User user = this.userRepository.findByEmail(email);
+        if (user == null)
+            return null;
+        if (!passwordEncoder.matches(currentPassword, user.getPassword()))
+            return null;
+        user.setPassword(passwordEncoder.encode(newPassword));
+        this.userRepository.save(user);
+        ResUpdatePasswordDTO dto = new ResUpdatePasswordDTO();
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setName(user.getName());
+        dto.setAvatar(user.getAvatar());
+        dto.setRole(user.getRole());
+        return dto;
     }
 
     // formart data response

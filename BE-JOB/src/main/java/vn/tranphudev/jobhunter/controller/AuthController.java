@@ -80,6 +80,9 @@ public class AuthController {
                     currentUserDB.getId(),
                     currentUserDB.getEmail(),
                     currentUserDB.getName(),
+                    currentUserDB.getAge(),
+                    currentUserDB.getGender(),
+                    currentUserDB.getAddress(),
                     currentUserDB.getRole(),
                     currentUserDB.getAvatar());
             res.setUser(userLogin);
@@ -163,6 +166,9 @@ public class AuthController {
                     currentUserDB.getId(),
                     currentUserDB.getEmail(),
                     currentUserDB.getName(),
+                    currentUserDB.getAge(),
+                    currentUserDB.getGender(),
+                    currentUserDB.getAddress(),
                     currentUserDB.getRole(),
                     currentUserDB.getAvatar());
             res.setUser(userLogin);
