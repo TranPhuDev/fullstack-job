@@ -5,8 +5,8 @@ import {
   createBrowserRouter,
   RouterProvider
 } from "react-router-dom";
-import BookPage from 'pages/client/book';
-import AboutPage from 'pages/client/about';
+import BookPage from '@/pages/client/Company';
+import AboutPage from '@/pages/client/Company.detail';
 import LoginPage from 'pages/client/auth/login';
 import RegisterPage from 'pages/client/auth/register';
 import 'styles/global.scss'
@@ -26,6 +26,8 @@ import JobTabs from './components/job/job_manage/job.tab';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ViewUpsertJob from './components/job/job_manage/upsert.job';
 import ClientDetailJobPage from './pages/client/job.detail';
+import ClientCompanyPage from '@/pages/client/Company';
+import ClientCompanyDetailPage from '@/pages/client/Company.detail';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -34,13 +36,10 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "job/:id", element: <ClientDetailJobPage /> },
       {
-        path: "/book",
-        element: <BookPage />,
+        path: "/company",
+        element: <ClientCompanyPage />,
       },
-      {
-        path: "/about",
-        element: <AboutPage />,
-      },
+      { path: "company/:id", element: <ClientCompanyDetailPage /> }
     ]
   },
   {

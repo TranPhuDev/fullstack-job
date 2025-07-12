@@ -7,6 +7,7 @@ import defaultAvatar from 'assets/images/default-avatar.jpg';
 import logo from 'assets/images/EI.png';
 import ManageAccount from '../client/manage.account';
 import SubModal from '../client/modal.sub';
+import LikeModal from '../client/modal.like';
 
 const levelData = [
     'Intern', 'Fresher', 'Junior', 'Middle', 'Senior'
@@ -28,7 +29,14 @@ const AppHeader = () => {
     const navigate = useNavigate();
     const [openManageAccount, setOpenManageAccount] = useState<boolean>(false);
     const [openSubModal, setOpenSubModal] = useState<boolean>(false);
+    const [openLikeModal, setOpenLikeModal] = useState<boolean>(false);
     const { isAuthenticated, user, setUser, setIsAuthenticated, setFilter } = useCurrentApp();
+    const topCompanyMenuLeft = [
+        { label: 'Công ty IT tốt nhất' }
+    ];
+    const topCompanyMenuRight = [
+        { label: 'Công ty IT tốt nhất 2025' }
+    ];
 
     useEffect(() => {
         // Fetch skills
@@ -129,10 +137,39 @@ const AppHeader = () => {
                                 </div>
                             </div>
                         </li>
-                        <li className={styles.menuItem}>
+                        <li className={styles.menuItem} style={{ position: 'relative' }}>
                             <span className={styles.menuLabel}>
                                 Top Công ty IT <span className={styles.arrow}>⌄</span>
                             </span>
+                            <div className={styles.megaMenu} style={{ minWidth: 500 }}>
+                                <ul className={styles.megaMenuLeft}>
+                                    {topCompanyMenuLeft.map((item) => (
+                                        <li
+                                            key={item.label}
+                                            className={styles.active}
+                                            onMouseEnter={() => {}}
+                                        >
+                                            {item.label}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <div style={{ width: '100%', padding: 24 }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+                                        {topCompanyMenuRight.map((item) => (
+                                            <span
+                                                key={item.label}
+                                                className={styles.skillsGrid}
+                                                style={{ display: 'flex', alignItems: 'center', padding: '6px 0 6px 12px', height: 36, color: '#ccc', fontSize: 14, cursor: 'pointer', transition: 'color 0.2s', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                                                onClick={() => navigate('/company')}
+                                                onMouseOver={e => (e.currentTarget.style.background = '#353535', e.currentTarget.style.color = '#fff')}
+                                                onMouseOut={e => (e.currentTarget.style.background = '', e.currentTarget.style.color = '#ccc')}
+                                            >
+                                                {item.label}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
                         </li>
                         <li className={styles.menuItem}>
                             <span className={styles.menuLabel}>
@@ -173,7 +210,7 @@ const AppHeader = () => {
                                         </div>
                                     )}
                                     <div className={styles.userMenuItem} onClick={() => setOpenManageAccount(true)}>Hồ Sơ</div>
-                                    <div className={styles.userMenuItem}>Công việc yêu thích</div>
+                                    <div className={styles.userMenuItem} onClick={() => setOpenLikeModal(true)}>Công việc yêu thích</div>
                                     <div className={styles.userMenuItem} onClick={() => setOpenSubModal(true)}>Nhận Jobs qua Email</div>
                                     <div className={styles.userMenuItem} onClick={handleLogout}>Đăng xuất</div>
                                 </div>
@@ -199,6 +236,10 @@ const AppHeader = () => {
             <SubModal
                 open={openSubModal}
                 onClose={setOpenSubModal}
+            />
+            <LikeModal
+                open={openLikeModal}
+                onClose={setOpenLikeModal}
             />
         </>
     );

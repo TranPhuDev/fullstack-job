@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiMapPin, FiClock, FiBriefcase } from "react-icons/fi";
+import { FiMapPin, FiBriefcase } from "react-icons/fi";
 import { AiOutlineDollarCircle } from "react-icons/ai";
 import styles from "../../styles/content.job.module.scss";
 import { MdLaptopChromebook } from "react-icons/md";
@@ -9,24 +9,23 @@ import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import "dayjs/locale/vi";
 import ApplyModal from "./modal.apply";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useCurrentApp } from "../context/app.context";
 import ContentJobRight from "./content.job.right";
+import LikeModal from "./modal.like";
 dayjs.extend(relativeTime);
 
 const ContentJob: React.FC = () => {
   const { filter } = useCurrentApp();
   const [jobs, setJobs] = useState<IJob[]>([]);
   const [selectedJob, setSelectedJob] = useState<IJob | null>(null);
-  const [favoriteJobs, setFavoriteJobs] = useState<string[]>([]);
   const [meta, setMeta] = useState({ page: 1, pageSize: 10, total: 0 });
   const topRef = React.useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [jobDetail, setJobDetail] = useState<IJob | null>(null);
+  const [showLikeModal, setShowLikeModal] = useState(false);
 
-  let location = useLocation();
-  let params = new URLSearchParams(location.search);
-  const id = params?.get("id");
+  const id = new URLSearchParams(useLocation().search).get("id");
 
   useEffect(() => {
     const init = async () => {
@@ -87,14 +86,6 @@ const ContentJob: React.FC = () => {
         window.scrollTo({ top: topRef.current.offsetTop, behavior: 'smooth' });
       }
     }, 0);
-  };
-
-  const isFavorite = !!selectedJob && favoriteJobs.includes(selectedJob.id || '');
-  const handleToggleFavorite = () => {
-    if (!selectedJob || !selectedJob.id) return;
-    setFavoriteJobs((prev) =>
-      isFavorite ? prev.filter((id) => id !== selectedJob.id) : [...prev, selectedJob.id!]
-    );
   };
 
   // Hàm chuyển location code sang tên tiếng Việt
@@ -206,9 +197,8 @@ const ContentJob: React.FC = () => {
                 selectedJob={selectedJob}
                 setJobDetail={setJobDetail}
                 setIsModalOpen={setIsModalOpen}
-                isFavorite={isFavorite}
-                handleToggleFavorite={handleToggleFavorite}
                 isAuthenticated={true}
+                setShowLikeModal={setShowLikeModal}
               />
             </div>
           </>
@@ -229,6 +219,7 @@ const ContentJob: React.FC = () => {
         setIsModalOpen={setIsModalOpen}
         jobDetail={jobDetail}
       />
+      <LikeModal open={showLikeModal} onClose={() => setShowLikeModal(false)} />
     </div>
   );
 };

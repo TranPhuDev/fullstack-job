@@ -1,0 +1,103 @@
+.companyWrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.companyTitle {
+  font-weight: 700;
+  font-size: 28px;
+  margin-bottom: 24px;
+}
+
+.companyItem {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #eee;
+  margin-bottom: 24px;
+  padding: 24px;
+  transition: box-shadow 0.2s;
+}
+.companyItem:hover {
+  box-shadow: 0 4px 16px #e0e0e0;
+}
+
+.companyRank {
+  width: 60px;
+  height: 60px;
+  background: #f3f3f3;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 28px;
+  color: #888;
+  margin-right: 24px;
+}
+
+.companyLogo {
+  width: 90px;
+  height: 90px;
+  margin-right: 32px;
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.companyLogo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.companyName {
+  font-weight: 700;
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.companyDesc {
+  color: #666;
+  font-size: 15px;
+  margin-bottom: 8px;
+  max-width: 700px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.companyNameLink {
+  color: #222;
+  font-weight: 700;
+  font-size: 22px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.companyNameLink:hover {
+  color: #1677ff;
+  text-decoration: none;
+}
+
+@media (max-width: 700px) {
+  .companyItem {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+  }
+  .companyLogo {
+    margin-right: 0;
+    margin-bottom: 12px;
+  }
+  .companyRank {
+    margin-right: 0;
+    margin-bottom: 12px;
+  }
+}

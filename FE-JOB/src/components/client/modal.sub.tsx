@@ -134,7 +134,7 @@ const JobByEmail = (props: any) => {
                         </Form.Item>
                     </Col>
                     <Col span={24}>
-                        <Button onClick={() => form.submit()}>Cập nhật</Button>
+                        <Button onClick={() => form.submit()}>Đăng ký</Button>
                     </Col>
                 </Row>
             </Form>
@@ -165,7 +165,7 @@ const SubModal = (props: IProps) => {
     return (
         <>
             <Modal
-                title="Đăng kí nhận thông báo"
+                title="Đăng ký nhận thông báo"
                 open={open}
                 onCancel={() => onClose(false)}
                 maskClosable={false}

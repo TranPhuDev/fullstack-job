@@ -1,6 +1,8 @@
+import TablePermission from "@/components/permission/table.permission"
+
 const PermissionPage = () => {
     return (<>
-        <>Permission page</>
+        <TablePermission />
     </>)
 }
 

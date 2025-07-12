@@ -183,6 +183,29 @@ export const callFetchResumeByUser = () => {
     return axios.post<IBackendRes<IModelPaginate<IResume>>>(`/api/v1/resumes/by-user`);
 }
 
+//Module Permission
+export const callCreatePermission = (permission: IPermission) => {
+    return axios.post<IBackendRes<IPermission>>('/api/v1/permissions', { ...permission })
+}
+
+export const callUpdatePermission = (permission: IPermission, id: string) => {
+    return axios.put<IBackendRes<IPermission>>(`/api/v1/permissions`, { id, ...permission })
+}
+
+export const callDeletePermission = (id: string) => {
+    return axios.delete<IBackendRes<IPermission>>(`/api/v1/permissions/${id}`);
+}
+
+export const callFetchPermission = (query: string) => {
+    return axios.get<IBackendRes<IModelPaginate<IPermission>>>(`/api/v1/permissions?${query}`);
+}
+
+export const callFetchPermissionById = (id: string) => {
+    return axios.get<IBackendRes<IPermission>>(`/api/v1/permissions/${id}`);
+}
+
+
+
 //Module Role
 export const callFetchRole = (query: string) => {
     return axios.get<IBackendRes<IModelPaginate<IRole>>>(`/api/v1/roles?${query}`);

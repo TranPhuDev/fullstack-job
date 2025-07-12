@@ -5,24 +5,53 @@ import styles from "../../styles/content.job.module.scss";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
 import { Link } from "react-router-dom";
+import { useCurrentApp } from "../context/app.context";
+import { App } from 'antd';
 
 interface ContentJobRightProps {
   selectedJob: IJob | null;
   setJobDetail: (job: IJob | null) => void;
   setIsModalOpen: (open: boolean) => void;
-  isFavorite: boolean;
-  handleToggleFavorite: () => void;
   isAuthenticated: boolean;
+  setShowLikeModal?: (open: boolean) => void; // Thêm props để mở modal like
 }
 
 const ContentJobRight: React.FC<ContentJobRightProps> = ({
   selectedJob,
   setJobDetail,
   setIsModalOpen,
-  isFavorite,
-  handleToggleFavorite,
   isAuthenticated,
+  setShowLikeModal,
 }) => {
+  const { likedJobs, toggleLikeJob } = useCurrentApp();
+  const isJobLiked = selectedJob && likedJobs.some(j => j.id === selectedJob.id);
+  const { notification } = App.useApp();
+
+  const handleLikeJob = () => {
+    if (!selectedJob) return;
+    if (!isJobLiked) {
+      toggleLikeJob(selectedJob);
+      notification.success({
+        message: 'Thành công',
+        description: <div>
+          Việc làm đã lưu vào mục công việc yêu thích.<br />
+          <span
+            style={{ color: '#1677ff', cursor: 'pointer', fontWeight: 500 }}
+            onClick={() => setShowLikeModal && setShowLikeModal(true)}
+          >
+            Xem danh sách
+          </span>
+        </div>,
+        duration: 3
+      });
+    } else {
+      toggleLikeJob(selectedJob);
+      notification.info({
+        message: 'Đã bỏ yêu thích việc làm',
+        duration: 2
+      });
+    }
+  };
   return (
     <div className={styles.detailWrapper}>
       {selectedJob && (
@@ -67,12 +96,12 @@ const ContentJobRight: React.FC<ContentJobRightProps> = ({
             </button>
             <button
               className={styles.heartBtn}
-              onClick={handleToggleFavorite}
-              aria-label={isFavorite ? "Bỏ yêu thích" : "Thêm vào yêu thích"}
+              onClick={handleLikeJob}
+              aria-label={isJobLiked ? "Bỏ yêu thích" : "Thêm vào yêu thích"}
               type="button"
             >
-              <span className={styles.heartIcon} style={{ color: isFavorite ? '#ff424e' : '#bbb' }}>
-                {isFavorite ? '♥' : '♡'}
+              <span className={styles.heartIcon} style={{ color: isJobLiked ? '#ff424e' : '#bbb' }}>
+                {isJobLiked ? '♥' : '♡'}
               </span>
             </button>
           </div>
