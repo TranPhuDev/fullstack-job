@@ -11,6 +11,8 @@ import { sfLike } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { useNavigate } from 'react-router-dom';
 import DetailJob from './detail.job';
+import Access from '@/share/Access';
+import { ALL_PERMISSIONS } from '@/services/permissions';
 export const waitTimePromise = async (time: number = 1000) => {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -119,31 +121,46 @@ export default function TableJob() {
             width: 100,
             render: (_value, entity) => (
                 <Space>
-                    <EyeOutlined
-                        style={{ fontSize: 20, marginRight: 10, color: '#1677ff', cursor: 'pointer' }}
-                        onClick={() => {
-                            setDataDetail(entity);
-                            setOpenModalDetail(true);
-                        }}
-                    />
-                    <EditOutlined
-                        style={{ fontSize: 20, color: '#ffa500' }}
-                        onClick={() => {
-                            navigate(`/admin/job/upsert?id=${entity.id}`)
-                        }}
-                    />
-                    <Popconfirm
-                        placement="leftTop"
-                        title={"Xác nhận xóa job"}
-                        description={"Bạn có chắc chắn muốn xóa job này ?"}
-                        onConfirm={() => entity.id && handleDeleteJob(entity.id)}
-                        okText="Xác nhận"
-                        cancelText="Hủy"
+                    <Access
+                        permission={ALL_PERMISSIONS.JOBS.DETAIL}
+                        hideChildren
                     >
-                        <span style={{ cursor: "pointer", margin: "0 10px" }}>
-                            <DeleteOutlined style={{ fontSize: 20, color: '#ff4d4f' }} />
-                        </span>
-                    </Popconfirm>
+                        <EyeOutlined
+                            style={{ fontSize: 20, marginRight: 10, color: '#1677ff', cursor: 'pointer' }}
+                            onClick={() => {
+                                setDataDetail(entity);
+                                setOpenModalDetail(true);
+                            }}
+                        />
+                    </Access>
+                    <Access
+                        permission={ALL_PERMISSIONS.JOBS.UPDATE}
+                        hideChildren
+                    >
+                        <EditOutlined
+                            style={{ fontSize: 20, color: '#ffa500' }}
+                            onClick={() => {
+                                navigate(`/admin/job/upsert?id=${entity.id}`)
+                            }}
+                        />
+                    </Access>
+                    <Access
+                        permission={ALL_PERMISSIONS.JOBS.DELETE}
+                        hideChildren
+                    >
+                        <Popconfirm
+                            placement="leftTop"
+                            title={"Xác nhận xóa job"}
+                            description={"Bạn có chắc chắn muốn xóa job này ?"}
+                            onConfirm={() => entity.id && handleDeleteJob(entity.id)}
+                            okText="Xác nhận"
+                            cancelText="Hủy"
+                        >
+                            <span style={{ cursor: "pointer", margin: "0 10px" }}>
+                                <DeleteOutlined style={{ fontSize: 20, color: '#ff4d4f' }} />
+                            </span>
+                        </Popconfirm>
+                    </Access>
                 </Space>
             ),
         },
@@ -230,52 +247,62 @@ export default function TableJob() {
     return (
         <>
             <div>
-                <ProTable<IJob>
-                    columns={columns}
-                    actionRef={actionRef}
-                    cardBordered
+                <Access
+                    permission={ALL_PERMISSIONS.JOBS.GET_PAGINATE}
+                >
+                    <ProTable<IJob>
+                        columns={columns}
+                        actionRef={actionRef}
+                        cardBordered
 
-                    request={async (params, sort) => {
-                        await waitTime(500);
-                        const query = buildQuery(params, sort);
-                        const res = await callFetchJob(query);
-                        const data = res?.data;
-                        if (data && data.meta) {
-                            setMeta(data.meta);
-                        }
-                        // Nếu mỗi job có trường company là object, map lại để lấy companyName (dùng cho hiển thị, không thay đổi kiểu IJob)
-                        const jobs = data?.result?.map((job: IJob) => ({
-                            ...job,
-                            companyName: job.company && typeof job.company === 'object' && 'name' in job.company ? (job.company as { name?: string }).name || '' : '',
-                        }));
-                        return {
-                            data: jobs, // dùng jobs đã map
-                            success: true,
-                            total: data?.meta?.total,
-                        };
-                    }}
-                    scroll={{ x: true }}
-                    pagination={{
-                        current: meta.page,
-                        pageSize: meta.pageSize,
-                        showSizeChanger: true,
-                        total: meta.total,
-                        showTotal: (total, range) => { return (<div>{range[0]} - {range[1]} trên {total} rows</div>) }
-                    }}
-                    dateFormatter="string"
-                    headerTitle="Table Job"
-                    toolBarRender={() => [
-                        <Button
-                            key="button"
-                            icon={<PlusOutlined />}
-                            onClick={() => navigate('upsert')}
-                            type="primary"
-                        >
-                            Thêm mới
-                        </Button>
-                    ]}
-                />
+                        request={async (params, sort) => {
+                            await waitTime(500);
+                            const query = buildQuery(params, sort);
+                            const res = await callFetchJob(query);
+                            const data = res?.data;
+                            if (data && data.meta) {
+                                setMeta(data.meta);
+                            }
+                            // Nếu mỗi job có trường company là object, map lại để lấy companyName (dùng cho hiển thị, không thay đổi kiểu IJob)
+                            const jobs = data?.result?.map((job: IJob) => ({
+                                ...job,
+                                companyName: job.company && typeof job.company === 'object' && 'name' in job.company ? (job.company as { name?: string }).name || '' : '',
+                            }));
+                            return {
+                                data: jobs, // dùng jobs đã map
+                                success: true,
+                                total: data?.meta?.total,
+                            };
+                        }}
+                        scroll={{ x: true }}
+                        pagination={{
+                            current: meta.page,
+                            pageSize: meta.pageSize,
+                            showSizeChanger: true,
+                            total: meta.total,
+                            showTotal: (total, range) => { return (<div>{range[0]} - {range[1]} trên {total} rows</div>) }
+                        }}
+                        dateFormatter="string"
+                        headerTitle="Table Job"
+                        toolBarRender={() => [
+                            <Access
+                                permission={ALL_PERMISSIONS.JOBS.CREATE}
+                                hideChildren
+                            >
+                                <Button
+                                    key="button"
+                                    icon={<PlusOutlined />}
+                                    onClick={() => navigate('upsert')}
+                                    type="primary"
+                                >
+                                    Thêm mới
+                                </Button>
+                            </Access>
+                        ]}
+                    />
+                </Access>
             </div>
+
             <DetailJob openModalDetail={openModalDetail} setOpenModalDetail={setOpenModalDetail} dataDetail={dataDetail} />
         </>
     );

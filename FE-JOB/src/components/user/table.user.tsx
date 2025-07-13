@@ -12,6 +12,8 @@ import UpdateUser from './update.user';
 import defaultAvatar from 'assets/images/default-avatar.jpg'
 import { App } from 'antd';
 import DetailUser from './detail.user';
+import Access from '@/share/Access';
+import { ALL_PERMISSIONS } from '@/services/permissions';
 
 export const waitTimePromise = async (time: number = 1000) => {
     return new Promise((resolve) => {
@@ -107,41 +109,56 @@ export default function TableUser() {
             width: 50,
             render: (_value, entity) => (
                 <Space>
-                    <EyeOutlined
-                        style={{ fontSize: 20, marginRight: 10, color: '#1677ff', cursor: 'pointer' }}
-                        onClick={() => {
-                            setDataDetail(entity);
-                            setOpenModalDetail(true);
-                        }}
-                    />
-                    <EditOutlined
-                        style={{
-                            fontSize: 20,
-                            color: '#ffa500',
-                        }}
-
-                        onClick={() => {
-                            setOpenModalUpdate(true);
-                            setDataUpdate(entity);
-                        }}
-                    />
-                    <Popconfirm
-                        placement="leftTop"
-                        title={"Xác nhận xóa user"}
-                        description={"Bạn có chắc chắn muốn xóa user này ?"}
-                        onConfirm={() => entity.id && handleDeleteUser(entity.id)}
-                        okText="Xác nhận"
-                        cancelText="Hủy"
+                    <Access
+                        permission={ALL_PERMISSIONS.USERS.DETAIL}
+                        hideChildren
                     >
-                        <span style={{ cursor: "pointer", margin: "0 10px" }}>
-                            <DeleteOutlined
-                                style={{
-                                    fontSize: 20,
-                                    color: '#ff4d4f',
-                                }}
-                            />
-                        </span>
-                    </Popconfirm>
+                        <EyeOutlined
+                            style={{ fontSize: 20, marginRight: 10, color: '#1677ff', cursor: 'pointer' }}
+                            onClick={() => {
+                                setDataDetail(entity);
+                                setOpenModalDetail(true);
+                            }}
+                        />
+                    </Access>
+                    <Access
+                        permission={ALL_PERMISSIONS.USERS.UPDATE}
+                        hideChildren
+                    >
+                        <EditOutlined
+                            style={{
+                                fontSize: 20,
+                                color: '#ffa500',
+                            }}
+
+                            onClick={() => {
+                                setOpenModalUpdate(true);
+                                setDataUpdate(entity);
+                            }}
+                        />
+                    </Access>
+                    <Access
+                        permission={ALL_PERMISSIONS.USERS.DELETE}
+                        hideChildren
+                    >
+                        <Popconfirm
+                            placement="leftTop"
+                            title={"Xác nhận xóa user"}
+                            description={"Bạn có chắc chắn muốn xóa user này ?"}
+                            onConfirm={() => entity.id && handleDeleteUser(entity.id)}
+                            okText="Xác nhận"
+                            cancelText="Hủy"
+                        >
+                            <span style={{ cursor: "pointer", margin: "0 10px" }}>
+                                <DeleteOutlined
+                                    style={{
+                                        fontSize: 20,
+                                        color: '#ff4d4f',
+                                    }}
+                                />
+                            </span>
+                        </Popconfirm>
+                    </Access>
                 </Space >
             ),
         }
@@ -223,48 +240,58 @@ export default function TableUser() {
 
     return (
         <div>
-            <ProTable<IUser>
-                columns={columns}
-                actionRef={actionRef}
-                cardBordered
-                request={async (params, sort, filter) => {
-                    await waitTime(500);
-                    const query = buildQuery(params, sort, filter);
-                    const res = await callFetchUser(query);
-                    const data = res?.data as IModelPaginate<IUser>;
-                    if (data) {
-                        setMeta(data.meta)
-                    }
-                    return {
-                        data: data?.result || [],
-                        page: 1,
-                        success: true,
-                        total: meta.total || 0,
-                    };
-                }}
-                scroll={{ x: true }}
-                pagination={{
-                    current: meta.page,
-                    pageSize: meta.pageSize,
-                    showSizeChanger: true,
-                    total: meta.total,
-                    showTotal: (total, range) => { return (<div>{range[0]} - {range[1]} trên {total} rows</div>) }
-                }}
-                dateFormatter="string"
-                headerTitle="Table User"
-                toolBarRender={() => [
-                    <Button
-                        key="button"
-                        icon={<PlusOutlined />}
-                        onClick={() => {
-                            setOpenModal(true);
-                        }}
-                        type="primary"
-                    >
-                        Thêm mới
-                    </Button>
-                ]}
-            />
+            <Access
+                permission={ALL_PERMISSIONS.USERS.GET_PAGINATE}
+            >
+                <ProTable<IUser>
+                    columns={columns}
+                    actionRef={actionRef}
+                    cardBordered
+                    request={async (params, sort, filter) => {
+                        await waitTime(500);
+                        const query = buildQuery(params, sort, filter);
+                        const res = await callFetchUser(query);
+                        const data = res?.data as IModelPaginate<IUser>;
+                        if (data) {
+                            setMeta(data.meta)
+                        }
+                        return {
+                            data: data?.result || [],
+                            page: 1,
+                            success: true,
+                            total: meta.total || 0,
+                        };
+                    }}
+                    scroll={{ x: true }}
+                    pagination={{
+                        current: meta.page,
+                        pageSize: meta.pageSize,
+                        showSizeChanger: true,
+                        total: meta.total,
+                        showTotal: (total, range) => { return (<div>{range[0]} - {range[1]} trên {total} rows</div>) }
+                    }}
+                    dateFormatter="string"
+                    headerTitle="Table User"
+                    toolBarRender={() => [
+                        <Access
+                            key="access"
+                            permission={ALL_PERMISSIONS.USERS.CREATE}
+                            hideChildren
+                        >
+                            <Button
+                                key="button"
+                                icon={<PlusOutlined />}
+                                onClick={() => {
+                                    setOpenModal(true);
+                                }}
+                                type="primary"
+                            >
+                                Thêm mới
+                            </Button>
+                        </Access>
+                    ]}
+                />
+            </Access>
             <CreateUser openModal={openModal} setOpenModal={setOpenModal} refreshTable={refreshTable} />
             <UpdateUser openModalUpdate={openModalUpdate} setOpenModalUpdate={setOpenModalUpdate} refreshTable={refreshTable} setDataUpdate={setDataUpdate} dataUpdate={dataUpdate} />
             <DetailUser open={openModalDetail} onClose={() => setOpenModalDetail(false)} user={dataDetail} />

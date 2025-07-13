@@ -1,33 +1,23 @@
-import { callDeletePermission, callFetchPermission } from "@/services/api";
-import { colorMethod } from "@/services/utils";
+
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { ActionType, ProColumns, ProTable } from "@ant-design/pro-components";
-import { App, Button, Popconfirm, Space } from "antd";
-import dayjs from "dayjs";
-import queryString from "query-string";
-import { useRef, useState } from "react";
-import CreatePermission from "./create.permission";
-import UpdatePermission from "./update.permission";
-import DetailPermission from "./detail.permission";
+import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components';
+import { Button, Popconfirm, Space, Tag, message, notification } from "antd";
+import { useState, useRef, useEffect } from 'react';
+import dayjs from 'dayjs';
+import queryString from 'query-string';
+
+import { sfLike } from "spring-filter-query-builder";
+import { groupByPermission } from "@/services/utils";
+import { callDeleteRole, callFetchPermission, callFetchRole } from "@/services/api";
+import ModalRole from "./modal.role";
 import Access from "@/share/Access";
 import { ALL_PERMISSIONS } from "@/services/permissions";
-export const waitTimePromise = async (time: number = 1000) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(true);
-        }, time);
-    });
-};
-export const waitTime = async (time: number = 1000) => {
-    await waitTimePromise(time);
-};
-const TablePermission = () => {
-    const [openModalCreate, setOpenModalCreate] = useState<boolean>(false);
-    const [openModalDetail, setOpenModalDetail] = useState<boolean>(false);
-    const [openModalUpdate, setOpenModalUpdate] = useState<boolean>(false);
-    const [dataInit, setDataInit] = useState<IPermission | null>(null);
-    const { message, notification } = App.useApp();
+
+const TableRole = () => {
+    const [openModal, setOpenModal] = useState<boolean>(false);
+
     const tableRef = useRef<ActionType | undefined>(undefined);
+
     const [meta, setMeta] = useState({
         page: 1,
         pageSize: 8,
@@ -35,16 +25,37 @@ const TablePermission = () => {
         total: 0
     });
 
-    const handleDeletePermission = async (id: string | undefined) => {
+
+    //all backend permissions
+    const [listPermissions, setListPermissions] = useState<{
+        module: string;
+        permissions: IPermission[]
+    }[] | null>(null);
+
+    //current role
+    const [singleRole, setSingleRole] = useState<IRole | null>(null);
+
+    useEffect(() => {
+        const init = async () => {
+            const res = await callFetchPermission(`page=1&size=100`);
+            if (res.data?.result) {
+                setListPermissions(groupByPermission(res.data?.result))
+            }
+        }
+        init();
+    }, [])
+
+
+    const handleDeleteRole = async (id: string | undefined) => {
         if (id) {
-            const res = await callDeletePermission(id);
+            const res = await callDeleteRole(id);
             if (res && res.statusCode === 200) {
-                message.success('Xóa Permission thành công');
+                message.success('Xóa Role thành công');
                 reloadTable();
             } else {
                 notification.error({
                     message: 'Có lỗi xảy ra',
-                    description: res.error
+                    description: res.message
                 });
             }
         }
@@ -54,19 +65,16 @@ const TablePermission = () => {
         tableRef?.current?.reload();
     }
 
-    const columns: ProColumns<IPermission>[] = [
+    const columns: ProColumns<IRole>[] = [
         {
             title: 'Id',
             dataIndex: 'id',
-            width: 50,
+            width: 250,
             render: (text, record, index, action) => {
                 return (
-                    <a style={{ textDecoration: 'none' }} href="#" onClick={() => {
-                        setOpenModalDetail(true);
-                        setDataInit(record);
-                    }}>
+                    <span>
                         {record.id}
-                    </a>
+                    </span>
                 )
             },
             hideInSearch: true,
@@ -77,24 +85,16 @@ const TablePermission = () => {
             sorter: true,
         },
         {
-            title: 'API',
-            dataIndex: 'apiPath',
-            sorter: true,
-        },
-        {
-            title: 'Method',
-            dataIndex: 'method',
-            sorter: true,
+            title: 'Trạng thái',
+            dataIndex: 'active',
             render(dom, entity, index, action, schema) {
-                return (
-                    <p style={{ paddingLeft: 10, fontWeight: 'bold', marginBottom: 0, color: colorMethod(entity?.method as string) }}>{entity?.method || ''}</p>
-                )
+                return <>
+                    <Tag color={entity.active ? "lime" : "red"} >
+                        {entity.active ? "ACTIVE" : "INACTIVE"}
+                    </Tag>
+                </>
             },
-        },
-        {
-            title: 'Module',
-            dataIndex: 'module',
-            sorter: true,
+            hideInSearch: true,
         },
         {
             title: 'CreatedAt',
@@ -128,7 +128,7 @@ const TablePermission = () => {
             render: (_value, entity, _index, _action) => (
                 <Space>
                     <Access
-                        permission={ALL_PERMISSIONS.PERMISSIONS.UPDATE}
+                        permission={ALL_PERMISSIONS.ROLES.UPDATE}
                         hideChildren
                     >
                         <EditOutlined
@@ -138,20 +138,20 @@ const TablePermission = () => {
                             }}
                             type=""
                             onClick={() => {
-                                setOpenModalUpdate(true);
-                                setDataInit(entity);
+                                setSingleRole(entity);
+                                setOpenModal(true);
                             }}
                         />
                     </Access>
                     <Access
-                        permission={ALL_PERMISSIONS.PERMISSIONS.DELETE}
+                        permission={ALL_PERMISSIONS.ROLES.DELETE}
                         hideChildren
                     >
                         <Popconfirm
                             placement="leftTop"
-                            title={"Xác nhận xóa permission"}
-                            description={"Bạn có chắc chắn muốn xóa permission này ?"}
-                            onConfirm={() => handleDeletePermission(entity.id)}
+                            title={"Xác nhận xóa role"}
+                            description={"Bạn có chắc chắn muốn xóa role này ?"}
+                            onConfirm={() => handleDeleteRole(entity.id)}
                             okText="Xác nhận"
                             cancelText="Hủy"
                         >
@@ -173,38 +173,27 @@ const TablePermission = () => {
 
     const buildQuery = (params: any, sort: any, filter: any) => {
         const clone = { ...params };
+        const q: any = {
+            page: params.current,
+            size: params.pageSize,
+            filter: ""
+        }
 
-        let parts = [];
-        if (clone.name) parts.push(`name ~ '${clone.name}'`);
-        if (clone.apiPath) parts.push(`apiPath ~ '${clone.apiPath}'`);
-        if (clone.method) parts.push(`method ~ '${clone.method}'`);
-        if (clone.module) parts.push(`module ~ '${clone.module}'`);
+        if (clone.name) q.filter = `${sfLike("name", clone.name)}`;
 
-        clone.filter = parts.join(' and ');
-        if (!clone.filter) delete clone.filter;
+        if (!q.filter) delete q.filter;
 
-        clone.page = clone.current;
-        clone.size = clone.pageSize;
-
-        delete clone.current;
-        delete clone.pageSize;
-        delete clone.name;
-        delete clone.apiPath;
-        delete clone.method;
-        delete clone.module;
-
-        let temp = queryString.stringify(clone);
+        let temp = queryString.stringify(q);
 
         let sortBy = "";
-        const fields = ["name", "apiPath", "method", "module", "createdAt", "updatedAt"];
-
-        if (sort) {
-            for (const field of fields) {
-                if (sort[field]) {
-                    sortBy = `sort=${field},${sort[field] === 'ascend' ? 'asc' : 'desc'}`;
-                    break;  // Remove this if you want to handle multiple sort parameters
-                }
-            }
+        if (sort && sort.name) {
+            sortBy = sort.name === 'ascend' ? "sort=name,asc" : "sort=name,desc";
+        }
+        if (sort && sort.createdAt) {
+            sortBy = sort.createdAt === 'ascend' ? "sort=createdAt,asc" : "sort=createdAt,desc";
+        }
+        if (sort && sort.updatedAt) {
+            sortBy = sort.updatedAt === 'ascend' ? "sort=updatedAt,asc" : "sort=updatedAt,desc";
         }
 
         //mặc định sort theo updatedAt
@@ -219,18 +208,19 @@ const TablePermission = () => {
 
     return (
         <div>
+
             <Access
-                permission={ALL_PERMISSIONS.PERMISSIONS.GET_PAGINATE}
+                permission={ALL_PERMISSIONS.ROLES.GET_PAGINATE}
             >
-                <ProTable<IPermission>
+                <ProTable<IRole>
                     actionRef={tableRef}
-                    headerTitle="Danh sách Permissions (Quyền Hạn)"
+                    headerTitle="Danh sách Roles (Vai Trò)"
                     rowKey="id"
                     columns={columns}
                     request={async (params, sort, filter) => {
-                        await waitTime(500);
+                        // await waitTime(500);
                         const query = buildQuery(params, sort, filter);
-                        const res = await callFetchPermission(query);
+                        const res = await callFetchRole(query);
                         const data = res?.data;
                         if (data) {
                             setMeta(data.meta)
@@ -243,6 +233,7 @@ const TablePermission = () => {
                         };
                     }}
                     scroll={{ x: true }}
+
                     pagination={{
                         current: meta.page,
                         pageSize: meta.pageSize,
@@ -254,13 +245,13 @@ const TablePermission = () => {
                     toolBarRender={(_action, _rows): any => {
                         return (
                             <Access
-                                permission={ALL_PERMISSIONS.PERMISSIONS.CREATE}
+                                permission={ALL_PERMISSIONS.ROLES.CREATE}
                                 hideChildren
                             >
                                 <Button
                                     icon={<PlusOutlined />}
                                     type="primary"
-                                    onClick={() => setOpenModalCreate(true)}
+                                    onClick={() => setOpenModal(true)}
                                 >
                                     Thêm mới
                                 </Button>
@@ -269,26 +260,16 @@ const TablePermission = () => {
                     }}
                 />
             </Access>
-            <CreatePermission
-                openModalCreate={openModalCreate}
-                setOpenModalCreate={setOpenModalCreate}
+            <ModalRole
+                openModal={openModal}
+                setOpenModal={setOpenModal}
                 reloadTable={reloadTable}
-            />
-            <UpdatePermission
-                openModalUpdate={openModalUpdate}
-                setOpenModalUpdate={setOpenModalUpdate}
-                dataInit={dataInit}
-                setDataInit={setDataInit}
-                reloadTable={reloadTable}
-            />
-            <DetailPermission
-                open={openModalDetail}
-                onClose={setOpenModalDetail}
-                dataInit={dataInit}
-                setDataInit={setDataInit}
+                listPermissions={listPermissions!}
+                singleRole={singleRole}
+                setSingleRole={setSingleRole}
             />
         </div>
     )
 }
 
-export default TablePermission;
+export default TableRole;

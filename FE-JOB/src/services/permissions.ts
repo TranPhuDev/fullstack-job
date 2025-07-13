@@ -1,12 +1,14 @@
 export const ALL_PERMISSIONS = {
     COMPANIES: {
         GET_PAGINATE: { method: "GET", apiPath: '/api/v1/companies', module: "COMPANIES" },
+        DETAIL: { method: "GET", apiPath: '/api/v1/companies/{id}', module: "COMPANIES" },
         CREATE: { method: "POST", apiPath: '/api/v1/companies', module: "COMPANIES" },
         UPDATE: { method: "PUT", apiPath: '/api/v1/companies', module: "COMPANIES" },
         DELETE: { method: "DELETE", apiPath: '/api/v1/companies/{id}', module: "COMPANIES" },
     },
     JOBS: {
         GET_PAGINATE: { method: "GET", apiPath: '/api/v1/jobs', module: "JOBS" },
+        DETAIL: { method: "GET", apiPath: '/api/v1/jobs/{id}', module: "JOBS" },
         CREATE: { method: "POST", apiPath: '/api/v1/jobs', module: "JOBS" },
         UPDATE: { method: "PUT", apiPath: '/api/v1/jobs', module: "JOBS" },
         DELETE: { method: "DELETE", apiPath: '/api/v1/jobs/{id}', module: "JOBS" },
@@ -31,6 +33,7 @@ export const ALL_PERMISSIONS = {
     },
     USERS: {
         GET_PAGINATE: { method: "GET", apiPath: '/api/v1/users', module: "USERS" },
+        DETAIL: { method: "GET", apiPath: '/api/v1/users/{id}', module: "USERS" },
         CREATE: { method: "POST", apiPath: '/api/v1/users', module: "USERS" },
         UPDATE: { method: "PUT", apiPath: '/api/v1/users', module: "USERS" },
         DELETE: { method: "DELETE", apiPath: '/api/v1/users/{id}', module: "USERS" },

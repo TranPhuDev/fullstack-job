@@ -1,6 +1,8 @@
+import TableRole from "@/components/role/table.role"
+
 const RolePage = () => {
     return (<>
-        <>Role page</>
+        <TableRole />
     </>)
 }
 

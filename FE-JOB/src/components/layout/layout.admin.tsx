@@ -16,6 +16,7 @@ import { Link, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import { useCurrentApp } from 'components/context/app.context';
 import { logoutAPI } from 'services/api';
 import defaultAvatar from 'assets/images/default-avatar.jpg';
+import { ALL_PERMISSIONS } from '@/services/permissions';
 
 
 
@@ -24,51 +25,57 @@ const { Header, Sider, Content, Footer } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
 
 
-const items: MenuItem[] = [
-    {
-        key: '/admin',
-        icon: <AppstoreOutlined />,
-        label: <Link to="/admin">Dashboard</Link>,
-    },
-    {
-        key: '/admin/company',
-        icon: <BankOutlined />,
-        label: <Link to="/admin/company">Company</Link>,
-    },
-    {
-        key: '/admin/user',
-        icon: <UserOutlined />,
-        label: <Link to="/admin/user">User</Link>,
-    }
-    ,
-    {
-        key: '/admin/job',
-        icon: <ScheduleOutlined />,
-        label: <Link to="/admin/job">Job</Link>,
-    }
-    ,
-    {
-        key: '/admin/resume',
-        icon: <AliwangwangOutlined />,
-        label: <Link to="/admin/resume">Resume</Link>,
-    }
-    ,
-    {
-        key: '/admin/permission',
-        icon: <ApiOutlined />,
-        label: <Link to="/admin/permission">Permission</Link>,
-    }
-    ,
-    {
-        key: '/admin/role',
-        icon: <ExceptionOutlined />,
-        label: <Link to="/admin/role">Role</Link>,
-    }
-];
+// const items: MenuItem[] = [
+//     {
+//         key: '/admin',
+//         icon: <AppstoreOutlined />,
+//         label: <Link to="/admin">Dashboard</Link>,
+//     },
+//     {
+//         key: '/admin/company',
+//         icon: <BankOutlined />,
+//         label: <Link to="/admin/company">Company</Link>,
+//     },
+//     {
+//         key: '/admin/user',
+//         icon: <UserOutlined />,
+//         label: <Link to="/admin/user">User</Link>,
+//     }
+//     ,
+//     {
+//         key: '/admin/job',
+//         icon: <ScheduleOutlined />,
+//         label: <Link to="/admin/job">Job</Link>,
+//     }
+//     ,
+//     {
+//         key: '/admin/resume',
+//         icon: <AliwangwangOutlined />,
+//         label: <Link to="/admin/resume">Resume</Link>,
+//     }
+//     ,
+//     {
+//         key: '/admin/permission',
+//         icon: <ApiOutlined />,
+//         label: <Link to="/admin/permission">Permission</Link>,
+//     }
+//     ,
+//     {
+//         key: '/admin/role',
+//         icon: <ExceptionOutlined />,
+//         label: <Link to="/admin/role">Role</Link>,
+//     }
+// ];
+
+
+
 
 
 const SideBarAdmin = () => {
     const { user, setUser, isAuthenticated, setIsAuthenticated } = useCurrentApp();
+
+    const permissions = user?.role?.permissions || [];
+    const [menuItems, setMenuItems] = useState<MenuProps['items']>([]);
 
 
     const location = useLocation();
@@ -87,6 +94,93 @@ const SideBarAdmin = () => {
             localStorage.removeItem("access_token")
         }
     }
+
+    useEffect(() => {
+        const ACL_ENABLE = import.meta.env.VITE_ACL_ENABLE;
+        if (permissions?.length || ACL_ENABLE === 'false') {
+
+            const viewCompany = permissions?.find(item =>
+                item.apiPath === ALL_PERMISSIONS.COMPANIES.GET_PAGINATE.apiPath
+                && item.method === ALL_PERMISSIONS.COMPANIES.GET_PAGINATE.method
+            )
+
+            const viewUser = permissions?.find(item =>
+                item.apiPath === ALL_PERMISSIONS.USERS.GET_PAGINATE.apiPath
+                && item.method === ALL_PERMISSIONS.USERS.GET_PAGINATE.method
+            )
+
+            const viewJob = permissions?.find(item =>
+                item.apiPath === ALL_PERMISSIONS.JOBS.GET_PAGINATE.apiPath
+                && item.method === ALL_PERMISSIONS.JOBS.GET_PAGINATE.method
+            )
+
+            const viewResume = permissions?.find(item =>
+                item.apiPath === ALL_PERMISSIONS.RESUMES.GET_PAGINATE.apiPath
+                && item.method === ALL_PERMISSIONS.RESUMES.GET_PAGINATE.method
+            )
+
+            const viewRole = permissions?.find(item =>
+                item.apiPath === ALL_PERMISSIONS.ROLES.GET_PAGINATE.apiPath
+                && item.method === ALL_PERMISSIONS.ROLES.GET_PAGINATE.method
+            )
+
+            const viewPermission = permissions?.find(item =>
+                item.apiPath === ALL_PERMISSIONS.PERMISSIONS.GET_PAGINATE.apiPath
+                && item.method === ALL_PERMISSIONS.USERS.GET_PAGINATE.method
+            )
+
+            const full = [
+                {
+                    label: <Link to='/admin'>Dashboard</Link>,
+                    key: '/admin',
+                    icon: <AppstoreOutlined />
+                },
+                ...(viewCompany || ACL_ENABLE === 'false' ? [{
+                    label: <Link to='/admin/company'>Company</Link>,
+                    key: '/admin/company',
+                    icon: <BankOutlined />,
+                }] : []),
+
+                ...(viewUser || ACL_ENABLE === 'false' ? [{
+                    label: <Link to='/admin/user'>User</Link>,
+                    key: '/admin/user',
+                    icon: <UserOutlined />
+                }] : []),
+                ...(viewJob || ACL_ENABLE === 'false' ? [{
+                    label: <Link to='/admin/job'>Job</Link>,
+                    key: '/admin/job',
+                    icon: <ScheduleOutlined />
+                }] : []),
+
+                ...(viewResume || ACL_ENABLE === 'false' ? [{
+                    label: <Link to='/admin/resume'>Resume</Link>,
+                    key: '/admin/resume',
+                    icon: <AliwangwangOutlined />
+                }] : []),
+                ...(viewPermission || ACL_ENABLE === 'false' ? [{
+                    label: <Link to='/admin/permission'>Permission</Link>,
+                    key: '/admin/permission',
+                    icon: <ApiOutlined />
+                }] : []),
+                ...(viewRole || ACL_ENABLE === 'false' ? [{
+                    label: <Link to='/admin/role'>Role</Link>,
+                    key: '/admin/role',
+                    icon: <ExceptionOutlined />
+                }] : []),
+
+
+
+            ];
+
+            setMenuItems(full);
+        }
+    }, [permissions])
+    useEffect(() => {
+        setActiveMenu(location.pathname)
+    }, [location])
+
+
+
     const dropdownItems: MenuProps['items'] = [
         {
             label: 'Quản lý tài khoản ',
@@ -103,11 +197,11 @@ const SideBarAdmin = () => {
         },
     ];
 
-    useEffect(() => {
-        const active: any = items.find(
-            (item) => location.pathname === (item!.key as any)) ?? "/admin";
-        setActiveMenu(active?.key);
-    }, [location]);
+    // useEffect(() => {
+    //     const active: any = items.find(
+    //         (item) => location.pathname === (item!.key as any)) ?? "/admin";
+    //     setActiveMenu(active?.key);
+    // }, [location]);
 
     const isAdminRoute = location.pathname.includes("admin");
     const isAdmin = user?.role?.name; // Đổi "admin" thành tên role admin thực tế nếu khác
@@ -138,7 +232,7 @@ const SideBarAdmin = () => {
                 }}>
                     Admin
                 </div>
-                <Menu theme="dark" selectedKeys={[activeMenu]} mode="inline" items={items} onClick={(e) => setActiveMenu(e.key)} />
+                <Menu theme="dark" selectedKeys={[activeMenu]} mode="inline" items={menuItems} onClick={(e) => setActiveMenu(e.key)} />
             </Sider>
             <Layout style={{ minHeight: '100vh' }}>
                 <Header style={{ padding: 0, background: colorBgContainer }}>

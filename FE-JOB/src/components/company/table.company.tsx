@@ -11,6 +11,8 @@ import UpdateCompany from './update.company';
 import DetailCompany from './detail.company';
 import { sfLike } from 'spring-filter-query-builder';
 import queryString from 'query-string';
+import Access from '@/share/Access';
+import { ALL_PERMISSIONS } from '@/services/permissions';
 export const waitTimePromise = async (time: number = 1000) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -91,32 +93,47 @@ export default function TableCompany() {
       width: 50,
       render: (_value, entity) => (
         <Space>
-          <EyeOutlined
-            style={{ fontSize: 20, marginRight: 10, color: '#1677ff', cursor: 'pointer' }}
-            onClick={() => {
-              setDataDetail(entity);
-              setOpenModalDetail(true);
-            }}
-          />
-          <EditOutlined
-            style={{ fontSize: 20, color: '#ffa500' }}
-            onClick={() => {
-              setOpenModalUpdate(true);
-              setDataUpdate(entity);
-            }}
-          />
-          <Popconfirm
-            placement="leftTop"
-            title={"Xác nhận xóa company"}
-            description={"Bạn có chắc chắn muốn xóa company này ?"}
-            onConfirm={() => entity.id && handleDeleteCompany(entity.id)}
-            okText="Xác nhận"
-            cancelText="Hủy"
+          <Access
+            permission={ALL_PERMISSIONS.COMPANIES.DETAIL}
+            hideChildren
           >
-            <span style={{ cursor: "pointer", margin: "0 10px" }}>
-              <DeleteOutlined style={{ fontSize: 20, color: '#ff4d4f' }} />
-            </span>
-          </Popconfirm>
+            <EyeOutlined
+              style={{ fontSize: 20, marginRight: 10, color: '#1677ff', cursor: 'pointer' }}
+              onClick={() => {
+                setDataDetail(entity);
+                setOpenModalDetail(true);
+              }}
+            />
+          </Access>
+          <Access
+            permission={ALL_PERMISSIONS.COMPANIES.UPDATE}
+            hideChildren
+          >
+            <EditOutlined
+              style={{ fontSize: 20, color: '#ffa500' }}
+              onClick={() => {
+                setOpenModalUpdate(true);
+                setDataUpdate(entity);
+              }}
+            />
+          </Access>
+          <Access
+            permission={ALL_PERMISSIONS.COMPANIES.DELETE}
+            hideChildren
+          >
+            <Popconfirm
+              placement="leftTop"
+              title={"Xác nhận xóa company"}
+              description={"Bạn có chắc chắn muốn xóa company này ?"}
+              onConfirm={() => entity.id && handleDeleteCompany(entity.id)}
+              okText="Xác nhận"
+              cancelText="Hủy"
+            >
+              <span style={{ cursor: "pointer", margin: "0 10px" }}>
+                <DeleteOutlined style={{ fontSize: 20, color: '#ff4d4f' }} />
+              </span>
+            </Popconfirm>
+          </Access>
         </Space>
       ),
     },
@@ -180,48 +197,59 @@ export default function TableCompany() {
 
   return (
     <div>
-      <ProTable<ICompany>
-        columns={columns}
-        actionRef={actionRef}
-        cardBordered
-        request={async (params, sort, filter) => {
-          await waitTime(500);
-          const query = buildQuery(params, sort, filter);
-          const res = await callFetchCompany(query);
-          const data = res?.data as IModelPaginate<ICompany>;
-          if (data) {
-            setMeta(data.meta)
-          }
-          return {
-            data: data?.result || [],
-            page: 1,
-            success: true,
-            total: meta.total || 0,
-          };
-        }}
-        scroll={{ x: true }}
-        pagination={{
-          current: meta.page,
-          pageSize: meta.pageSize,
-          showSizeChanger: true,
-          total: meta.total,
-          showTotal: (total, range) => { return (<div>{range[0]} - {range[1]} trên {total} rows</div>) }
-        }}
-        dateFormatter="string"
-        headerTitle="Table Company"
-        toolBarRender={() => [
-          <Button
-            key="button"
-            icon={<PlusOutlined />}
-            onClick={() => {
-              setOpenModal(true);
-            }}
-            type="primary"
-          >
-            Thêm mới
-          </Button>
-        ]}
-      />
+      <Access
+        permission={ALL_PERMISSIONS.COMPANIES.GET_PAGINATE}
+      >
+        <ProTable<ICompany>
+          columns={columns}
+          actionRef={actionRef}
+          cardBordered
+          request={async (params, sort, filter) => {
+            await waitTime(500);
+            const query = buildQuery(params, sort, filter);
+            const res = await callFetchCompany(query);
+            const data = res?.data as IModelPaginate<ICompany>;
+            if (data) {
+              setMeta(data.meta)
+            }
+            return {
+              data: data?.result || [],
+              page: 1,
+              success: true,
+              total: meta.total || 0,
+            };
+          }}
+          scroll={{ x: true }}
+          pagination={{
+            current: meta.page,
+            pageSize: meta.pageSize,
+            showSizeChanger: true,
+            total: meta.total,
+            showTotal: (total, range) => { return (<div>{range[0]} - {range[1]} trên {total} rows</div>) }
+          }}
+          dateFormatter="string"
+          headerTitle="Table Company"
+          toolBarRender={() => [
+            <Access
+              key="access"
+              permission={ALL_PERMISSIONS.COMPANIES.CREATE}
+              hideChildren
+            >
+
+              <Button
+                key="button"
+                icon={<PlusOutlined />}
+                onClick={() => {
+                  setOpenModal(true);
+                }}
+                type="primary"
+              >
+                Thêm mới
+              </Button>
+            </Access>
+          ]}
+        />
+      </Access>
       <CreateCompany openModal={openModal} setOpenModal={setOpenModal} refreshTable={refreshTable} />
       <UpdateCompany openModalUpdate={openModalUpdate} setOpenModalUpdate={setOpenModalUpdate} refreshTable={refreshTable} setDataUpdate={setDataUpdate} dataUpdate={dataUpdate} />
       <DetailCompany open={openModalDetail} onClose={() => setOpenModalDetail(false)} company={dataDetail} />

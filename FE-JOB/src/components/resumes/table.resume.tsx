@@ -8,6 +8,8 @@ import { callFetchResume } from '@/services/api'; // sẽ tạo nếu chưa có
 import { sfIn } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import UpdateResume from './update.resume';
+import Access from '@/share/Access';
+import { ALL_PERMISSIONS } from '@/services/permissions';
 export const waitTimePromise = async (time: number = 1000) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -85,8 +87,15 @@ export default function TableResume() {
       width: 70,
       render: (_value, entity) => (
         <Space>
-          <EditOutlined style={{ fontSize: 20, color: '#ffa500', cursor: 'pointer' }} onClick={() => { setOpenViewDetail(true); setDataInit(entity); }} />
+          <Access
+            permission={ALL_PERMISSIONS.RESUMES.UPDATE}
+            hideChildren
+          >
+            <EditOutlined style={{ fontSize: 20, color: '#ffa500', cursor: 'pointer' }} onClick={() => { setOpenViewDetail(true); setDataInit(entity); }} />
+
+          </Access>
         </Space>
+
       ),
     },
   ];
@@ -135,45 +144,49 @@ export default function TableResume() {
 
   return (
     <div>
-      <ProTable<IResume>
-        columns={columns}
-        headerTitle=" Resumes"
-        actionRef={actionRef}
-        cardBordered
-        search={{ labelWidth: 'auto' }}
-        request={async (params, sort, filter) => {
-          await waitTime(500);
+      <Access
+        permission={ALL_PERMISSIONS.RESUMES.GET_PAGINATE}
+      >
+        <ProTable<IResume>
+          columns={columns}
+          headerTitle=" Resumes"
+          actionRef={actionRef}
+          cardBordered
+          search={{ labelWidth: 'auto' }}
+          request={async (params, sort, filter) => {
+            await waitTime(500);
 
-          const query = buildQuery(params, sort, filter);
-          const res = await callFetchResume(query);
-          const data = res?.data as IModelPaginate<IResume>;
-          if (data) setMeta(data.meta);
-          return {
-            data: data?.result || [],
-            page: 1,
-            success: true,
-            total: meta.total || 0,
-          };
-        }}
-        rowKey="id"
-        pagination={
-          {
-            current: meta.page,
-            pageSize: meta.pageSize,
-            showSizeChanger: true,
-            total: meta.total,
-            showTotal: (total, range) => { return (<div> {range[0]}-{range[1]} trên {total} rows</div>) }
+            const query = buildQuery(params, sort, filter);
+            const res = await callFetchResume(query);
+            const data = res?.data as IModelPaginate<IResume>;
+            if (data) setMeta(data.meta);
+            return {
+              data: data?.result || [],
+              page: 1,
+              success: true,
+              total: meta.total || 0,
+            };
+          }}
+          rowKey="id"
+          pagination={
+            {
+              current: meta.page,
+              pageSize: meta.pageSize,
+              showSizeChanger: true,
+              total: meta.total,
+              showTotal: (total, range) => { return (<div> {range[0]}-{range[1]} trên {total} rows</div>) }
+            }
           }
-        }
-        scroll={{ x: true }}
-        rowSelection={false}
-        toolBarRender={(_action, _rows): any => {
-          return (
-            <></>
-          );
-        }}
-        bordered
-      />
+          scroll={{ x: true }}
+          rowSelection={false}
+          toolBarRender={(_action, _rows): any => {
+            return (
+              <></>
+            );
+          }}
+          bordered
+        />
+      </Access>
       <UpdateResume
         open={openViewDetail}
         onClose={setOpenViewDetail}
