@@ -18,6 +18,17 @@ import vn.tranphudev.jobhunter.domain.response.RestResponse;
 
 @RestControllerAdvice
 public class GlobalException {
+
+    // handle all exceptions
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<RestResponse<Object>> handleAllException(Exception ex) {
+        RestResponse<Object> res = new RestResponse<Object>();
+        res.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        res.setError("Internal Server Error");
+        res.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
+    }
+
     @ExceptionHandler(value = {
             UsernameNotFoundException.class,
             BadCredentialsException.class,

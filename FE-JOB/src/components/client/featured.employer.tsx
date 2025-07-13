@@ -6,12 +6,25 @@ import { Link } from "react-router-dom";
 
 const FeaturedEmployer = () => {
   const [company, setCompany] = useState<ICompanyWithJobs | null>(null);
+  const [randomJobs, setRandomJobs] = useState<{ title: string; id: string }[]>([]);
 
+  
   useEffect(() => {
     const fetchData = async () => {
       const res = await callFetchCompanyWithJobs();
       if (res && res.data && res.data.length > 0) {
-        setCompany(res.data[0]);
+        // Lọc các công ty có jobCount > 3
+        const companiesWithJobs = res.data.filter((c: ICompanyWithJobs) => c.jobCount >= 3);
+        if (companiesWithJobs.length > 0) {
+          // Random một công ty
+          const randomIdx = Math.floor(Math.random() * companiesWithJobs.length);
+          const selectedCompany = companiesWithJobs[randomIdx];
+          setCompany(selectedCompany);
+          // Random 3 job từ jobNames/jobIds
+          const jobs = selectedCompany.jobNames.map((title: string, idx: number) => ({ title, id: String(selectedCompany.jobIds[idx]) }));
+          const shuffled = jobs.sort(() => 0.5 - Math.random());
+          setRandomJobs(shuffled.slice(0, 3));
+        }
       }
     };
     fetchData();
@@ -24,7 +37,15 @@ const FeaturedEmployer = () => {
       {/* Banner + label */}
       <div className={styles.bannerSection}>
         <img
-          src="https://res.cloudinary.com/djmkp6zls/image/upload/v1751954965/aws_o7fkhl.jpg"
+          src={
+            company.name.toLowerCase().includes("apple")
+              ? "https://res.cloudinary.com/djmkp6zls/image/upload/v1752404437/apple_engg2a.jpg"
+              : company.name.toLowerCase().includes("aws")
+              ? "https://res.cloudinary.com/djmkp6zls/image/upload/v1751954965/aws_o7fkhl.jpg"
+              : company.name.toLowerCase().includes("google")
+              ? "https://res.cloudinary.com/djmkp6zls/image/upload/v1752404716/google_bo1ack.jpg"
+              : "https://res.cloudinary.com/djmkp6zls/image/upload/v1751954965/aws_o7fkhl.jpg"
+          }
           alt="Banner"
           className={styles.bannerImage}
         />
@@ -64,10 +85,10 @@ const FeaturedEmployer = () => {
       </div>
       {/* Jobs */}
       <div className={styles.jobsSection}>
-        {company.jobNames.map((title, idx) => (
+        {randomJobs.map((job, idx) => (
           <div key={idx} className={styles.jobItem}>
             <FiArrowRightCircle className={styles.jobIcon} />
-            <Link to={`/job/${company.jobIds[idx]}`} className={styles.jobLinkToDetail}>{title}</Link>
+            <Link to={`/job/${job.id}`} className={styles.jobLinkToDetail}>{job.title}</Link>
           </div>
         ))}
       </div>

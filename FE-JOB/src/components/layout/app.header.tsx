@@ -147,7 +147,7 @@ const AppHeader = () => {
                                         <li
                                             key={item.label}
                                             className={styles.active}
-                                            onMouseEnter={() => {}}
+                                            onMouseEnter={() => { }}
                                         >
                                             {item.label}
                                         </li>
@@ -224,9 +224,9 @@ const AppHeader = () => {
                             Đăng Nhập/Đăng Ký
                         </span>
                     )}
-                    <span className={styles.lang}>EN</span>
+                    {/* <span className={styles.lang}>EN</span>
                     <span className={styles.divider}>|</span>
-                    <span className={styles.lang}>VI</span>
+                    <span className={styles.lang}>VI</span> */}
                 </div>
             </header>
             <ManageAccount

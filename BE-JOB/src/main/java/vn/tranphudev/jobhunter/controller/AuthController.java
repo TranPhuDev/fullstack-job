@@ -132,6 +132,9 @@ public class AuthController {
             userLogin.setId(currentUserDB.getId());
             userLogin.setEmail(currentUserDB.getEmail());
             userLogin.setName(currentUserDB.getName());
+            userLogin.setAge(currentUserDB.getAge());
+            userLogin.setGender(currentUserDB.getGender());
+            userLogin.setAddress(currentUserDB.getAddress());
             userLogin.setRole(currentUserDB.getRole());
             userLogin.setAvatar(currentUserDB.getAvatar());
 

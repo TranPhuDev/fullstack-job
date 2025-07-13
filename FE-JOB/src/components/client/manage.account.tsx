@@ -1,6 +1,6 @@
 import { Modal, Table, Tabs } from "antd";
 import type { TabsProps } from 'antd';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { callFetchResumeByUser } from "@/services/api";
@@ -8,7 +8,7 @@ import { ProFormDigit, ProFormSelect, ProFormText } from "@ant-design/pro-compon
 import { App, Button, Col, Form, Row, Upload, Modal as AntdModal } from "antd";
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { v4 as uuidv4 } from 'uuid';
-import { callUpdateUser, callUploadSingleFile, callChangePassword } from "@/services/api";
+import { callUpdateUser, callUploadSingleFile, callChangePassword, fetchAccountAPI } from "@/services/api";
 import { useCurrentApp } from "../context/app.context";
 import defaultAvatar from '@/assets/images/default-avatar.jpg';
 
@@ -185,6 +185,8 @@ const UserUpdateInfo = () => {
         email: string;
         avatar?: string;
     };
+
+
     const onFinish = async (values: UserUpdateFormFields) => {
         setIsSubmit(true);
         const payload = {
@@ -195,7 +197,14 @@ const UserUpdateInfo = () => {
         const res = await callUpdateUser(payload);
         if (res && res.data) {
             message.success("Cập nhật thông tin thành công");
-            setUser(res.data);
+            // Fetch lại account mới nhất để cập nhật quyền
+            const fresh = await fetchAccountAPI();
+            if (fresh && fresh.data && fresh.data.user) {
+                setUser(fresh.data.user);
+            } else {
+                setUser(res.data);
+            }
+            // KHÔNG setFieldsValue lại, để form giữ nguyên giá trị vừa update
         } else {
             message.error(res?.message || "Cập nhật thất bại");
         }
