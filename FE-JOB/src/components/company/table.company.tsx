@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import Access from '@/share/access';
 import { Button, Popconfirm, Space, App } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -11,7 +12,6 @@ import UpdateCompany from './update.company';
 import DetailCompany from './detail.company';
 import { sfLike } from 'spring-filter-query-builder';
 import queryString from 'query-string';
-import Access from '@/share/Access';
 import { ALL_PERMISSIONS } from '@/services/permissions';
 export const waitTimePromise = async (time: number = 1000) => {
   return new Promise((resolve) => {

@@ -12,7 +12,7 @@ import UpdateUser from './update.user';
 import defaultAvatar from 'assets/images/default-avatar.jpg'
 import { App } from 'antd';
 import DetailUser from './detail.user';
-import Access from '@/share/Access';
+import Access from '@/share/access';
 import { ALL_PERMISSIONS } from '@/services/permissions';
 
 export const waitTimePromise = async (time: number = 1000) => {

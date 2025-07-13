@@ -8,7 +8,7 @@ import { callFetchResume } from '@/services/api'; // sẽ tạo nếu chưa có
 import { sfIn } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import UpdateResume from './update.resume';
-import Access from '@/share/Access';
+import Access from '@/share/access';
 import { ALL_PERMISSIONS } from '@/services/permissions';
 export const waitTimePromise = async (time: number = 1000) => {
   return new Promise((resolve) => {

@@ -11,7 +11,7 @@ import { sfLike } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { useNavigate } from 'react-router-dom';
 import DetailJob from './detail.job';
-import Access from '@/share/Access';
+import Access from '@/share/access';
 import { ALL_PERMISSIONS } from '@/services/permissions';
 export const waitTimePromise = async (time: number = 1000) => {
     return new Promise((resolve) => {

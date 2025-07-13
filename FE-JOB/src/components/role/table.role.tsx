@@ -10,7 +10,7 @@ import { sfLike } from "spring-filter-query-builder";
 import { groupByPermission } from "@/services/utils";
 import { callDeleteRole, callFetchPermission, callFetchRole } from "@/services/api";
 import ModalRole from "./modal.role";
-import Access from "@/share/Access";
+import Access from "@/share/access";
 import { ALL_PERMISSIONS } from "@/services/permissions";
 
 const TableRole = () => {

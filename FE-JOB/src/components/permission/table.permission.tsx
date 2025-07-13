@@ -9,7 +9,7 @@ import { useRef, useState } from "react";
 import CreatePermission from "./create.permission";
 import UpdatePermission from "./update.permission";
 import DetailPermission from "./detail.permission";
-import Access from "@/share/Access";
+import Access from "@/share/access";
 import { ALL_PERMISSIONS } from "@/services/permissions";
 export const waitTimePromise = async (time: number = 1000) => {
     return new Promise((resolve) => {

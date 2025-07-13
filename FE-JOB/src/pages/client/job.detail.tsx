@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { useCurrentApp } from "@/components/context/app.context";
 import styles from "../../styles/job.detail.module.scss";
 import ApplyModal from "@/components/client/modal.apply";
+import LikeModal from "@/components/client/modal.like";
 
 type CompanyFull = {
     id: string;
@@ -24,11 +25,12 @@ const ClientDetailJobPage = () => {
     const { id } = useParams(); // lấy id từ URL /job/:id
     const { isAuthenticated } = useCurrentApp();
     const [showFullDesc, setShowFullDesc] = useState(false);
-    const [rating, setRating] = useState(() => (Math.random() * 2 + 3).toFixed(1)); 
+    const [rating, setRating] = useState(() => (Math.random() * 2 + 3).toFixed(1));
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [showLikeModal, setShowLikeModal] = useState(false);
     const randomRating = () => {
-      const newRating = (Math.random() * 2 + 3).toFixed(1);
-      setRating(newRating);
+        const newRating = (Math.random() * 2 + 3).toFixed(1);
+        setRating(newRating);
     };
 
     useEffect(() => {
@@ -52,9 +54,8 @@ const ClientDetailJobPage = () => {
                             selectedJob={jobDetail}
                             setJobDetail={setJobDetail}
                             setIsModalOpen={setIsModalOpen}
-                            isFavorite={false}
-                            handleToggleFavorite={() => { }}
                             isAuthenticated={isAuthenticated}
+                            setShowLikeModal={setShowLikeModal}
                         />
                     </div>
                     <div className="col-4 pb-5">
@@ -135,6 +136,7 @@ const ClientDetailJobPage = () => {
                 setIsModalOpen={setIsModalOpen}
                 jobDetail={jobDetail}
             />
+            <LikeModal open={showLikeModal} onClose={() => setShowLikeModal(false)} />
         </div>
     );
 }
