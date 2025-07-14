@@ -9,6 +9,7 @@ public class CompanyWithJobsDTO {
     private String address;
     private String description;
     private String workingTime;
+    private String companyPic;
     private String field;
     private String scale;
     private String overTime;
@@ -17,7 +18,7 @@ public class CompanyWithJobsDTO {
     private List<Long> jobIds;
 
     public CompanyWithJobsDTO(Long id, String name, String logo, String address, String description,
-            String workingTime, String field, String scale, String overTime,
+            String workingTime, String companyPic, String field, String scale, String overTime,
             Long jobCount, List<String> jobNames, List<Long> jobIds) {
         this.id = id;
         this.name = name;
@@ -25,6 +26,7 @@ public class CompanyWithJobsDTO {
         this.address = address;
         this.description = description;
         this.workingTime = workingTime;
+        this.companyPic = companyPic;
         this.field = field;
         this.scale = scale;
         this.overTime = overTime;
@@ -68,6 +70,10 @@ public class CompanyWithJobsDTO {
 
     public String getOverTime() {
         return overTime;
+    }
+
+    public String getCompanyPic() {
+        return companyPic;
     }
 
     public Long getJobCount() {

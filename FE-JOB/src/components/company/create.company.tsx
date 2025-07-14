@@ -38,6 +38,7 @@ type FieldType = {
   description?: string;
   logo?: string[];
   workingTime?: string;
+  companyPic?: string[];
   field?: string;
   scale?: string;
   overTime?: string;
@@ -54,6 +55,7 @@ const CreateCompany = ({ openModal, setOpenModal, refreshTable }: CreateCompanyP
   const { message, notification } = App.useApp();
   const [isSubmit, setIsSubmit] = useState(false);
   const [logo, setLogo] = useState<UploadFile[]>([]);
+  const [companyPic, setCompanyPic] = useState<UploadFile[]>([]); // State cho ảnh banner công ty
   const [description, setDescription] = useState<string>(''); // <- lưu mô tả từ TinyMCE
 
   const handleUpload: UploadProps['customRequest'] = async ({ file, onSuccess, onError }) => {
@@ -76,11 +78,33 @@ const CreateCompany = ({ openModal, setOpenModal, refreshTable }: CreateCompanyP
 
   const handleRemove = () => setLogo([]);
 
+  // Hàm upload cho companyPic
+  const handleUploadCompanyPic: UploadProps['customRequest'] = async ({ file, onSuccess, onError }) => {
+    const res = await callUploadSingleFile(file, 'companyBanner');
+    if (res && res.data) {
+      setCompanyPic([
+        {
+          uid: uuidv4(),
+          name: res.data.fileName,
+          status: 'done',
+          url: `${import.meta.env.VITE_BACKEND_URL}/storage/companyBanner/${res.data.fileName}`,
+        },
+      ]);
+      if (onSuccess) onSuccess('ok');
+    } else {
+      setCompanyPic([]);
+      if (onError) onError(new Error(res.message));
+    }
+  };
+
+  const handleRemoveCompanyPic = () => setCompanyPic([]);
+
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     setIsSubmit(true);
     const payload = {
       ...values,
       logo: logo[0]?.name, // hoặc logo.map(l => l.name) nếu backend nhận mảng
+      companyPic: companyPic[0]?.name, // gửi tên file banner
       description: description,
     };
     const res = await callCreateCompany(payload);
@@ -89,6 +113,7 @@ const CreateCompany = ({ openModal, setOpenModal, refreshTable }: CreateCompanyP
       setOpenModal(false);
       form.resetFields();
       setLogo([]);
+      setCompanyPic([]);
       setDescription('');
       refreshTable();
     } else {
@@ -108,6 +133,7 @@ const CreateCompany = ({ openModal, setOpenModal, refreshTable }: CreateCompanyP
         setOpenModal(false);
         form.resetFields();
         setLogo([]);
+        setCompanyPic([]);
         setDescription('');
       }}
       onOk={() => form.submit()}
@@ -187,19 +213,38 @@ const CreateCompany = ({ openModal, setOpenModal, refreshTable }: CreateCompanyP
             />
           </Col>
         </ProCard>
-        <Form.Item label="Logo">
-          <Upload
-            name="logo"
-            listType="picture-circle"
-            showUploadList={true}
-            customRequest={handleUpload}
-            fileList={logo}
-            onRemove={handleRemove}
-            beforeUpload={(file) => ['image/jpeg', 'image/png'].includes(file.type)}
-          >
-            {logo.length >= 1 ? null : <div>Upload</div>}
-          </Upload>
-        </Form.Item>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item label="Logo">
+              <Upload
+                name="logo"
+                listType="picture-circle"
+                showUploadList={true}
+                customRequest={handleUpload}
+                fileList={logo}
+                onRemove={handleRemove}
+                beforeUpload={(file) => ['image/jpeg', 'image/png'].includes(file.type)}
+              >
+                {logo.length >= 1 ? null : <div>Upload</div>}
+              </Upload>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item label="Ảnh banner công ty">
+              <Upload
+                name="companyPic"
+                listType="picture-card"
+                showUploadList={true}
+                customRequest={handleUploadCompanyPic}
+                fileList={companyPic}
+                onRemove={handleRemoveCompanyPic}
+                beforeUpload={(file) => ['image/jpeg', 'image/png'].includes(file.type)}
+              >
+                {companyPic.length >= 1 ? null : <div>Upload</div>}
+              </Upload>
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     </Modal>
   );

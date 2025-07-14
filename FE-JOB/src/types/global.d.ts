@@ -53,6 +53,7 @@ declare global {
         scale?: string;
         overTime?: string;
         logo: string;
+        companyPic?: string;
         description?: string;
         createdBy?: string;
         isDeleted?: boolean;
@@ -140,6 +141,7 @@ declare global {
         address: string;
         description: string;
         workingTime: string;
+        companyPic?: string;
         field: string;
         scale: string;
         overTime: string;

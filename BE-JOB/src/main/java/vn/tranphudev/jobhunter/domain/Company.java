@@ -41,6 +41,8 @@ public class Company {
 
     private String workingTime;
 
+    private String companyPic;
+
     private String field;
 
     private String scale;

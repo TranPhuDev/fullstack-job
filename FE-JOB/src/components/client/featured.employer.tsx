@@ -8,7 +8,7 @@ const FeaturedEmployer = () => {
   const [company, setCompany] = useState<ICompanyWithJobs | null>(null);
   const [randomJobs, setRandomJobs] = useState<{ title: string; id: string }[]>([]);
 
-  
+
   useEffect(() => {
     const fetchData = async () => {
       const res = await callFetchCompanyWithJobs();
@@ -38,13 +38,7 @@ const FeaturedEmployer = () => {
       <div className={styles.bannerSection}>
         <img
           src={
-            company.name.toLowerCase().includes("apple")
-              ? "https://res.cloudinary.com/djmkp6zls/image/upload/v1752404437/apple_engg2a.jpg"
-              : company.name.toLowerCase().includes("aws")
-              ? "https://res.cloudinary.com/djmkp6zls/image/upload/v1751954965/aws_o7fkhl.jpg"
-              : company.name.toLowerCase().includes("google")
-              ? "https://res.cloudinary.com/djmkp6zls/image/upload/v1752404716/google_bo1ack.jpg"
-              : "https://res.cloudinary.com/djmkp6zls/image/upload/v1751954965/aws_o7fkhl.jpg"
+            company.companyPic ? `${import.meta.env.VITE_BACKEND_URL}/storage/companyBanner/${company.companyPic}` : "https://via.placeholder.com/600x200"
           }
           alt="Banner"
           className={styles.bannerImage}

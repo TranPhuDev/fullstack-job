@@ -1,4 +1,4 @@
-import { Modal, Form, Input, Upload, Col, Row, App } from 'antd';
+import { Modal, Form, Upload, Col, Row, App } from 'antd';
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
@@ -17,6 +17,7 @@ interface CompanyData {
   overTime?: string;
   description?: string;
   logo: string;
+  companyPic?: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -31,9 +32,10 @@ interface UpdateCompanyProps {
 
 const UpdateCompany = ({ openModalUpdate, setOpenModalUpdate, refreshTable, dataUpdate, setDataUpdate }: UpdateCompanyProps) => {
   const [form] = Form.useForm();
-  const { message, notification } = App.useApp();
+  const { message } = App.useApp(); // Xóa notification
   const [isSubmit, setIsSubmit] = useState(false);
   const [logo, setLogo] = useState<UploadFile[]>([]);
+  const [companyPic, setCompanyPic] = useState<UploadFile[]>([]); // State cho ảnh banner công ty
   const [description, setDescription] = useState<string>("");
   useEffect(() => {
     if (dataUpdate) {
@@ -44,7 +46,6 @@ const UpdateCompany = ({ openModalUpdate, setOpenModalUpdate, refreshTable, data
         scale: SCALE_OPTIONS.find(opt => opt.label === dataUpdate.scale)?.value,
         overTime: OVERTIME_OPTIONS.find(opt => opt.label === dataUpdate.overTime)?.value,
       };
-      console.log('Form Value:', formValue);
       form.setFieldsValue(formValue);
       setDescription(dataUpdate.description || "");
       if (dataUpdate.logo) {
@@ -52,9 +53,16 @@ const UpdateCompany = ({ openModalUpdate, setOpenModalUpdate, refreshTable, data
       } else {
         setLogo([]);
       }
+      // Xử lý companyPic nếu có
+      if (dataUpdate.companyPic) {
+        setCompanyPic([{ uid: uuidv4(), name: dataUpdate.companyPic, status: 'done', url: `${import.meta.env.VITE_BACKEND_URL}/storage/companyBanner/${dataUpdate.companyPic}` }]);
+      } else {
+        setCompanyPic([]);
+      }
     } else {
       form.resetFields();
       setLogo([]);
+      setCompanyPic([]);
       setDescription("");
     }
   }, [openModalUpdate, dataUpdate, form]);
@@ -69,6 +77,24 @@ const UpdateCompany = ({ openModalUpdate, setOpenModalUpdate, refreshTable, data
     }
   };
   const handleRemove = () => setLogo([]);
+  const handleUploadCompanyPic: UploadProps['customRequest'] = async ({ file, onSuccess, onError }) => {
+    const res = await callUploadSingleFile(file, 'companyBanner');
+    if (res && res.data) {
+      setCompanyPic([
+        {
+          uid: uuidv4(),
+          name: res.data.fileName,
+          status: 'done',
+          url: `${import.meta.env.VITE_BACKEND_URL}/storage/companyBanner/${res.data.fileName}`,
+        },
+      ]);
+      if (onSuccess) onSuccess('ok');
+    } else {
+      setCompanyPic([]);
+      if (onError) onError(new Error(res.message));
+    }
+  };
+  const handleRemoveCompanyPic = () => setCompanyPic([]);
   const onFinish = async (values: Omit<CompanyData, 'id' | 'logo' | 'createdAt' | 'updatedAt'>) => {
     if (!dataUpdate) return;
     setIsSubmit(true);
@@ -81,7 +107,8 @@ const UpdateCompany = ({ openModalUpdate, setOpenModalUpdate, refreshTable, data
       values.scale || '',
       values.overTime || '',
       description ?? '',
-      logo[0]?.name || ''
+      logo[0]?.name || '',
+      companyPic[0]?.name || ''
     );
     if (res && res.data) {
       message.success('Cập nhật công ty thành công');
@@ -89,6 +116,7 @@ const UpdateCompany = ({ openModalUpdate, setOpenModalUpdate, refreshTable, data
       setDataUpdate(null);
       form.resetFields();
       setLogo([]);
+      setCompanyPic([]);
       setDescription("");
       refreshTable();
     } else {
@@ -97,7 +125,7 @@ const UpdateCompany = ({ openModalUpdate, setOpenModalUpdate, refreshTable, data
     setIsSubmit(false);
   };
   return (
-    <Modal width={900} open={openModalUpdate} onCancel={() => { setOpenModalUpdate(false); setDataUpdate(null); form.resetFields(); setLogo([]); setDescription(""); }} onOk={() => form.submit()} confirmLoading={isSubmit} title="Cập nhật công ty">
+    <Modal width={900} open={openModalUpdate} onCancel={() => { setOpenModalUpdate(false); setDataUpdate(null); form.resetFields(); setLogo([]); setCompanyPic([]); setDescription(""); }} onOk={() => form.submit()} confirmLoading={isSubmit} title="Cập nhật công ty">
       <Form form={form} layout="vertical" onFinish={onFinish}>
         <Row gutter={16}>
           <Col span={12} md={12}>
@@ -169,17 +197,34 @@ const UpdateCompany = ({ openModalUpdate, setOpenModalUpdate, refreshTable, data
             />
           </Col>
         </ProCard>
-        <Form.Item label="Logo">
-          <Upload
-            name="logo"
-            listType="picture-circle"
-            showUploadList={true}
-            customRequest={handleUpload}
-            fileList={logo}
-            onRemove={handleRemove}
-            beforeUpload={file => ['image/jpeg', 'image/png'].includes(file.type)}
-          >{logo.length >= 1 ? null : <div>Upload</div>}</Upload>
-        </Form.Item>
+        <Row gutter={16}>
+          <Col span={12} md={12}>
+            <Form.Item label="Logo">
+              <Upload
+                name="logo"
+                listType="picture-circle"
+                showUploadList={true}
+                customRequest={handleUpload}
+                fileList={logo}
+                onRemove={handleRemove}
+                beforeUpload={file => ['image/jpeg', 'image/png'].includes(file.type)}
+              >{logo.length >= 1 ? null : <div>Upload</div>}</Upload>
+            </Form.Item>
+          </Col>
+          <Col span={12} md={12}>
+            <Form.Item label="Ảnh banner công ty">
+              <Upload
+                name="companyPic"
+                listType="picture-card"
+                showUploadList={true}
+                customRequest={handleUploadCompanyPic}
+                fileList={companyPic}
+                onRemove={handleRemoveCompanyPic}
+                beforeUpload={file => ['image/jpeg', 'image/png'].includes(file.type)}
+              >{companyPic.length >= 1 ? null : <div>Upload</div>}</Upload>
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     </Modal>
   );

@@ -56,6 +56,7 @@ public class CompanyService {
             currentCompany.setWorkingTime(company.getWorkingTime());
             currentCompany.setField(company.getField());
             currentCompany.setScale(company.getScale());
+            currentCompany.setCompanyPic(company.getCompanyPic());
             currentCompany.setOverTime(company.getOverTime());
             currentCompany.setAddress(company.getAddress());
             currentCompany.setLogo(company.getLogo());
@@ -106,6 +107,7 @@ public class CompanyService {
                         c.getAddress(),
                         c.getDescription(),
                         c.getWorkingTime(),
+                        c.getCompanyPic(),
                         c.getField(),
                         c.getScale(),
                         c.getOverTime(),

@@ -90,8 +90,8 @@ export const callCreateCompany = (values: { [key: string]: any }) => {
     return axios.post<IBackendRes<ICompany>>('/api/v1/companies', values)
 }
 
-export const callUpdateCompany = (id: string, name: string, address: string, workingTime: string, field: string, scale: string, overTime: string, description: string, logo: string) => {
-    return axios.put<IBackendRes<ICompany>>(`/api/v1/companies`, { id, name, address, workingTime, field, scale, overTime, description, logo })
+export const callUpdateCompany = (id: string, name: string, address: string, workingTime: string, field: string, scale: string, overTime: string, description: string, logo: string, companyPic: string) => {
+    return axios.put<IBackendRes<ICompany>>(`/api/v1/companies`, { id, name, address, workingTime, field, scale, overTime, description, logo, companyPic })
 }
 
 export const callDeleteCompany = (id: string) => {
