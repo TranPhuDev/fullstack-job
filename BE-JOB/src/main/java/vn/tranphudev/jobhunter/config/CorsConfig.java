@@ -1,6 +1,7 @@
 package vn.tranphudev.jobhunter.config;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +16,10 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // cho phép các URL nào có thể kết nối tới backend
-        configuration.setAllowedOrigins(
-                Arrays.asList("http://localhost:3000", "http://localhost:4173", "http://localhost:5173"));
+        // configuration.setAllowedOrigins(
+        // Arrays.asList("http://localhost:3000", "http://localhost:4173",
+        // "http://localhost:5173" ));
+        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
 
         // các method nào đc kết nối
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));

@@ -78,7 +78,12 @@ const CreateCompany = ({ openModal, setOpenModal, refreshTable }: CreateCompanyP
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     setIsSubmit(true);
-    const res = await callCreateCompany(values);
+    const payload = {
+      ...values,
+      logo: logo[0]?.name, // hoặc logo.map(l => l.name) nếu backend nhận mảng
+      description: description,
+    };
+    const res = await callCreateCompany(payload);
     if (res && res.data) {
       message.success("Tạo mới công ty thành công");
       setOpenModal(false);

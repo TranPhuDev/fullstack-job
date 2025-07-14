@@ -79,7 +79,7 @@ const FeaturedEmployer = () => {
           }
           return <div className={styles.companyDesc}>{firstSentence}</div>;
         })()}
-        <Link to={`/?company=${encodeURIComponent(company.name)}`} className={styles.jobsLink}>
+        <Link to={`/?company=${encodeURIComponent(company.name)}&page=1`} className={styles.jobsLink}>
           Xem {company.jobCount} việc làm &nbsp; <FiArrowRightCircle />
         </Link>
       </div>

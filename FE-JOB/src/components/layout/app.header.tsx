@@ -171,11 +171,11 @@ const AppHeader = () => {
                                 </div>
                             </div>
                         </li>
-                        <li className={styles.menuItem}>
+                        {/* <li className={styles.menuItem}>
                             <span className={styles.menuLabel}>
                                 Blog <span className={styles.arrow}>⌄</span>
                             </span>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
                 <div className={styles.right}>

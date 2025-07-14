@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import "dayjs/locale/vi";
 import ApplyModal from "./modal.apply";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useCurrentApp } from "../context/app.context";
 import ContentJobRight from "./content.job.right";
 import LikeModal from "./modal.like";
@@ -26,6 +26,8 @@ const ContentJob: React.FC = () => {
   const [showLikeModal, setShowLikeModal] = useState(false);
 
   const id = new URLSearchParams(useLocation().search).get("id");
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const init = async () => {
@@ -43,6 +45,14 @@ const ContentJob: React.FC = () => {
     fetchJobs(meta.page, meta.pageSize);
     // eslint-disable-next-line
   }, [meta.page, meta.pageSize, filter]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const pageParam = params.get("page");
+    if (pageParam) {
+      setMeta((prev) => ({ ...prev, page: Number(pageParam) }));
+    }
+  }, [location.search]);
 
   const fetchJobs = async (page: number, pageSize: number) => {
     try {
@@ -81,6 +91,9 @@ const ContentJob: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     setMeta((prev) => ({ ...prev, page }));
+    const params = new URLSearchParams(location.search);
+    params.set("page", String(page));
+    navigate({ pathname: location.pathname, search: params.toString() });
     setTimeout(() => {
       if (topRef.current) {
         window.scrollTo({ top: topRef.current.offsetTop, behavior: 'smooth' });
