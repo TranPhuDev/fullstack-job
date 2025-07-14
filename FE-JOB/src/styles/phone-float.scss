@@ -1,0 +1,35 @@
+.phone-float-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 9999;
+  background: #25d366;
+  color: #fff;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  animation: shake 1.2s infinite;
+  transition: background 0.2s;
+}
+.phone-float-btn:hover {
+  background: #128c7e;
+  color: #fff;
+}
+
+@keyframes shake {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(-15deg); }
+  20% { transform: rotate(10deg); }
+  30% { transform: rotate(-10deg); }
+  40% { transform: rotate(6deg); }
+  50% { transform: rotate(-4deg); }
+  60% { transform: rotate(4deg); }
+  70% { transform: rotate(-2deg); }
+  80% { transform: rotate(2deg); }
+  90% { transform: rotate(-1deg); }
+  100% { transform: rotate(0deg); }
+} 
