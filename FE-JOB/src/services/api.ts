@@ -259,3 +259,18 @@ export const callFetchSubscriber = (query: string) => {
 export const callFetchSubscriberById = (id: string) => {
     return axios.get<IBackendRes<ISubscribers>>(`/api/v1/subscribers/${id}`);
 }
+
+// Hủy đăng ký nhận mail
+export const callUnsubscribeSubscriber = (email: string) => {
+    return axios.put(`/api/v1/subscribers/unsubscribe?email=${email}`);
+}
+
+// Đăng ký lại nhận mail
+export const callResubscribeSubscriber = () => {
+    return axios.put('/api/v1/subscribers/resubscribe');
+}
+
+// Gửi mail cho user hiện tại
+export const callSendMailToCurrentUser = () => {
+    return axios.get<IBackendRes<IAccount>>('/api/v1/email');
+}

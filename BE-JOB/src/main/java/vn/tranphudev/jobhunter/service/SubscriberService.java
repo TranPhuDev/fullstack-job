@@ -83,26 +83,19 @@ public class SubscriberService {
         return res;
     }
 
-    public void sendSubscribersEmailJobs() {
-        List<Subscriber> listSubs = this.subscriberRepository.findAll();
-        if (listSubs != null && listSubs.size() > 0) {
-            for (Subscriber sub : listSubs) {
-                List<Skill> listSkills = sub.getSkills();
-                if (listSkills != null && listSkills.size() > 0) {
-                    List<Job> listJobs = this.jobRepository.findBySkillsIn(listSkills);
-                    if (listJobs != null && listJobs.size() > 0) {
-
-                        List<ResEmailJob> arr = listJobs.stream().map(
-                                job -> this.convertJobToSendEmail(job)).collect(Collectors.toList());
-
-                        this.emailService.sendEmailFromTemplateSync(
-                                sub.getEmail(),
-                                "Cơ hội việc làm hot đang chờ đón bạn, khám phá ngay",
-                                "job",
-                                sub.getName(),
-                                arr);
-                    }
-                }
+    public void sendSubscribersEmailJobsForOne(Subscriber sub) {
+        List<Skill> listSkills = sub.getSkills();
+        if (listSkills != null && listSkills.size() > 0) {
+            List<Job> listJobs = this.jobRepository.findBySkillsIn(listSkills);
+            if (listJobs != null && listJobs.size() > 0) {
+                List<ResEmailJob> arr = listJobs.stream().map(
+                        job -> this.convertJobToSendEmail(job)).collect(Collectors.toList());
+                this.emailService.sendEmailFromTemplateSync(
+                        sub.getEmail(),
+                        "Cơ hội việc làm hot đang chờ đón bạn, khám phá ngay",
+                        "job",
+                        sub.getName(),
+                        arr);
             }
         }
     }
@@ -111,4 +104,13 @@ public class SubscriberService {
         return this.subscriberRepository.findByEmail(email);
     }
 
+    // Gửi mail cho tất cả subscriber nhận mail
+    public void sendSubscribersEmailJobs() {
+        List<Subscriber> listSubs = this.subscriberRepository.findByReceiveEmailTrue();
+        if (listSubs != null && listSubs.size() > 0) {
+            for (Subscriber sub : listSubs) {
+                sendSubscribersEmailJobsForOne(sub);
+            }
+        }
+    }
 }

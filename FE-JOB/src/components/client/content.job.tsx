@@ -16,7 +16,7 @@ import LikeModal from "./modal.like";
 dayjs.extend(relativeTime);
 
 const ContentJob: React.FC = () => {
-  const { filter } = useCurrentApp();
+  const { filter, user } = useCurrentApp();
   const [jobs, setJobs] = useState<IJob[]>([]);
   const [selectedJob, setSelectedJob] = useState<IJob | null>(null);
   const [meta, setMeta] = useState({ page: 1, pageSize: 10, total: 0 });
@@ -168,7 +168,11 @@ const ContentJob: React.FC = () => {
                     </div>
                     <div className={styles.attractive} style={{ display: 'flex', alignItems: 'center' }}>
                       <AiOutlineDollarCircle style={{ fontSize: 22, marginRight: 8 }} />
-                      <span style={{ lineHeight: 1 }}> {job.salary ? job.salary.toLocaleString('vi-VN') + ' đ' : ''}</span>
+                      {user ? (
+                        <span style={{ lineHeight: 1 }}>You'll love it - {job.salary ? job.salary.toLocaleString('vi-VN') + ' đ' : ''}</span>
+                      ) : (
+                        <span style={{ lineHeight: 1, fontWeight: 500, cursor: 'pointer' }} >Đăng nhập để xem mức lương</span>
+                      )}
                     </div>
                     <div className={styles.horizontal}></div>
                     <div className={styles.jobMeta}>

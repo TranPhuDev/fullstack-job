@@ -41,6 +41,7 @@ public class Subscriber {
     @JoinTable(name = "subscriber_skill", joinColumns = @JoinColumn(name = "subscriber_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills;
 
+    private boolean receiveEmail = true; // Mặc định nhận mail khi đăng ký
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;

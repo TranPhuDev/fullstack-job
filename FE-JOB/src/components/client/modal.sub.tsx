@@ -1,7 +1,8 @@
 import { App, Button, Col, Form, Modal, Row, Select, Tabs, TabsProps } from "antd";
 import { useCurrentApp } from "../context/app.context";
 import { useEffect, useState } from "react";
-import { callCreateSubscriber, callFetchAllSkill, callGetSubscriberSkills, callUpdateSubscriber } from "@/services/api";
+import { callCreateSubscriber, callFetchAllSkill, callGetSubscriberSkills, callUpdateSubscriber, callSendMailToCurrentUser, callUnsubscribeSubscriber, callResubscribeSubscriber } from "@/services/api";
+import axios from "axios";
 import { MonitorOutlined } from "@ant-design/icons";
 
 
@@ -30,12 +31,8 @@ const JobByEmail = (props: any) => {
             if (res && res.data) {
                 setSubscriber(res.data);
                 const d = res.data.skills;
-                const arr = d.map((item: any) => {
-                    return {
-                        label: item.name as string,
-                        value: item.id + "" as string
-                    }
-                });
+                // Chỉ set mảng id cho form
+                const arr = d.map((item: any) => item.id + "");
                 form.setFieldValue("skills", arr);
             }
         }
@@ -57,53 +54,90 @@ const JobByEmail = (props: any) => {
         }
     }
 
+    // Hàm gửi mail và hiện notification
+    const sendMailAndNotify = async () => {
+        const mailRes = await callSendMailToCurrentUser();
+        if (mailRes && mailRes.data) {
+            setTimeout(() => {
+                notification.success({ message: 'Vui lòng kiểm tra gmail' });
+            }, 4000);
+        } else {
+            notification.error({
+                message: 'Gửi mail thất bại, email đăng kí không tồn tại!',
+                description: mailRes?.message || 'Có lỗi khi gửi mail.'
+            });
+        }
+    };
+
     const onFinish = async (values: any) => {
         const { skills } = values;
+        const arr = skills?.map((item: any) => ({ id: typeof item === "object" && item.id ? item.id : item }));
 
-        const arr = skills?.map((item: any) => {
-            if (item?.id) return { id: item.id };
-            return { id: item }
-        });
-
+        // 1. Chưa từng đăng ký
         if (!subscriber?.id) {
-            //create subscriber
             const data = {
                 email: user?.email,
                 name: user?.name,
                 skills: arr
-            }
-
+            };
             const res = await callCreateSubscriber(data);
             if (res.data) {
-                message.success("Cập nhật thông tin thành công");
+                message.success("Đăng ký thành công");
                 setSubscriber(res.data);
+                await sendMailAndNotify();
             } else {
-                notification.error({
-                    message: 'Có lỗi xảy ra',
-                    description: res.message
-                });
+                notification.error({ message: 'Có lỗi xảy ra', description: res.message });
             }
-
-
-        } else {
-            //update subscriber
-            const res = await callUpdateSubscriber({
-                id: subscriber?.id,
-                skills: arr
-            });
-            if (res.data) {
-                message.success("Cập nhật thông tin thành công");
-                setSubscriber(res.data);
-            } else {
-                notification.error({
-                    message: 'Có lỗi xảy ra',
-                    description: res.message
-                });
-            }
+            return;
         }
 
+        // 2. Đã đăng ký nhưng đã hủy nhận mail => Đăng ký lại + cập nhật skill
+        if (subscriber.receiveEmail === false) {
+            // Đăng ký lại
+            const resub = await callResubscribeSubscriber();
+            if (resub && resub.data) {
+                // Cập nhật skill sau khi đăng ký lại
+                const res = await callUpdateSubscriber({ id: subscriber.id, skills: arr });
+                if (res.data) {
+                    message.success("Đăng ký và cập nhật kỹ năng thành công");
+                    setSubscriber({ ...res.data, receiveEmail: true });
+                    await sendMailAndNotify();
+                } else {
+                    notification.error({ message: 'Cập nhật kỹ năng thất bại', description: res.message });
+                }
+            } else {
+                notification.error({ message: "Đăng ký thất bại!" });
+            }
+            return;
+        }
 
-    }
+        // 3. Đã đăng ký và đang nhận mail (cập nhật skill)
+        const res = await callUpdateSubscriber({ id: subscriber.id, skills: arr });
+        if (res.data) {
+            message.success("Cập nhật thông tin thành công");
+            setSubscriber(res.data);
+            await sendMailAndNotify();
+        } else {
+            notification.error({ message: 'Có lỗi xảy ra', description: res.message });
+        }
+    };
+
+    const handleUnsubscribe = async () => {
+        if (!user?.email) return;
+        try {
+            const res = await callUnsubscribeSubscriber(user.email);
+            if (res && res.data) {
+                notification.success({ message: "Đã hủy đăng ký nhận mail thành công!" });
+                setSubscriber({ ...subscriber, receiveEmail: false } as any);
+            } else {
+                notification.error({ message: "Hủy đăng ký thất bại!" });
+            }
+        } catch (e) {
+            notification.error({ message: "Hủy đăng ký thất bại!" });
+        }
+    };
+
+
     return (
         <>
             <Form
@@ -135,6 +169,11 @@ const JobByEmail = (props: any) => {
                     </Col>
                     <Col span={24}>
                         <Button onClick={() => form.submit()}>Đăng ký</Button>
+                        {subscriber?.receiveEmail !== false && (
+                            <Button danger style={{ marginLeft: 12 }} onClick={handleUnsubscribe}>
+                                Hủy đăng ký
+                            </Button>
+                        )}
                     </Col>
                 </Row>
             </Form>

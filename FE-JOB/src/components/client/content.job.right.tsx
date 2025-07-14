@@ -23,12 +23,19 @@ const ContentJobRight: React.FC<ContentJobRightProps> = ({
   isAuthenticated,
   setShowLikeModal,
 }) => {
-  const { likedJobs, toggleLikeJob } = useCurrentApp();
+  const { likedJobs, toggleLikeJob, user } = useCurrentApp();
   const isJobLiked = selectedJob && likedJobs.some(j => j.id === selectedJob.id);
   const { notification } = App.useApp();
 
   const handleLikeJob = () => {
     if (!selectedJob) return;
+    if (!user) {
+      notification.warning({
+        message: 'Bạn cần đăng nhập để sử dụng tính năng này',
+        duration: 2
+      });
+      return;
+    }
     if (!isJobLiked) {
       toggleLikeJob(selectedJob);
       notification.success({
@@ -75,11 +82,15 @@ const ContentJobRight: React.FC<ContentJobRightProps> = ({
               <div className={styles.detailCompany}>{selectedJob.company?.name}</div>
               <div className={styles.attractive} style={{ display: 'flex', alignItems: 'center' }}>
                 <AiOutlineDollarCircle style={{ fontSize: 22, marginRight: 8 }} />
-                <span style={{ lineHeight: 1 }}>
-                  {isAuthenticated
-                    ? `You'll love it - ${selectedJob.salary ? selectedJob.salary.toLocaleString('vi-VN') + ' đ' : ''}`
-                    : "Đăng nhập để xem mức lương"}
-                </span>
+                {user ? (
+                  <span style={{ lineHeight: 1 }}>
+                    You'll love it - {selectedJob.salary ? selectedJob.salary.toLocaleString('vi-VN') + ' đ' : ''}
+                  </span>
+                ) : (
+                  <span style={{ lineHeight: 1, fontWeight: 500, cursor: 'pointer' }} onClick={() => window.location.href = '/client/auth/login'}>
+                    Đăng nhập để xem mức lương
+                  </span>
+                )}
               </div>
             </div>
           </div>

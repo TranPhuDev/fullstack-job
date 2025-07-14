@@ -14,4 +14,6 @@ public interface SubscriberRepository extends JpaRepository<Subscriber, Long>,
 
     Subscriber findByEmail(String email);
 
+    // Lấy danh sách subscriber có nhận mail
+    java.util.List<Subscriber> findByReceiveEmailTrue();
 }

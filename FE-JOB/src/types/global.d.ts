@@ -210,11 +210,12 @@ declare global {
         id?: string;
         name?: string;
         email?: string;
-        skills: string[];
+        skills: { id: string }[];
         createdBy?: string;
         isDeleted?: boolean;
         deletedAt?: boolean | null;
         createdAt?: string;
         updatedAt?: string;
+        receiveEmail?: boolean;
     }
 }
