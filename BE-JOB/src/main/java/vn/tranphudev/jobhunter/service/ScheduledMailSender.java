@@ -12,7 +12,7 @@ public class ScheduledMailSender {
         this.subscriberService = subscriberService;
     }
 
-    @Scheduled(fixedRate = 10 * 60 * 1000)
+    @Scheduled(cron = "0 0 8 */5 * *")
     @Transactional
     public void sendMailToAllSubscribers() {
         subscriberService.sendSubscribersEmailJobs();
