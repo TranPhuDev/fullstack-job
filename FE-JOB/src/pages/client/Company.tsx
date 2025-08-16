@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { callFetchCompany } from '@/services/api';
 import styles from '@/styles/Company.module.scss';
 import { useNavigate } from 'react-router-dom';
+import { FiArrowLeft } from 'react-icons/fi';
 
 function getFirstLineFromHtml(html: string): string {
     // Tách theo <br> hoặc \n hoặc kết thúc thẻ block
@@ -44,6 +45,17 @@ const ClientCompanyPage = () => {
 
     return (
         <div className={styles.companyWrapper}>
+            {/* Nút Quay lại trang chủ */}
+            <div className={styles.backButtonContainer}>
+                <button
+                    onClick={() => navigate('/')}
+                    className={styles.backButton}
+                >
+                    <FiArrowLeft size={16} />
+                    Quay lại trang chủ
+                </button>
+            </div>
+
             <h2 className={styles.companyTitle}>Danh sách công ty IT tốt nhất 2025</h2>
             {companies.map((company, idx) => (
                 <div key={company.id} className={styles.companyItem}>

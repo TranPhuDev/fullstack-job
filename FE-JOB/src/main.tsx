@@ -10,6 +10,7 @@ import AboutPage from '@/pages/client/Company.detail';
 import LoginPage from 'pages/client/auth/login';
 import RegisterPage from 'pages/client/auth/register';
 import 'styles/global.scss'
+import 'styles/responsive.scss'
 import HomePage from 'pages/client/home';
 import { App, ConfigProvider } from 'antd';
 import { AppProvider } from 'components/context/app.context';

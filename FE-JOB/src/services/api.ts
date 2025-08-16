@@ -126,6 +126,11 @@ export const callFetchAllSkill = (query: string) => {
     return axios.get<IBackendRes<IModelPaginate<ISkill>>>(`/api/v1/skills?${query}`);
 }
 
+// Fetch all skills without pagination for job management
+export const callFetchAllSkillsForJob = () => {
+    return axios.get<IBackendRes<ISkill[]>>(`/api/v1/skills/all`);
+}
+
 //Module Job
 export const callCreateJob = (job: IJob) => {
     return axios.post<IBackendRes<IJob>>('/api/v1/jobs', { ...job })

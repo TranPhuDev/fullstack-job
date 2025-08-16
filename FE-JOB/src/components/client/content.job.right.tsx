@@ -12,16 +12,16 @@ interface ContentJobRightProps {
   selectedJob: IJob | null;
   setJobDetail: (job: IJob | null) => void;
   setIsModalOpen: (open: boolean) => void;
-  isAuthenticated: boolean;
   setShowLikeModal?: (open: boolean) => void; // Thêm props để mở modal like
+  isDetailPage?: boolean; // Thêm prop để xác định khi nào đang ở trang chi tiết
 }
 
 const ContentJobRight: React.FC<ContentJobRightProps> = ({
   selectedJob,
   setJobDetail,
   setIsModalOpen,
-  isAuthenticated,
   setShowLikeModal,
+  isDetailPage = false, // Mặc định là false
 }) => {
   const { likedJobs, toggleLikeJob, user } = useCurrentApp();
   const isJobLiked = selectedJob && likedJobs.some(j => j.id === selectedJob.id);
@@ -60,7 +60,7 @@ const ContentJobRight: React.FC<ContentJobRightProps> = ({
     }
   };
   return (
-    <div className={styles.detailWrapper}>
+    <div className={`${styles.detailWrapper} ${isDetailPage ? styles['job-detail-page'] : ''}`}>
       {selectedJob && (
         <>
           <div className={styles.detailHeaderRow}>

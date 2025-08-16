@@ -1,11 +1,12 @@
 import ContentJobRight from "@/components/client/content.job.right";
 import { callFetchJobById } from "@/services/api";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useCurrentApp } from "@/components/context/app.context";
 import styles from "../../styles/job.detail.module.scss";
 import ApplyModal from "@/components/client/modal.apply";
 import LikeModal from "@/components/client/modal.like";
+import { FiArrowLeft } from "react-icons/fi";
 
 type CompanyFull = {
     id: string;
@@ -28,10 +29,22 @@ const ClientDetailJobPage = () => {
     const [rating, setRating] = useState(() => (Math.random() * 2 + 3).toFixed(1));
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [showLikeModal, setShowLikeModal] = useState(false);
+    const [isMobile, setIsMobile] = useState<boolean>(false);
+    const navigate = useNavigate();
+
     const randomRating = () => {
         const newRating = (Math.random() * 2 + 3).toFixed(1);
         setRating(newRating);
     };
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     useEffect(() => {
         const init = async () => {
@@ -48,18 +61,44 @@ const ClientDetailJobPage = () => {
     return (
         <div className={`${styles.containerJob}`}>
             <div className="container">
+                {/* Back Button - Hiển thị rõ ràng trên mobile */}
+                {isMobile && (
+                    <div style={{ marginBottom: "16px", marginTop: "16px" }}>
+                        <button
+                            onClick={() => navigate(-1)}
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "8px",
+                                padding: "8px 16px",
+                                border: "1px solid #ddd",
+                                borderRadius: "6px",
+                                background: "white",
+                                cursor: "pointer",
+                                fontSize: "14px",
+                                color: "#333"
+                            }}
+                        >
+                            <FiArrowLeft size={16} />
+                            Quay lại
+                        </button>
+                    </div>
+                )}
                 <div className="row">
-                    <div className="col-8 mt-3 pb-5">
+                    {/* Job Detail - Full width on mobile, col-8 on desktop */}
+                    <div className={isMobile ? "col-12" : "col-8"} style={{ marginTop: isMobile ? "12px" : "12px" }}>
                         <ContentJobRight
                             selectedJob={jobDetail}
                             setJobDetail={setJobDetail}
                             setIsModalOpen={setIsModalOpen}
-                            isAuthenticated={isAuthenticated}
                             setShowLikeModal={setShowLikeModal}
+                            isDetailPage={true}
                         />
                     </div>
-                    <div className="col-4 pb-5">
-                        {jobDetail?.company && (
+
+                    {/* Company Card - Full width on mobile, col-4 on desktop */}
+                    {jobDetail?.company && (
+                        <div className={isMobile ? "col-12" : "col-4"} style={{ paddingBottom: isMobile ? "20px" : "20px" }}>
                             <div className={styles.companyCard}>
                                 <div className={styles.companyHeader}>
                                     <img
@@ -127,8 +166,8 @@ const ClientDetailJobPage = () => {
                                     <span>{(jobDetail.company as CompanyFull).overTime || "N/A"}</span>
                                 </div>
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
             </div>
             <ApplyModal

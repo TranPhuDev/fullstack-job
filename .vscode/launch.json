@@ -5,6 +5,13 @@
       "name": "JobhunterApplication",
       "request": "launch",
       "mainClass": "vn.tranphudev.jobhunter.JobhunterApplication",
+      "projectName": "BE-JOB"
+    },
+    {
+      "type": "java",
+      "name": "JobhunterApplication",
+      "request": "launch",
+      "mainClass": "vn.tranphudev.jobhunter.JobhunterApplication",
       "projectName": "BE"
     },
     {

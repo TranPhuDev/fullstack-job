@@ -1,0 +1,180 @@
+// Responsive cho phần Rải CV
+.resumeTableWrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.resumeTable {
+    min-width: 600px; // Đảm bảo table có đủ không gian trên desktop
+}
+
+// Responsive cho mobile
+@media (max-width: 768px) {
+    .resumeTable {
+        min-width: 100%;
+
+        // Ẩn một số cột trên mobile để tiết kiệm không gian
+        .ant-table-thead>tr>th:nth-child(1),
+        // STT
+        .ant-table-tbody>tr>td:nth-child(1) {
+            display: none;
+        }
+
+        // Giảm padding cho các cell
+        .ant-table-thead>tr>th,
+        .ant-table-tbody>tr>td {
+            padding: 8px 4px;
+            font-size: 12px;
+        }
+
+        // Cột Công ty
+        .ant-table-thead>tr>th:nth-child(2),
+        .ant-table-tbody>tr>td:nth-child(2) {
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        // Cột Job title
+        .ant-table-thead>tr>th:nth-child(3),
+        .ant-table-tbody>tr>td:nth-child(3) {
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        // Cột Trạng thái
+        .ant-table-thead>tr>th:nth-child(4),
+        .ant-table-tbody>tr>td:nth-child(4) {
+            max-width: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        // Cột Ngày rải CV
+        .ant-table-thead>tr>th:nth-child(5),
+        .ant-table-tbody>tr>td:nth-child(5) {
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 11px;
+        }
+
+        // Cột Chi tiết
+        .ant-table-thead>tr>th:nth-child(6),
+        .ant-table-tbody>tr>td:nth-child(6) {
+            max-width: 60px;
+            text-align: center;
+        }
+    }
+}
+
+// Responsive cho mobile nhỏ
+@media (max-width: 480px) {
+    .resumeTable {
+
+        .ant-table-thead>tr>th,
+        .ant-table-tbody>tr>td {
+            padding: 6px 2px;
+            font-size: 11px;
+        }
+
+        // Cột Công ty
+        .ant-table-thead>tr>th:nth-child(2),
+        .ant-table-tbody>tr>td:nth-child(2) {
+            max-width: 100px;
+        }
+
+        // Cột Job title
+        .ant-table-thead>tr>th:nth-child(3),
+        .ant-table-tbody>tr>td:nth-child(3) {
+            max-width: 80px;
+        }
+
+        // Cột Trạng thái
+        .ant-table-thead>tr>th:nth-child(4),
+        .ant-table-tbody>tr>td:nth-child(4) {
+            max-width: 60px;
+        }
+
+        // Cột Ngày rải CV
+        .ant-table-thead>tr>th:nth-child(5),
+        .ant-table-tbody>tr>td:nth-child(5) {
+            max-width: 80px;
+            font-size: 10px;
+        }
+
+        // Cột Chi tiết
+        .ant-table-thead>tr>th:nth-child(6),
+        .ant-table-tbody>tr>td:nth-child(6) {
+            max-width: 50px;
+        }
+    }
+}
+
+// Responsive cho Modal
+@media (max-width: 768px) {
+    .manageAccountModal {
+        .ant-modal {
+            width: 95% !important;
+            max-width: 95%;
+            margin: 10px;
+        }
+
+        .ant-modal-content {
+            padding: 16px;
+        }
+
+        .ant-modal-header {
+            padding: 12px 16px;
+        }
+
+        .ant-modal-title {
+            font-size: 16px;
+        }
+
+        .ant-tabs-tab {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .ant-tabs-content-holder {
+            padding: 12px 0;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .manageAccountModal {
+        .ant-modal {
+            width: 98% !important;
+            max-width: 98%;
+            margin: 5px;
+        }
+
+        .ant-modal-content {
+            padding: 12px;
+        }
+
+        .ant-modal-header {
+            padding: 10px 12px;
+        }
+
+        .ant-modal-title {
+            font-size: 14px;
+        }
+
+        .ant-tabs-tab {
+            padding: 6px 8px;
+            font-size: 12px;
+        }
+
+        .ant-tabs-content-holder {
+            padding: 8px 0;
+        }
+    }
+}

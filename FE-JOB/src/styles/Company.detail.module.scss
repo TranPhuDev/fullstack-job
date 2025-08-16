@@ -4,6 +4,39 @@
   padding: 32px 16px;
 }
 
+// Nút Quay lại
+.backButtonContainer {
+  margin-bottom: 24px;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.backButton:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.backButton:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
 .companyDetailHeader {
   display: flex;
   align-items: center;
@@ -78,17 +111,209 @@
   font-size: 17px;
 }
 
+// Responsive cho tablet
+@media (max-width: 900px) {
+  .companyDetailWrapper {
+    padding: 24px 16px;
+  }
+
+  .backButtonContainer {
+    margin-bottom: 20px;
+  }
+
+  .backButton {
+    padding: 10px 18px;
+    font-size: 13px;
+  }
+
+  .companyDetailHeader {
+    margin-bottom: 24px;
+  }
+
+  .companyDetailLogo {
+    width: 100px;
+    height: 100px;
+    margin-right: 24px;
+  }
+
+  .companyDetailName {
+    font-size: 28px;
+  }
+
+  .companyDetailAddress {
+    font-size: 16px;
+  }
+
+  .companyDetailSection {
+    margin-bottom: 20px;
+  }
+
+  .companyDetailSectionTitle {
+    font-size: 17px;
+  }
+
+  .companyDetailDesc {
+    font-size: 15px;
+  }
+
+  .companyDetailInfoRow {
+    gap: 32px;
+  }
+
+  .companyDetailInfoBlock {
+    min-width: 160px;
+  }
+}
+
+// Responsive cho mobile
 @media (max-width: 700px) {
+  .companyDetailWrapper {
+    padding: 20px 12px;
+  }
+
+  .backButtonContainer {
+    margin-bottom: 16px;
+    text-align: left;
+  }
+
+  .backButton {
+    padding: 10px 16px;
+    font-size: 13px;
+    margin: 0;
+  }
+
   .companyDetailHeader {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     gap: 16px;
+    margin-bottom: 20px;
   }
+
   .companyDetailLogo {
+    width: 90px;
+    height: 90px;
     margin-right: 0;
-    margin-bottom: 12px;
+    margin-bottom: 0;
   }
+
+  .companyDetailName {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .companyDetailAddress {
+    font-size: 15px;
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  .companyDetailSection {
+    margin-bottom: 18px;
+  }
+
+  .companyDetailSectionTitle {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .companyDetailDesc {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .companyDetailInfoRow {
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .companyDetailInfoBlock {
+    min-width: 140px;
+    text-align: center;
+  }
+
+  .companyDetailInfoLabel {
+    font-size: 14px;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .companyDetailInfoValue {
+    font-size: 16px;
+  }
+}
+
+// Responsive cho mobile nhỏ
+@media (max-width: 480px) {
+  .companyDetailWrapper {
+    padding: 16px 8px;
+  }
+
+  .backButtonContainer {
+    margin-bottom: 12px;
+    text-align: left;
+  }
+
+  .backButton {
+    padding: 8px 14px;
+    font-size: 12px;
+    width: auto;
+    max-width: none;
+  }
+
+  .companyDetailHeader {
+    margin-bottom: 16px;
+    gap: 12px;
+  }
+
+  .companyDetailLogo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .companyDetailName {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .companyDetailAddress {
+    font-size: 14px;
+    margin-top: 4px;
+  }
+
+  .companyDetailSection {
+    margin-bottom: 16px;
+  }
+
+  .companyDetailSectionTitle {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  .companyDetailDesc {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
   .companyDetailInfoRow {
     gap: 16px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .companyDetailInfoBlock {
+    min-width: 120px;
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .companyDetailInfoLabel {
+    font-size: 13px;
+    margin-bottom: 3px;
+  }
+
+  .companyDetailInfoValue {
+    font-size: 15px;
   }
 }

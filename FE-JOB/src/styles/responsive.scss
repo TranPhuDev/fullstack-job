@@ -1,0 +1,696 @@
+// Responsive breakpoints
+// Mobile styles
+@media (max-width: 768px) {
+  // Hide elements on mobile
+  .featuredEmployerOverlap {
+    display: none !important;
+  }
+  
+  // Adjust container padding
+  .container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  
+  // Adjust grid system
+  .row {
+    margin-left: -6px !important;
+    margin-right: -6px !important;
+  }
+  
+  .col-12,
+  .col-5,
+  .col-7,
+  .col-8,
+  .col-4 {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+  
+  // Hide navigation menu
+  .menu {
+    display: none !important;
+  }
+  
+  // Adjust header
+  .header {
+    padding: 0 16px !important;
+    height: 50px !important;
+  }
+  
+  .logo {
+    height: 100px !important;
+  }
+  
+  .brand {
+    font-size: 20px !important;
+  }
+  
+  // Adjust search form
+  .searchForm {
+    margin-bottom: 60px !important;
+    padding: 0 16px !important;
+  }
+  
+  .inputGroup {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  
+  .selectWrapper,
+  .searchInput,
+  .searchBtn {
+    width: 100% !important;
+    height: 50px !important;
+    border-radius: 10px !important;
+  }
+  
+  // Enhanced search input styles for mobile
+  .selectWrapper {
+    border: 2px solid #e0e0e0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  .selectWrapper:hover {
+    border-color: #887f6c !important;
+    box-shadow: 0 6px 16px rgba(136, 127, 108, 0.15) !important;
+  }
+  
+  .searchInput {
+    border: 2px solid #e0e0e0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  .searchInput:focus {
+    border-color: #887f6c !important;
+    box-shadow: 0 6px 16px rgba(136, 127, 108, 0.15), 0 0 0 3px rgba(136, 127, 108, 0.1) !important;
+    background: #fff !important;
+  }
+  
+  .searchBtn {
+    background: linear-gradient(135deg, #887f6c 0%, #645e4f 100%) !important;
+    box-shadow: 0 4px 12px rgba(136, 127, 108, 0.3) !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+  }
+  
+  .searchBtn::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+    transition: left 0.5s !important;
+  }
+  
+  .searchBtn:hover {
+    background: linear-gradient(135deg, #645e4f 0%, #4a4539 100%) !important;
+    box-shadow: 0 6px 20px rgba(136, 127, 108, 0.4) !important;
+    transform: translateY(-1px) !important;
+  }
+  
+  .searchBtn:hover::before {
+    left: 100% !important;
+  }
+  
+  .searchBtn:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(136, 127, 108, 0.3) !important;
+  }
+  
+  // Hide job detail and show job list on mobile
+  .detailWrapper {
+    display: none !important;
+  }
+  
+  // Hiển thị job detail trên mobile khi ở trang chi tiết job
+  .detailWrapper.job-detail-page {
+    display: block !important;
+    position: static !important;
+    top: auto !important;
+    background: #fff !important;
+    padding: 16px !important;
+    border-radius: 12px !important;
+    min-height: auto !important;
+    margin-bottom: 16px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  .detailWrapper.job-detail-page .detailTitle {
+    font-size: 18px !important;
+    margin-bottom: 6px !important;
+  }
+  
+  .detailWrapper.job-detail-page .detailCompany {
+    font-size: 16px !important;
+    margin-bottom: 6px !important;
+  }
+  
+  .detailWrapper.job-detail-page .detailHeaderRow {
+    gap: 12px !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .detailWrapper.job-detail-page .companyLogo {
+    width: 80px !important;
+    height: 80px !important;
+    font-size: 1.5rem !important;
+  }
+  
+  .detailWrapper.job-detail-page .applyBtn {
+    height: 48px !important;
+    font-size: 1rem !important;
+    margin: 16px 0 12px 0 !important;
+  }
+  
+  .detailWrapper.job-detail-page .applyRow {
+    gap: 10px !important;
+    margin: 16px 0 12px 0 !important;
+  }
+  
+  .detailWrapper.job-detail-page .heartBtn {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .detailWrapper.job-detail-page .detailDesc {
+    font-size: 14px !important;
+    margin-top: 12px !important;
+  }
+  
+  .detailWrapper.job-detail-page .reasonTitle {
+    font-size: 1.3rem !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .detailWrapper.job-detail-page .reasonList li {
+    font-size: 1rem !important;
+    margin-bottom: 10px !important;
+  }
+  
+  // Adjust job list for mobile
+  .jobListWrapper {
+    gap: 12px !important;
+    padding: 4px 0 !important;
+  }
+  
+  .jobItem {
+    padding: 12px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+    border: 1px solid #e0e0e0 !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  .jobItem:hover {
+    border-color: #ff424e !important;
+    background: #fff6f7 !important;
+    box-shadow: 0 4px 16px rgba(255, 66, 78, 0.15) !important;
+    transform: translateY(-1px) !important;
+  }
+  
+  .jobItem.selected {
+    border-color: #ff424e !important;
+    background: #fff6f7 !important;
+    box-shadow: 0 4px 16px rgba(255, 66, 78, 0.2) !important;
+  }
+  
+  // TimePost positioning - đẩy lên trên
+  .timePost {
+    top: -6px !important;
+    left: 12px !important;
+    font-size: 11px !important;
+    padding: 1px 6px !important;
+    border-radius: 3px !important;
+    background: #fff !important;
+    border: 1px solid #e0e0e0 !important;
+    z-index: 3 !important;
+  }
+  
+  // Hot tag and super hot tag positioning
+  .hotTag,
+  .superHotTag {
+    right: 0 !important;
+    top: 0 !important;
+    font-size: 11px !important;
+    padding: 3px 8px !important;
+    border-radius: 0 10px 0 10px !important;
+  }
+  
+  .jobTitle {
+    font-size: 15px !important;
+    margin-bottom: 8px !important;
+    padding-right: 70px !important; /* Để tránh bị che bởi hot tag */
+    margin-top: 6px !important; /* Để tạo khoảng cách với timePost */
+  }
+  
+  .jobCompany {
+    font-size: 13px !important;
+  }
+  
+  .tag {
+    font-size: 11px !important;
+    padding: 1px 6px !important;
+  }
+  
+  .attractive {
+    font-size: 13px !important;
+  }
+  
+  .jobMeta {
+    margin-top: 8px !important;
+  }
+  
+  .jobTitleRow {
+    font-size: 1rem !important;
+  }
+  
+  .jobInfoRow {
+    font-size: 0.95rem !important;
+  }
+  
+  .jobLink {
+    font-size: 13px !important;
+  }
+  
+  .metaIcon {
+    font-size: 14px !important;
+  }
+  
+  .boldGray,
+  .grayText {
+    font-size: 13px !important;
+  }
+  
+  // Adjust pagination
+  .paginationWrapper {
+    gap: 6px !important;
+  }
+  
+  .pageBtn {
+    min-width: 36px !important;
+    height: 36px !important;
+  }
+  
+  // Footer responsive styles
+  .app-footer {
+    padding: 24px 0 0 0 !important;
+    font-size: 14px !important;
+    
+    .footer-container {
+      padding: 0 16px 16px 16px !important;
+      gap: 20px 0 !important;
+    }
+    
+    .footer-col {
+      margin-bottom: 12px !important;
+      text-align: center !important;
+      
+      ul {
+        margin: 8px 0 0 0 !important;
+        text-align: center !important; // Căn giữa toàn bộ danh sách
+        
+        li {
+          margin-bottom: 8px !important;
+          text-align: center !important; // Căn giữa từng item
+          
+          a {
+            font-size: 14px !important;
+            line-height: 1.4 !important;
+            display: inline-block !important; // Để căn giữa hoạt động tốt hơn
+          }
+        }
+      }
+    }
+    
+    .logo-col {
+      margin-bottom: 16px !important;
+      align-items: center !important;
+      text-align: center !important;
+      
+      .footer-logo {
+        margin-bottom: 8px !important;
+        justify-content: center !important;
+      }
+      
+      .footer-slogan {
+        font-size: 1rem !important;
+        margin-bottom: 16px !important;
+        margin-left: 0 !important;
+        text-align: center !important;
+      }
+      
+      .footer-social {
+        justify-content: center !important;
+        margin-left: 0 !important;
+        gap: 16px !important;
+        
+        .footer-social-icon {
+          width: 40px !important;
+          height: 40px !important;
+          
+          svg {
+            width: 24px !important;
+            height: 24px !important;
+          }
+        }
+      }
+    }
+    
+    .footer-title {
+      font-size: 1rem !important;
+      margin-bottom: 6px !important;
+      text-align: center !important;
+    }
+    
+    .contact-col {
+      .footer-contact-list {
+        margin-top: 8px !important;
+        text-align: center !important; // Căn giữa danh sách contact
+        
+        li {
+          margin-bottom: 8px !important;
+          font-size: 14px !important;
+          line-height: 1.4 !important;
+          justify-content: center !important;
+          text-align: center !important;
+          
+          .footer-contact-icon {
+            margin-right: 6px !important;
+            font-size: 1em !important;
+          }
+          
+          a {
+            font-size: 14px !important;
+          }
+        }
+      }
+    }
+    
+    .footer-bottom {
+      margin-top: 12px !important;
+      padding: 12px 0 6px 0 !important;
+      font-size: 0.9em !important;
+      flex-direction: column !important;
+      gap: 8px !important;
+      
+      span {
+        display: block !important;
+        
+        &:nth-child(2) {
+          display: none !important; // Ẩn dấu "|" trên mobile
+        }
+      }
+    }
+  }
+  
+  .footer-logo-img {
+    width: 120px !important;
+  }
+}
+
+// Small mobile styles
+@media (max-width: 480px) {
+  .container {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  
+  .row {
+    margin-left: -4px !important;
+    margin-right: -4px !important;
+  }
+  
+  .col-12,
+  .col-5,
+  .col-7,
+  .col-8,
+  .col-4 {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  
+  .header {
+    padding: 0 12px !important;
+    height: 48px !important;
+  }
+  
+  .logo {
+    height: 90px !important;
+  }
+  
+  .brand {
+    font-size: 18px !important;
+  }
+  
+  .searchForm {
+    margin-bottom: 40px !important;
+    padding: 0 12px !important;
+  }
+  
+  .selectWrapper,
+  .searchInput,
+  .searchBtn {
+    height: 48px !important;
+    border-radius: 8px !important;
+  }
+  
+  .jobItem {
+    padding: 10px !important;
+    border-radius: 8px !important;
+  }
+  
+  .timePost {
+    top: -5px !important;
+    left: 10px !important;
+    font-size: 10px !important;
+    padding: 1px 5px !important;
+    border-radius: 2px !important;
+  }
+  
+  .jobTitle {
+    font-size: 14px !important;
+    padding-right: 60px !important; /* Để tránh bị che bởi hot tag */
+    margin-top: 5px !important; /* Để tạo khoảng cách với timePost */
+  }
+  
+  .hotTag,
+  .superHotTag {
+    font-size: 10px !important;
+    padding: 2px 6px !important;
+    border-radius: 0 8px 0 8px !important;
+  }
+  
+  .tag {
+    font-size: 10px !important;
+    padding: 1px 5px !important;
+  }
+  
+  .paginationWrapper {
+    gap: 4px !important;
+  }
+  
+  .pageBtn {
+    min-width: 32px !important;
+    height: 32px !important;
+  }
+  
+  // Footer responsive styles for small mobile
+  .app-footer {
+    padding: 20px 0 0 0 !important;
+    font-size: 13px !important;
+    
+    .footer-container {
+      padding: 0 12px 12px 12px !important;
+      gap: 16px 0 !important;
+    }
+    
+    .footer-col {
+      margin-bottom: 10px !important;
+      
+      ul {
+        margin: 6px 0 0 0 !important;
+        text-align: center !important; // Căn giữa toàn bộ danh sách
+        
+        li {
+          margin-bottom: 6px !important;
+          text-align: center !important; // Căn giữa từng item
+          
+          a {
+            font-size: 13px !important;
+            display: inline-block !important; // Để căn giữa hoạt động tốt hơn
+          }
+        }
+      }
+    }
+    
+    .logo-col {
+      margin-bottom: 14px !important;
+      
+      .footer-slogan {
+        font-size: 0.95rem !important;
+        margin-bottom: 14px !important;
+      }
+      
+      .footer-social {
+        gap: 14px !important;
+        
+        .footer-social-icon {
+          width: 36px !important;
+          height: 36px !important;
+          
+          svg {
+            width: 20px !important;
+            height: 20px !important;
+          }
+        }
+      }
+    }
+    
+    .footer-title {
+      font-size: 0.95rem !important;
+      margin-bottom: 5px !important;
+    }
+    
+    .contact-col {
+      .footer-contact-list {
+        margin-top: 6px !important;
+        text-align: center !important; // Căn giữa danh sách contact
+        
+        li {
+          margin-bottom: 6px !important;
+          font-size: 13px !important;
+          text-align: center !important; // Căn giữa từng item
+          
+          .footer-contact-icon {
+            margin-right: 5px !important;
+            font-size: 0.95em !important;
+          }
+          
+          a {
+            font-size: 13px !important;
+          }
+        }
+      }
+    }
+    
+    .footer-bottom {
+      margin-top: 10px !important;
+      padding: 10px 0 5px 0 !important;
+      font-size: 0.85em !important;
+      gap: 6px !important;
+    }
+  }
+  
+  .footer-logo-img {
+    width: 100px !important;
+  }
+  
+  // Job detail page styles cho mobile nhỏ
+  .detailWrapper.job-detail-page {
+    padding: 12px !important;
+    border-radius: 10px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .detailWrapper.job-detail-page .detailTitle {
+    font-size: 16px !important;
+    margin-bottom: 5px !important;
+  }
+  
+  .detailWrapper.job-detail-page .detailCompany {
+    font-size: 14px !important;
+    margin-bottom: 5px !important;
+  }
+  
+  .detailWrapper.job-detail-page .detailHeaderRow {
+    gap: 10px !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .detailWrapper.job-detail-page .companyLogo {
+    width: 70px !important;
+    height: 70px !important;
+    font-size: 1.3rem !important;
+  }
+  
+  .detailWrapper.job-detail-page .applyBtn {
+    height: 44px !important;
+    font-size: 0.95rem !important;
+    margin: 14px 0 10px 0 !important;
+  }
+  
+  .detailWrapper.job-detail-page .applyRow {
+    gap: 8px !important;
+    margin: 14px 0 10px 0 !important;
+  }
+  
+  .detailWrapper.job-detail-page .heartBtn {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  
+  .detailWrapper.job-detail-page .detailDesc {
+    font-size: 13px !important;
+    margin-top: 10px !important;
+  }
+  
+  .detailWrapper.job-detail-page .reasonTitle {
+    font-size: 1.2rem !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .detailWrapper.job-detail-page .reasonList li {
+    font-size: 0.95rem !important;
+    margin-bottom: 8px !important;
+  }
+}
+
+// Tablet styles
+@media (max-width: 900px) and (min-width: 769px) {
+  .searchForm {
+    max-width: 100% !important;
+  }
+  
+  .inputGroup {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  
+  .searchInput,
+  .searchBtn {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  
+  .featuredEmployerWrapper {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  
+  // Footer responsive styles for tablet
+  .app-footer {
+    padding: 30px 0 0 0 !important;
+    
+    .footer-container {
+      padding: 0 20px 20px 20px !important;
+      gap: 24px 0 !important;
+    }
+    
+    .footer-col,
+    .logo-col,
+    .contact-col {
+      margin-bottom: 16px !important;
+    }
+    
+    .footer-bottom {
+      font-size: 0.93em !important;
+      padding: 14px 0 8px 0 !important;
+    }
+  }
+} 

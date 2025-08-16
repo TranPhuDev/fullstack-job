@@ -24,10 +24,23 @@ const ContentJob: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [jobDetail, setJobDetail] = useState<IJob | null>(null);
   const [showLikeModal, setShowLikeModal] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   const id = new URLSearchParams(useLocation().search).get("id");
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const init = async () => {
@@ -127,17 +140,30 @@ const ContentJob: React.FC = () => {
           </div>
         ) : (
           <>
-            <div className="col-5">
+            {/* Job list bên trái - hiển thị trên mobile */}
+            <div className={isMobile ? "col-12" : "col-5"}>
               <div className={styles.jobListWrapper}>
                 {jobs.map((job) => (
                   <div
                     key={job.id}
-                    onClick={() => setSelectedJob(job)}
+                    onClick={() => {
+                      if (isMobile) {
+                        // Trên mobile: navigate sang trang job detail
+                        // Thêm delay nhỏ để đảm bảo UX mượt mà
+                        setTimeout(() => {
+                          navigate(`/job/${job.id}`);
+                        }, 100);
+                      } else {
+                        // Trên desktop: chỉ set selected job để hiển thị bên phải
+                        setSelectedJob(job);
+                      }
+                    }}
                     className={
                       selectedJob && job.id === selectedJob.id
                         ? `${styles.jobItem} ${styles.selected}`
                         : styles.jobItem
                     }
+                    style={{ cursor: 'pointer' }}
                   >
                     {job.salary && job.salary > 30000000 ? (
                       <div className={styles.superHotTag}>
@@ -208,16 +234,17 @@ const ContentJob: React.FC = () => {
                 ))}
               </div>
             </div>
-            {/* Chi tiết job bên phải */}
-            <div className="col-7">
-              <ContentJobRight
-                selectedJob={selectedJob}
-                setJobDetail={setJobDetail}
-                setIsModalOpen={setIsModalOpen}
-                isAuthenticated={true}
-                setShowLikeModal={setShowLikeModal}
-              />
-            </div>
+            {/* Chi tiết job bên phải - ẩn trên mobile */}
+            {!isMobile && (
+              <div className="col-7">
+                <ContentJobRight
+                  selectedJob={selectedJob}
+                  setJobDetail={setJobDetail}
+                  setIsModalOpen={setIsModalOpen}
+                  setShowLikeModal={setShowLikeModal}
+                />
+              </div>
+            )}
           </>
         )}
       </div>

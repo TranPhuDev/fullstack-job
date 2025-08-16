@@ -28,9 +28,10 @@ import {
     callCreateJob,
     callUpdateJob,
     callFetchJobById,
+    callFetchAllSkillsForJob,
     callFetchAllSkill,
     callFetchCompany,
-} from "@/services/api";
+} from '@/services/api';
 import { DebounceSelect } from "@/components/user/debounce.select";
 import { ICompanySelect } from "@/components/user/create.user";
 
@@ -84,14 +85,27 @@ const ViewUpsertJob = () => {
     // Fetch skills and companies
     useEffect(() => {
         const fetchData = async () => {
-            // fetch skills
-            const skillRes = await callFetchAllSkill("page=1&pageSize=100");
-            setSkills(
-                (skillRes?.data?.result as ISkill[] | undefined)?.map((s: ISkill) => ({
-                    label: s.name ?? '',
-                    value: s.id ?? '',
-                })) || []
-            );
+            // fetch skills - thử nhiều cách để lấy tất cả skill
+            try {
+                // Thử API mới trước
+                const skillRes = await callFetchAllSkillsForJob();
+                setSkills(
+                    (skillRes?.data as ISkill[] | undefined)?.map((s: ISkill) => ({
+                        label: s.name ?? '',
+                        value: s.id ?? '',
+                    })) || []
+                );
+            } catch (error) {
+                // Fallback: sử dụng API cũ với pageSize lớn
+                console.log('API mới không khả dụng, sử dụng API cũ');
+                const skillRes = await callFetchAllSkill("page=1&pageSize=10000&size=10000");
+                setSkills(
+                    (skillRes?.data?.result as ISkill[] | undefined)?.map((s: ISkill) => ({
+                        label: s.name ?? '',
+                        value: s.id ?? '',
+                    })) || []
+                );
+            }
 
             if (id) {
                 const res = await callFetchJobById(id);

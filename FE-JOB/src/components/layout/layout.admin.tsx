@@ -87,7 +87,6 @@ const SideBarAdmin = () => {
 
     const handleLogout = async () => {
         const res = await logoutAPI();
-        // Kiểm tra statusCode để đảm bảo API call thành công
         if (res.data == null) {
             setUser(null);
             setIsAuthenticated(false);
@@ -182,10 +181,10 @@ const SideBarAdmin = () => {
 
 
     const dropdownItems: MenuProps['items'] = [
-        {
-            label: 'Quản lý tài khoản ',
-            key: 'account',
-        },
+        // {
+        //     label: 'Quản lý tài khoản ',
+        //     key: 'account',
+        // },
         {
             label: <Link style={{ textDecoration: "none" }} to="/">Trang chủ</Link>,
             key: 'homepage',

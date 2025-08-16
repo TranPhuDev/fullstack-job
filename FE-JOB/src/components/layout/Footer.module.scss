@@ -152,23 +152,240 @@
   margin: 0 auto;
 }
 
-// Responsive
+// Responsive cho tablet
 @media (max-width: 900px) {
-  .app-footer .footer-container {
-    flex-wrap: wrap;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0 16px 16px 16px;
+  .app-footer {
+    padding: 30px 0 0 0;
+    
+    .footer-container {
+      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0 20px 20px 20px;
+      gap: 24px 0;
+    }
+    
+    .footer-col,
+    .logo-col,
+    .contact-col {
+      min-width: 0;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+    
+    .footer-bottom {
+      font-size: 0.93em;
+      padding: 14px 0 8px 0;
+    }
   }
-  .app-footer .footer-col,
-  .app-footer .logo-col,
-  .app-footer .contact-col {
-    min-width: 0;
-    width: 100%;
-    margin-bottom: 18px;
+}
+
+// Responsive cho mobile
+@media (max-width: 768px) {
+  .app-footer {
+    padding: 24px 0 0 0;
+    font-size: 14px;
+    
+    .footer-container {
+      padding: 0 16px 16px 16px;
+      gap: 20px 0;
+    }
+    
+    .footer-col {
+      margin-bottom: 12px;
+      
+      ul {
+        margin: 8px 0 0 0;
+        text-align: center; // Căn giữa toàn bộ danh sách
+        
+        li {
+          margin-bottom: 8px;
+          text-align: center; // Căn giữa từng item
+          
+          a {
+            font-size: 14px;
+            line-height: 1.4;
+            display: inline-block; // Để căn giữa hoạt động tốt hơn
+          }
+        }
+      }
+    }
+    
+    .logo-col {
+      margin-bottom: 16px;
+      align-items: center;
+      text-align: center;
+      
+      .footer-logo {
+        margin-bottom: 8px;
+        justify-content: center;
+      }
+      
+      .footer-slogan {
+        font-size: 1rem;
+        margin-bottom: 16px;
+        margin-left: 0;
+        text-align: center;
+      }
+      
+      .footer-social {
+        justify-content: center;
+        margin-left: 0;
+        gap: 16px;
+        
+        .footer-social-icon {
+          width: 40px;
+          height: 40px;
+          
+          svg {
+            width: 24px;
+            height: 24px;
+          }
+        }
+      }
+    }
+    
+    .footer-title {
+      font-size: 1rem;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    
+    .contact-col {
+      .footer-contact-list {
+        margin-top: 8px;
+        text-align: center; // Căn giữa danh sách contact
+        
+        li {
+          margin-bottom: 8px;
+          font-size: 14px;
+          line-height: 1.4;
+          justify-content: center;
+          text-align: center;
+          
+          .footer-contact-icon {
+            margin-right: 6px;
+            font-size: 1em;
+          }
+          
+          a {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+    
+    .footer-bottom {
+      margin-top: 12px;
+      padding: 12px 0 6px 0;
+      font-size: 0.9em;
+      flex-direction: column;
+      gap: 8px;
+      
+      span {
+        display: block;
+        
+        &:nth-child(2) {
+          display: none; // Ẩn dấu "|" trên mobile
+        }
+      }
+    }
   }
-  .app-footer .footer-bottom {
-    font-size: 0.93em;
-    padding: 14px 0 8px 0;
+  
+  .footer-logo-img {
+    width: 120px;
+  }
+}
+
+// Responsive cho mobile nhỏ
+@media (max-width: 480px) {
+  .app-footer {
+    padding: 20px 0 0 0;
+    font-size: 13px;
+    
+    .footer-container {
+      padding: 0 12px 12px 12px;
+      gap: 16px 0;
+    }
+    
+    .footer-col {
+      margin-bottom: 10px;
+      
+      ul {
+        margin: 6px 0 0 0;
+        text-align: center; // Căn giữa toàn bộ danh sách
+        
+        li {
+          margin-bottom: 6px;
+          text-align: center; // Căn giữa từng item
+          
+          a {
+            font-size: 13px;
+            display: inline-block; // Để căn giữa hoạt động tốt hơn
+          }
+        }
+      }
+    }
+    
+    .logo-col {
+      margin-bottom: 14px;
+      
+      .footer-slogan {
+        font-size: 0.95rem;
+        margin-bottom: 14px;
+      }
+      
+      .footer-social {
+        gap: 14px;
+        
+        .footer-social-icon {
+          width: 36px;
+          height: 36px;
+          
+          svg {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
+    
+    .footer-title {
+      font-size: 0.95rem;
+      margin-bottom: 5px;
+    }
+    
+    .contact-col {
+      .footer-contact-list {
+        margin-top: 6px;
+        text-align: center; // Căn giữa danh sách contact
+        
+        li {
+          margin-bottom: 6px;
+          font-size: 13px;
+          text-align: center; // Căn giữa từng item
+          
+          .footer-contact-icon {
+            margin-right: 5px;
+            font-size: 0.95em;
+          }
+          
+          a {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+    
+    .footer-bottom {
+      margin-top: 10px;
+      padding: 10px 0 5px 0;
+      font-size: 0.85em;
+      gap: 6px;
+    }
+  }
+  
+  .footer-logo-img {
+    width: 100px;
   }
 }

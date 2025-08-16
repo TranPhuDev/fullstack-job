@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { callFetchCompanyById } from '@/services/api';
 import styles from '@/styles/Company.detail.module.scss';
+import { FiArrowLeft } from 'react-icons/fi';
 
 const ClientCompanyDetailPage = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [company, setCompany] = useState<ICompany | null>(null);
+
     useEffect(() => {
         const fetchCompany = async () => {
             if (!id) return;
@@ -21,6 +24,17 @@ const ClientCompanyDetailPage = () => {
 
     return (
         <div className={styles.companyDetailWrapper}>
+            {/* Nút Quay lại */}
+            <div className={styles.backButtonContainer}>
+                <button
+                    onClick={() => navigate('/company')}
+                    className={styles.backButton}
+                >
+                    <FiArrowLeft size={16} />
+                    Quay lại
+                </button>
+            </div>
+
             <div className={styles.companyDetailHeader}>
                 <div className={styles.companyDetailLogo}>
                     {company.logo ? (

@@ -1,5 +1,7 @@
 package vn.tranphudev.jobhunter.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -72,6 +74,12 @@ public class SkillController {
     @GetMapping("/skills")
     public ResponseEntity<ResultPaginationDTO> fetchAllSkills(@Filter Specification<Skill> spec, Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(this.skillService.handleFetchAllSkills(spec, pageable));
+    }
+
+    // Fetch all skills without pagination for dropdowns
+    @GetMapping("/skills/all")
+    public ResponseEntity<List<Skill>> fetchAllSkillsWithoutPagination() {
+        return ResponseEntity.status(HttpStatus.OK).body(this.skillService.handleFetchAllSkillsWithoutPagination());
     }
 
     // Delete skill

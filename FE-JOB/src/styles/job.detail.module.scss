@@ -1,6 +1,7 @@
 .containerJob {
     background-color: #f7f7f7;
 }
+
 .companyCard {
   background: #fff;
   border-radius: 10px;
@@ -8,11 +9,13 @@
   padding: 20px;
   margin-top: 10px;
 }
+
 .companyHeader {
   display: flex;
   align-items: center;
   gap: 16px;
 }
+
 .companyLogo {
   width: 60px;
   height: 60px;
@@ -20,19 +23,23 @@
   object-fit: cover;
   background: #f5f5f5;
 }
+
 .companyName {
   font-weight: bold;
   font-size: 1.2rem;
 }
+
 .companyRating {
   margin-top: 4px;
   font-size: 1.1rem;
 }
+
 .companyDesc {
   margin: 12px 0;
   color: #444;
   font-size: 0.98rem;
 }
+
 .companyInfoRow {
   display: flex;
   justify-content: space-between;
@@ -42,7 +49,133 @@
   border-bottom: 1px dotted #eee;
   padding-bottom: 3px;
 }
+
 .companyInfoRow span:last-child {
   color: #222;
   font-weight: 600;
+}
+
+// Responsive cho mobile
+@media (max-width: 768px) {
+  .containerJob {
+    background-color: #f7f7f7;
+    padding: 0 8px;
+  }
+  
+  .companyCard {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    padding: 16px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .companyHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .companyLogo {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: #f5f5f5;
+  }
+  
+  .companyName {
+    font-weight: bold;
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+  
+  .companyRating {
+    margin-top: 3px;
+    font-size: 1rem;
+  }
+  
+  .companyDesc {
+    margin: 10px 0;
+    color: #444;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
+  .companyInfoRow {
+    display: flex;
+    justify-content: space-between;
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    border-bottom: 1px dotted #eee;
+    padding-bottom: 6px;
+    line-height: 1.4;
+  }
+  
+  .companyInfoRow span:last-child {
+    color: #222;
+    font-weight: 600;
+    text-align: right;
+    max-width: 50%;
+  }
+  
+  .companyInfoRow span:first-child {
+    max-width: 50%;
+    padding-right: 8px;
+  }
+}
+
+// Responsive cho mobile nhỏ
+@media (max-width: 480px) {
+  .containerJob {
+    padding: 0 4px;
+  }
+  
+  .companyCard {
+    padding: 12px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+  }
+  
+  .companyHeader {
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  
+  .companyLogo {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .companyName {
+    font-size: 1rem;
+  }
+  
+  .companyRating {
+    font-size: 0.9rem;
+  }
+  
+  .companyDesc {
+    margin: 8px 0;
+    font-size: 0.9rem;
+  }
+  
+  .companyInfoRow {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+  }
+  
+  .companyInfoRow span:last-child {
+    max-width: 45%;
+  }
+  
+  .companyInfoRow span:first-child {
+    max-width: 55%;
+    padding-right: 6px;
+  }
 }

@@ -1,16 +1,13 @@
-import { Modal, Table, Tabs } from "antd";
-import type { TabsProps } from 'antd';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
+import { Modal, Tabs, TabsProps, Table, Form, Button, Upload, UploadFile, UploadProps, App, Col, Row } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import dayjs from 'dayjs';
-import { callFetchResumeByUser } from "@/services/api";
 import { ProFormDigit, ProFormSelect, ProFormText } from "@ant-design/pro-components";
-import { App, Button, Col, Form, Row, Upload, Modal as AntdModal } from "antd";
-import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
+import { useCurrentApp } from '../context/app.context';
+import { callFetchResumeByUser, callUpdateUser, callUploadSingleFile, callChangePassword, fetchAccountAPI } from '@/services/api';
 import { v4 as uuidv4 } from 'uuid';
-import { callUpdateUser, callUploadSingleFile, callChangePassword, fetchAccountAPI } from "@/services/api";
-import { useCurrentApp } from "../context/app.context";
+import dayjs from 'dayjs';
 import defaultAvatar from '@/assets/images/default-avatar.jpg';
+import styles from './ManageAccount.module.scss';
 
 interface IProps {
     open: boolean;
@@ -84,8 +81,9 @@ const UserResume = (props: any) => {
     ];
 
     return (
-        <div>
+        <div className={styles.resumeTableWrapper}>
             <Table<IResume>
+                className={styles.resumeTable}
                 columns={columns}
                 dataSource={listCV}
                 loading={isFetching}
@@ -235,9 +233,9 @@ const UserUpdateInfo = () => {
                         >
                             {dataAvatar.length >= 1 ? null : <div>Upload</div>}
                         </Upload>
-                        <AntdModal open={previewOpen} title={previewTitle} footer={null} onCancel={() => setPreviewOpen(false)}>
+                        <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={() => setPreviewOpen(false)}>
                             <img alt="avatar" style={{ width: '100%' }} src={previewImage} />
-                        </AntdModal>
+                        </Modal>
                     </Form.Item>
                 </Col>
                 <Col xs={24} sm={24} md={16}>
@@ -388,6 +386,7 @@ const ManageAccount = (props: IProps) => {
                 footer={null}
                 destroyOnClose={true}
                 width="1000px"
+                className={styles.manageAccountModal}
             >
 
                 <div style={{ minHeight: 400 }}>

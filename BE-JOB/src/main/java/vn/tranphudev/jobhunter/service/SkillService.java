@@ -69,6 +69,11 @@ public class SkillService {
         return rs;
     }
 
+    // get all skills without pagination for dropdowns
+    public List<Skill> handleFetchAllSkillsWithoutPagination() {
+        return this.skillRepository.findAll();
+    }
+
     // Delete skill
     public void deleteSkill(long id) {
         // delete job (inside job_skill table)

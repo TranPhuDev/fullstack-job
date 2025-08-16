@@ -22,7 +22,7 @@ const JobLike = () => {
         <div className={modalLikeStyles.likeList}>
             {likedJobs.map((job) => (
                 <div key={job.id} className={modalLikeStyles.likeItem}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
                         <div className={modalLikeStyles.companyLogo}>
                             {job.company?.logo ? (
                                 <img
@@ -74,7 +74,7 @@ const JobLike = () => {
 const LikeModal = (props: IProps) => {
     const { open, onClose } = props;
 
-    const onChange = () => {};
+    const onChange = () => { };
 
     const items: TabsProps['items'] = [
 
@@ -97,6 +97,7 @@ const LikeModal = (props: IProps) => {
                 footer={null}
                 destroyOnClose={true}
                 width="1000px"
+                className={modalLikeStyles.likeModal}
             >
 
                 <div style={{ minHeight: 400 }}>

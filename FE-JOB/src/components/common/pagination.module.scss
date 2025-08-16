@@ -51,3 +51,46 @@
   font-size: 20px;
   border: 1px solid #eee;
 }
+
+// Responsive cho mobile
+@media (max-width: 768px) {
+  .paginationWrapper {
+    gap: 6px;
+    margin: 12px 0;
+    flex-wrap: wrap;
+  }
+
+  .pageBtn {
+    min-width: 36px;
+    height: 36px;
+    font-size: 16px;
+    padding: 0 8px;
+  }
+
+  .ellipsis {
+    min-width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+}
+
+// Responsive cho mobile nhỏ
+@media (max-width: 480px) {
+  .paginationWrapper {
+    gap: 4px;
+    margin: 10px 0;
+  }
+
+  .pageBtn {
+    min-width: 32px;
+    height: 32px;
+    font-size: 14px;
+    padding: 0 6px;
+  }
+
+  .ellipsis {
+    min-width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+}

@@ -14,13 +14,53 @@ h4 {
   font-weight: 650 !important;
 }
 
-
-
-
 .ant-menu a,
 .ant-menu .ant-menu-item a,
 .ant-menu .ant-menu-item-selected a,
 .ant-menu .ant-menu-item-active a,
 .ant-menu .ant-menu-item>span>a {
   text-decoration: none !important;
+}
+
+// Responsive cho container
+@media (max-width: 768px) {
+  .container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  
+  .row {
+    margin-left: -6px !important;
+    margin-right: -6px !important;
+  }
+  
+  .col-12,
+  .col-5,
+  .col-7,
+  .col-8,
+  .col-4 {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  
+  .row {
+    margin-left: -4px !important;
+    margin-right: -4px !important;
+  }
+  
+  .col-12,
+  .col-5,
+  .col-7,
+  .col-8,
+  .col-4 {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
 }
