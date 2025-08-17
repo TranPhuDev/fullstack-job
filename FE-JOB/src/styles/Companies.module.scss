@@ -1,0 +1,342 @@
+.companiesWrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+.backButtonContainer {
+    margin-bottom: 30px;
+}
+
+.backButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: #e9e9e9;
+        border-color: #ccc;
+    }
+
+    &:active {
+        transform: translateY(1px);
+    }
+}
+
+.companiesHeader {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.companiesTitle {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.companiesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 30px;
+}
+
+.companyItem {
+    padding: 20px 16px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+
+    &:hover {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.companyLogo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+}
+
+.companyName {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+.companyAddress {
+    font-size: 12px;
+    opacity: 0.7;
+    line-height: 1.3;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 18px;
+    color: #666;
+}
+
+// Filter Header Styles
+.companiesSubtitle {
+    font-size: 18px;
+    color: #666;
+    margin: 10px 0 0 0;
+    font-weight: 400;
+}
+
+.filterHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+}
+
+.filterTitle {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.highlight {
+    background: #f0f0f0;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    color: #333;
+    border: 1px solid #d0d0d0;
+}
+
+.clearFilterBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f0f0f0;
+    color: #333;
+    border: 1px solid #d0d0d0;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.clearFilterBtn:hover {
+    background: #e0e0e0;
+    border-color: #c0c0c0;
+    transform: translateY(-1px);
+}
+
+.clearFilterBtn:active {
+    transform: translateY(0);
+}
+
+// Responsive design
+@media (max-width: 900px) {
+    .companiesWrapper {
+        padding: 15px;
+    }
+
+    .companiesTitle {
+        font-size: 28px;
+    }
+
+    .companiesGrid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+    }
+
+    .companyItem {
+        padding: 16px 14px;
+    }
+
+    .companyLogo {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .companyName {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 700px) {
+    .companiesWrapper {
+        padding: 10px;
+    }
+
+    .companiesTitle {
+        font-size: 24px;
+    }
+
+    .companiesGrid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+    }
+
+    .companyItem {
+        padding: 14px 12px;
+    }
+
+    .companyLogo {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+
+    .companyName {
+        font-size: 13px;
+    }
+
+    .companyAddress {
+        font-size: 11px;
+    }
+
+    .backButton {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .companiesWrapper {
+        padding: 8px;
+    }
+
+    .companiesTitle {
+        font-size: 20px;
+    }
+
+    .companiesGrid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 8px;
+    }
+
+    .companyItem {
+        padding: 12px 10px;
+    }
+
+    .companyLogo {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        margin-bottom: 6px;
+    }
+
+    .companyName {
+        font-size: 12px;
+    }
+
+    .companyAddress {
+        font-size: 10px;
+    }
+
+    .backButton {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+// Responsive cho filter header
+@media (max-width: 900px) {
+    .filterHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .filterTitle {
+        font-size: 20px;
+    }
+
+    .clearFilterBtn {
+        align-self: stretch;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 700px) {
+    .filterHeader {
+        padding: 14px;
+        margin-bottom: 20px;
+    }
+
+    .filterTitle {
+        font-size: 18px;
+    }
+
+    .clearFilterBtn {
+        font-size: 13px;
+        padding: 8px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .filterHeader {
+        padding: 12px;
+        margin-bottom: 16px;
+    }
+
+    .filterTitle {
+        font-size: 16px;
+    }
+
+    .clearFilterBtn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}

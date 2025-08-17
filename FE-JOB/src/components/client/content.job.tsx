@@ -59,6 +59,11 @@ const ContentJob: React.FC = () => {
     // eslint-disable-next-line
   }, [meta.page, meta.pageSize, filter]);
 
+  // Debug filter state
+  useEffect(() => {
+    console.log('Current filter:', filter);
+  }, [filter]);
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const pageParam = params.get("page");

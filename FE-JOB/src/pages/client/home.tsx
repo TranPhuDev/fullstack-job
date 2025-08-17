@@ -25,13 +25,15 @@ const HomePage = () => {
   const [keyword, setKeyword] = useState<string>("");
   const wrapperRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { setFilter } = useCurrentApp();
+  const { setFilter, filter } = useCurrentApp();
   const navigate = useNavigate();
 
   // Đọc parameter company từ URL
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const companyParam = params.get("company");
+  const skillParam = params.get("skill");
+  const levelParam = params.get("level");
 
   // Đóng dropdown khi click ra ngoài
   useEffect(() => {
@@ -67,15 +69,31 @@ const HomePage = () => {
     }
   }, [showInputOverlay]);
 
-  // Khi vào trang, nếu có companyParam trên URL thì set filter
+  // Khi vào trang, nếu có các param trên URL thì set filter và clear các filter khác
   useEffect(() => {
     if (companyParam) {
-      setFilter(prev => ({ ...prev, company: companyParam }));
+      setFilter({ company: companyParam });
+      setSelected(cities[0]);
+      setKeyword("");
+    } else if (skillParam) {
+      setFilter({ skill: skillParam });
+      setSelected(cities[0]);
+      setKeyword("");
+    } else if (levelParam) {
+      setFilter({ level: levelParam });
+      setSelected(cities[0]);
+      setKeyword("");
+    } else {
+      // Nếu không có param nào, clear tất cả filter
+      setFilter({});
+      setSelected(cities[0]);
+      setKeyword("");
     }
-  }, [companyParam, setFilter]);
+  }, [companyParam, skillParam, levelParam, setFilter]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    // Clear các filter cũ và set filter mới
     setFilter({
       city: selected.value,
       keyword: keyword
@@ -85,6 +103,16 @@ const HomePage = () => {
     const btn = document.activeElement as HTMLElement;
     if (btn && btn.tagName === 'BUTTON') btn.blur();
   };
+
+  const clearAllFilters = () => {
+    setFilter({});
+    setSelected(cities[0]);
+    setKeyword("");
+    navigate('/');
+  };
+
+  // Kiểm tra xem có filter nào đang active không
+  const hasActiveFilter = filter.company || filter.skill || filter.level || filter.city || filter.keyword;
 
   return (
     <div className={styles.homeTopSection}>
@@ -103,6 +131,7 @@ const HomePage = () => {
             (isShowingInputOverlay ? ' ' + styles.overlayShow : '')
           }></div>
         )}
+
         <form className={styles.searchForm} onSubmit={handleSearch}>
           <div className={styles.inputGroup}>
             <div
@@ -180,6 +209,25 @@ const HomePage = () => {
         <div className={styles.featuredEmployerOverlap}>
           <FeaturedEmployer />
         </div>
+
+        {/* Hiển thị filter đang active - di chuyển xuống dưới Featured Employer */}
+        {hasActiveFilter && (
+          <div className={styles.activeFilterBanner}>
+            <div className={styles.activeFilterContent}>
+              <span className={styles.activeFilterText}>
+                Đang lọc theo:
+                {filter.company && <span className={styles.filterTag}>Công ty: {filter.company}</span>}
+                {filter.skill && <span className={styles.filterTag}>Kỹ năng: {filter.skill}</span>}
+                {filter.level && <span className={styles.filterTag}>Cấp bậc: {filter.level}</span>}
+                {filter.city && <span className={styles.filterTag}>Thành phố: {cities.find(c => c.value === filter.city)?.label}</span>}
+                {filter.keyword && <span className={styles.filterTag}>Từ khóa: {filter.keyword}</span>}
+              </span>
+              <button onClick={clearAllFilters} className={styles.clearAllFiltersBtn}>
+                Xóa tất cả bộ lọc
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="container">
           <div className="row">

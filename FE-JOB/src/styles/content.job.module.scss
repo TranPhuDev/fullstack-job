@@ -1,5 +1,34 @@
 // FE-JOB/src/styles/content.job.module.scss
 
+.filterInfo {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.filterTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.filterTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filterTag {
+  background: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
 
 .jobListWrapper {
   display: flex;
@@ -109,8 +138,10 @@
   font-weight: 600;
   font-size: 16px;
   margin-bottom: 10px;
-  padding-right: 80px; /* Để tránh bị che bởi hot tag */
-  margin-top: 8px; /* Để tạo khoảng cách với timePost */
+  padding-right: 80px;
+  /* Để tránh bị che bởi hot tag */
+  margin-top: 8px;
+  /* Để tạo khoảng cách với timePost */
 }
 
 .jobCompany {
@@ -565,8 +596,25 @@
   .jobTitle {
     font-size: 15px;
     margin-bottom: 8px;
-    padding-right: 70px; /* Để tránh bị che bởi hot tag */
-    margin-top: 6px; /* Để tạo khoảng cách với timePost */
+    padding-right: 70px;
+    /* Để tránh bị che bởi hot tag */
+    margin-top: 6px;
+    /* Để tạo khoảng cách với timePost */
+  }
+
+  .filterInfo {
+    padding: 14px;
+    margin-bottom: 18px;
+  }
+
+  .filterTitle {
+    font-size: 15px;
+    margin-bottom: 11px;
+  }
+
+  .filterTag {
+    font-size: 13px;
+    padding: 5px 11px;
   }
 
   .jobCompany {
@@ -611,7 +659,7 @@
   .detailWrapper {
     display: none;
   }
-  
+
   // Hiển thị job detail trên mobile khi ở trang chi tiết job
   .detailWrapper.job-detail-page {
     display: block !important;
@@ -624,54 +672,54 @@
     margin-bottom: 16px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   }
-  
+
   .detailWrapper.job-detail-page .detailTitle {
     font-size: 18px;
     margin-bottom: 6px;
   }
-  
+
   .detailWrapper.job-detail-page .detailCompany {
     font-size: 16px;
     margin-bottom: 6px;
   }
-  
+
   .detailWrapper.job-detail-page .detailHeaderRow {
     gap: 12px;
     margin-bottom: 10px;
   }
-  
+
   .detailWrapper.job-detail-page .companyLogo {
     width: 80px;
     height: 80px;
     font-size: 1.5rem;
   }
-  
+
   .detailWrapper.job-detail-page .applyBtn {
     height: 48px;
     font-size: 1rem;
     margin: 16px 0 12px 0;
   }
-  
+
   .detailWrapper.job-detail-page .applyRow {
     gap: 10px;
     margin: 16px 0 12px 0;
   }
-  
+
   .detailWrapper.job-detail-page .heartBtn {
     width: 40px;
     height: 40px;
   }
-  
+
   .detailWrapper.job-detail-page .detailDesc {
     font-size: 14px;
     margin-top: 12px;
   }
-  
+
   .detailWrapper.job-detail-page .reasonTitle {
     font-size: 1.3rem;
     margin-bottom: 12px;
   }
-  
+
   .detailWrapper.job-detail-page .reasonList li {
     font-size: 1rem;
     margin-bottom: 10px;
@@ -680,6 +728,21 @@
 
 // Responsive cho mobile nhỏ
 @media (max-width: 480px) {
+  .filterInfo {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .filterTitle {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .filterTag {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
   .jobItem {
     padding: 10px;
     border-radius: 8px;
@@ -695,8 +758,10 @@
 
   .jobTitle {
     font-size: 14px;
-    padding-right: 60px; /* Để tránh bị che bởi hot tag */
-    margin-top: 5px; /* Để tạo khoảng cách với timePost */
+    padding-right: 60px;
+    /* Để tránh bị che bởi hot tag */
+    margin-top: 5px;
+    /* Để tạo khoảng cách với timePost */
   }
 
   .hotTag,
@@ -705,61 +770,61 @@
     padding: 2px 6px;
     border-radius: 0 8px 0 8px;
   }
-  
+
   // Job detail page styles cho mobile nhỏ
   .detailWrapper.job-detail-page {
     padding: 12px;
     border-radius: 10px;
     margin-bottom: 12px;
   }
-  
+
   .detailWrapper.job-detail-page .detailTitle {
     font-size: 16px;
     margin-bottom: 5px;
   }
-  
+
   .detailWrapper.job-detail-page .detailCompany {
     font-size: 14px;
     margin-bottom: 5px;
   }
-  
+
   .detailWrapper.job-detail-page .detailHeaderRow {
     gap: 10px;
     margin-bottom: 8px;
   }
-  
+
   .detailWrapper.job-detail-page .companyLogo {
     width: 70px;
     height: 70px;
     font-size: 1.3rem;
   }
-  
+
   .detailWrapper.job-detail-page .applyBtn {
     height: 44px;
     font-size: 0.95rem;
     margin: 14px 0 10px 0;
   }
-  
+
   .detailWrapper.job-detail-page .applyRow {
     gap: 8px;
     margin: 14px 0 10px 0;
   }
-  
+
   .detailWrapper.job-detail-page .heartBtn {
     width: 36px;
     height: 36px;
   }
-  
+
   .detailWrapper.job-detail-page .detailDesc {
     font-size: 13px;
     margin-top: 10px;
   }
-  
+
   .detailWrapper.job-detail-page .reasonTitle {
     font-size: 1.2rem;
     margin-bottom: 10px;
   }
-  
+
   .detailWrapper.job-detail-page .reasonList li {
     font-size: 0.95rem;
     margin-bottom: 8px;

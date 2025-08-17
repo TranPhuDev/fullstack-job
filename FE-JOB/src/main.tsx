@@ -29,6 +29,9 @@ import ViewUpsertJob from './components/job/job_manage/upsert.job';
 import ClientDetailJobPage from './pages/client/job.detail';
 import ClientCompanyPage from '@/pages/client/Company';
 import ClientCompanyDetailPage from '@/pages/client/Company.detail';
+import SkillsPage from '@/pages/client/Skills';
+import LevelsPage from '@/pages/client/Levels';
+import CompaniesPage from '@/pages/client/Companies';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -40,7 +43,10 @@ const router = createBrowserRouter([
         path: "/company",
         element: <ClientCompanyPage />,
       },
-      { path: "company/:id", element: <ClientCompanyDetailPage /> }
+      { path: "company/:id", element: <ClientCompanyDetailPage /> },
+      { path: "skills", element: <SkillsPage /> },
+      { path: "levels", element: <LevelsPage /> },
+      { path: "companies", element: <CompaniesPage /> }
     ]
   },
   {

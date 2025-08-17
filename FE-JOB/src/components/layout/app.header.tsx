@@ -304,7 +304,19 @@ const AppHeader = () => {
                                                     </span>
                                                 ))}
                                             </div>
-                                            <div className={styles.seeAll}>
+                                            <div className={styles.seeAll} onClick={() => {
+                                                if (activeIndex === 0) {
+                                                    navigate('/skills');
+                                                } else if (activeIndex === 1) {
+                                                    navigate('/levels');
+                                                } else if (activeIndex === 2) {
+                                                    navigate('/companies');
+                                                } else if (activeIndex === 3) {
+                                                    // Xử lý cho thành phố khác
+                                                } else {
+                                                    // Xử lý cho các trường hợp khác
+                                                }
+                                            }}>
                                                 {activeIndex === 3 ? 'Thành phố khác' : 'Xem tất cả'}
                                             </div>
                                         </div>
@@ -445,16 +457,49 @@ const AppHeader = () => {
                                                     {item.data.length > 8 && (
                                                         <span
                                                             className={`${styles.mobileSubMenuItem} ${styles.mobileExpandButton} ${expandedSections.includes(idx) ? styles.expanded : ''}`}
-                                                            onClick={() => toggleExpandedSection(idx)}
+                                                            onClick={() => {
+                                                                if (expandedSections.includes(idx)) {
+                                                                    toggleExpandedSection(idx);
+                                                                } else {
+                                                                    // Khi click "Xem tất cả" thì navigate sang trang tương ứng
+                                                                    if (idx === 0) {
+                                                                        navigate('/skills');
+                                                                        setIsMobileMenuOpen(false);
+                                                                    } else if (idx === 1) {
+                                                                        navigate('/levels');
+                                                                        setIsMobileMenuOpen(false);
+                                                                    } else if (idx === 2) {
+                                                                        navigate('/companies');
+                                                                        setIsMobileMenuOpen(false);
+                                                                    }
+                                                                }
+                                                            }}
                                                         >
-                                                            {expandedSections.includes(idx) ? 'Thu gọn ↑' : `Xem thêm ${item.data.length - 8} tùy chọn ↓`}
+                                                            {expandedSections.includes(idx) ? 'Thu gọn ↑' : 'Xem tất cả'}
                                                         </span>
                                                     )}
                                                 </div>
                                             ) : (
                                                 <div className={styles.mobileSubMenu}>
-                                                    <span className={styles.mobileSubMenuItem} style={{ color: '#999', fontStyle: 'italic' }}>
-                                                        Đang tải...
+                                                    <span
+                                                        className={styles.mobileSubMenuItem}
+                                                        onClick={() => {
+                                                            if (idx === 0) {
+                                                                navigate('/skills');
+                                                                setIsMobileMenuOpen(false);
+                                                            } else if (idx === 1) {
+                                                                navigate('/levels');
+                                                                setIsMobileMenuOpen(false);
+                                                            } else if (idx === 2) {
+                                                                navigate('/companies');
+                                                                setIsMobileMenuOpen(false);
+                                                            }
+                                                        }}
+                                                        style={{ color: '#007bff', cursor: 'pointer' }}
+                                                    >
+                                                        {idx === 0 ? 'Xem tất cả kỹ năng' :
+                                                            idx === 1 ? 'Xem tất cả cấp bậc' :
+                                                                idx === 2 ? 'Xem tất cả công ty' : 'Xem tất cả'}
                                                     </span>
                                                 </div>
                                             )}
